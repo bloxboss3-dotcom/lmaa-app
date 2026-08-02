@@ -1,0 +1,178 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   LMAA design tokens
+   Confident martial-arts identity: near-black chrome, generous white space,
+   deep red for action and restrained gold for honour/accent.
+   ========================================================================== */
+@theme {
+  --color-ink-950: #08080a;
+  --color-ink-900: #0b0b0d;
+  --color-ink-850: #131318;
+  --color-ink-800: #1b1b21;
+  --color-ink-700: #26262f;
+  --color-ink-600: #363642;
+  --color-ink-500: #55555f;
+  --color-ink-400: #6a6a74;
+  --color-ink-300: #9b9ba6;
+  --color-ink-200: #c9c9d2;
+  --color-ink-100: #e6e6ec;
+  --color-ink-50: #f4f4f7;
+
+  --color-crimson-50: #fff1f2;
+  --color-crimson-100: #ffe1e3;
+  --color-crimson-200: #ffc7cb;
+  --color-crimson-300: #f89aa1;
+  --color-crimson-400: #ef6470;
+  --color-crimson-500: #dd2b39;
+  --color-crimson-600: #c1121f;
+  --color-crimson-700: #a20e19;
+  --color-crimson-800: #7d0b14;
+  --color-crimson-900: #5a0810;
+
+  --color-gold-100: #faf1d9;
+  --color-gold-200: #f0dfae;
+  --color-gold-300: #e2cb8a;
+  --color-gold-400: #d3b167;
+  --color-gold-500: #c9a24d;
+  --color-gold-600: #a4802f;
+  --color-gold-700: #7d6122;
+
+  --color-canvas: #f6f6f8;
+  --color-surface: #ffffff;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Noto Sans', sans-serif;
+
+  --radius-card: 1.25rem;
+
+  --shadow-soft: 0 1px 2px rgb(11 11 13 / 0.04), 0 8px 24px -12px rgb(11 11 13 / 0.18);
+  --shadow-lift: 0 2px 6px rgb(11 11 13 / 0.06), 0 20px 40px -20px rgb(11 11 13 / 0.28);
+
+  --animate-fade-up: fade-up 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.28s ease-out both;
+  --animate-sheet-up: sheet-up 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes sheet-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* ================================================================== base == */
+@layer base {
+  :root {
+    color-scheme: light;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    /* Never let the fixed bottom navigation sit on top of page content. */
+    overscroll-behavior-y: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* A single, obvious focus treatment everywhere (keyboard + switch access). */
+  :focus-visible {
+    outline: 3px solid var(--color-crimson-600);
+    outline-offset: 2px;
+    border-radius: 0.35rem;
+  }
+
+  /* Respect the OS "reduce motion" setting. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+/* ============================================================ utilities == */
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Truthful, readable multi-line clamps for card copy. */
+  .clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .hero-grain {
+    background-image:
+      radial-gradient(120% 90% at 15% 0%, rgb(193 18 31 / 0.42) 0%, transparent 58%),
+      radial-gradient(90% 80% at 95% 10%, rgb(201 162 77 / 0.16) 0%, transparent 55%),
+      linear-gradient(160deg, var(--color-ink-900) 0%, var(--color-ink-950) 100%);
+  }
+}

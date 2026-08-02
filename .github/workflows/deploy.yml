@@ -1,0 +1,83 @@
+name: Build and deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Lets Kevin re-run a deployment from the Actions tab without pushing code.
+  workflow_dispatch:
+
+# Permissions the official Pages actions need. Nothing more.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time. A newer push waits for the current run to finish
+# rather than cancelling it, so a half-deployed site never goes live.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Check and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies from the lockfile
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check types
+        run: npm run typecheck
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build the app
+        env:
+          # Serves the app from https://USER.github.io/REPOSITORY/.
+          # For a custom domain, set the repository variable VITE_BASE_PATH to "/"
+          # (Settings -> Secrets and variables -> Actions -> Variables).
+          VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || format('/{0}/', github.event.repository.name) }}
+          # Browser-safe Supabase values. Leave unset to deploy in demo mode.
+          # These are repository VARIABLES, not secrets: everything here is
+          # visible in the published JavaScript by design.
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_PUSH_ENABLED: ${{ vars.VITE_PUSH_ENABLED }}
+          VITE_PUSH_FUNCTION_URL: ${{ vars.VITE_PUSH_FUNCTION_URL }}
+          VITE_PUSH_APP_ID: ${{ vars.VITE_PUSH_APP_ID }}
+          VITE_FEATURE_LEADERSHIP: ${{ vars.VITE_FEATURE_LEADERSHIP }}
+          VITE_APP_VERSION: ${{ github.sha }}
+        run: npm run build
+
+      - name: Add .nojekyll so GitHub serves every built file as-is
+        run: touch dist/.nojekyll
+
+      - name: Upload the built site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4
