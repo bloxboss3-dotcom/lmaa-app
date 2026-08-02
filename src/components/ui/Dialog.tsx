@@ -68,7 +68,7 @@ export function Dialog({
       >
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-lg font-bold text-ink-900">{title}</h2>
+            <h2 className="text-lg font-semibold text-ink-900">{title}</h2>
             {description ? (
               <p className="mt-1 text-sm leading-relaxed text-ink-600">{description}</p>
             ) : null}

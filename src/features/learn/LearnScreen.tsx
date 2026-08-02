@@ -78,7 +78,7 @@ export function LearnScreen() {
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-2">
-                  <span className="font-bold text-ink-900">{item.title}</span>
+                  <span className="font-semibold text-ink-900">{item.title}</span>
                   <Badge tone="neutral">{item.count}</Badge>
                 </span>
                 <span className="mt-0.5 block text-sm text-ink-500">{item.description}</span>
@@ -96,7 +96,7 @@ export function LearnScreen() {
               <Icon name="sparkle" size={20} />
             </span>
             <div>
-              <h2 className="font-bold text-ink-900">Leadership Academy</h2>
+              <h2 className="font-semibold text-ink-900">Leadership Academy</h2>
               <p className="mt-1 text-sm leading-relaxed text-ink-600">
                 Missions, badges and instructor feedback for leadership students are coming in a
                 later release. Nothing to do here yet.

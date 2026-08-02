@@ -36,7 +36,6 @@ export function PageScreen({ slug: fixedSlug }: { slug?: string }) {
     return (
       <Screen className="mx-auto max-w-2xl">
         <EmptyState
-          icon="file"
           title={`${FALLBACK_TITLES[slug] ?? 'This page'} is not available yet`}
           description="The academy has not published this page. Please check back soon."
           action={

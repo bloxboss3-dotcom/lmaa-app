@@ -9,7 +9,6 @@ export function NotFoundScreen() {
   return (
     <Screen className="mx-auto max-w-2xl">
       <EmptyState
-        icon="search"
         title="We could not find that screen"
         description="The link may be old, or the page may have moved."
         action={

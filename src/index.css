@@ -2,62 +2,67 @@
 
 /* ==========================================================================
    LMAA design tokens
-   Confident martial-arts identity: near-black chrome, generous white space,
-   deep red for action and restrained gold for honour/accent.
+
+   Direction: quiet, editorial, easy to scan. Hairline borders instead of
+   shadows, a warm neutral palette instead of cold grey, one accent colour used
+   sparingly, and a small type scale with real contrast between levels.
    ========================================================================== */
 @theme {
-  --color-ink-950: #08080a;
-  --color-ink-900: #0b0b0d;
-  --color-ink-850: #131318;
-  --color-ink-800: #1b1b21;
-  --color-ink-700: #26262f;
-  --color-ink-600: #363642;
-  --color-ink-500: #55555f;
-  --color-ink-400: #6a6a74;
-  --color-ink-300: #9b9ba6;
-  --color-ink-200: #c9c9d2;
-  --color-ink-100: #e6e6ec;
-  --color-ink-50: #f4f4f7;
+  /* Warm neutrals — cold blue-greys made every screen feel like a dashboard. */
+  --color-ink-950: #0c0b0a;
+  --color-ink-900: #171614;
+  --color-ink-850: #201e1c;
+  --color-ink-800: #2b2825;
+  --color-ink-700: #3d3935;
+  --color-ink-600: #55504a;
+  --color-ink-500: #6d675f;
+  --color-ink-400: #736c63;
+  --color-ink-300: #a9a29a;
+  --color-ink-200: #d6d1ca;
+  --color-ink-100: #e9e5df;
+  --color-ink-50: #f3f0eb;
 
-  --color-crimson-50: #fff1f2;
-  --color-crimson-100: #ffe1e3;
-  --color-crimson-200: #ffc7cb;
-  --color-crimson-300: #f89aa1;
-  --color-crimson-400: #ef6470;
-  --color-crimson-500: #dd2b39;
-  --color-crimson-600: #c1121f;
-  --color-crimson-700: #a20e19;
-  --color-crimson-800: #7d0b14;
-  --color-crimson-900: #5a0810;
+  --color-crimson-50: #fdf2f2;
+  --color-crimson-100: #fbe1e2;
+  --color-crimson-200: #f6c4c6;
+  --color-crimson-300: #ec9296;
+  --color-crimson-400: #dd5b62;
+  --color-crimson-500: #c92c36;
+  --color-crimson-600: #b3121f;
+  --color-crimson-700: #930f19;
+  --color-crimson-800: #720c14;
+  --color-crimson-900: #52080e;
 
-  --color-gold-100: #faf1d9;
-  --color-gold-200: #f0dfae;
-  --color-gold-300: #e2cb8a;
-  --color-gold-400: #d3b167;
-  --color-gold-500: #c9a24d;
-  --color-gold-600: #a4802f;
-  --color-gold-700: #7d6122;
+  --color-gold-100: #f7efdc;
+  --color-gold-200: #ecdcb4;
+  --color-gold-300: #dcc389;
+  --color-gold-400: #c9a961;
+  --color-gold-500: #b8954a;
+  --color-gold-600: #96762f;
+  --color-gold-700: #6f5722;
 
-  --color-canvas: #f6f6f8;
+  --color-canvas: #f8f7f4;
   --color-surface: #ffffff;
 
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'Noto Sans', sans-serif;
 
-  --radius-card: 1.25rem;
+  /* Calmer geometry: less bubble, more card. */
+  --radius-card: 0.875rem;
 
-  --shadow-soft: 0 1px 2px rgb(11 11 13 / 0.04), 0 8px 24px -12px rgb(11 11 13 / 0.18);
-  --shadow-lift: 0 2px 6px rgb(11 11 13 / 0.06), 0 20px 40px -20px rgb(11 11 13 / 0.28);
+  /* Shadows are the exception now, not the rule. */
+  --shadow-soft: 0 1px 2px rgb(23 22 20 / 0.05);
+  --shadow-lift: 0 4px 16px -8px rgb(23 22 20 / 0.22);
 
-  --animate-fade-up: fade-up 0.36s cubic-bezier(0.22, 1, 0.36, 1) both;
-  --animate-fade-in: fade-in 0.28s ease-out both;
-  --animate-sheet-up: sheet-up 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-up: fade-up 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.22s ease-out both;
+  --animate-sheet-up: sheet-up 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
 
   @keyframes fade-up {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(8px);
     }
     to {
       opacity: 1;
@@ -75,7 +80,7 @@
   @keyframes sheet-up {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(20px);
     }
     to {
       opacity: 1;
@@ -91,27 +96,26 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     background-color: var(--color-canvas);
     color: var(--color-ink-900);
     font-family: var(--font-sans);
+    font-size: 0.9375rem; /* 15px — comfortable on a phone without shouting */
+    line-height: 1.55;
     font-synthesis-weight: none;
-    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    /* Never let the fixed bottom navigation sit on top of page content. */
-    overscroll-behavior-y: none;
   }
 
+  /* Headings are semibold, not black. Weight was doing the work that size and
+     spacing should do, which is why everything read as equally important. */
   h1,
   h2,
   h3,
   h4 {
-    letter-spacing: -0.02em;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
     text-wrap: balance;
   }
 
@@ -119,18 +123,13 @@
     text-wrap: pretty;
   }
 
-  /* A single, obvious focus treatment everywhere (keyboard + switch access). */
   :focus-visible {
-    outline: 3px solid var(--color-crimson-600);
+    outline: 2px solid var(--color-ink-900);
     outline-offset: 2px;
-    border-radius: 0.35rem;
+    border-radius: 0.3rem;
   }
 
-  /* Respect the OS "reduce motion" setting. */
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
     *,
     *::before,
     *::after {
@@ -156,7 +155,12 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  /* Truthful, readable multi-line clamps for card copy. */
+  .clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   .clamp-2 {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -169,10 +173,12 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  .hero-grain {
-    background-image:
-      radial-gradient(120% 90% at 15% 0%, rgb(193 18 31 / 0.42) 0%, transparent 58%),
-      radial-gradient(90% 80% at 95% 10%, rgb(201 162 77 / 0.16) 0%, transparent 55%),
-      linear-gradient(160deg, var(--color-ink-900) 0%, var(--color-ink-950) 100%);
+  /* Small label used above groups. Grey, not red — the accent is for actions. */
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-ink-400);
   }
 }

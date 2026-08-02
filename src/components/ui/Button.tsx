@@ -3,28 +3,26 @@ import { Link } from 'react-router-dom'
 import { cx } from '@/lib/cx'
 import { Icon, type IconName } from './Icon'
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'dark'
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'dark'
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary:
-    'bg-crimson-600 text-white hover:bg-crimson-700 active:bg-crimson-800 shadow-[0_6px_18px_-8px_rgba(193,18,31,0.8)]',
-  secondary: 'bg-white text-ink-900 border border-ink-200 hover:border-ink-300 hover:bg-ink-50',
-  ghost: 'bg-transparent text-ink-700 hover:bg-ink-100',
-  danger: 'bg-white text-crimson-700 border border-crimson-200 hover:bg-crimson-50',
+  primary: 'bg-crimson-600 text-white hover:bg-crimson-700 active:bg-crimson-800',
+  secondary: 'bg-white text-ink-800 border border-ink-200 hover:bg-ink-50',
+  ghost: 'bg-transparent text-ink-600 hover:bg-ink-100 hover:text-ink-900',
   dark: 'bg-ink-900 text-white hover:bg-ink-800',
 }
 
 const SIZES: Record<ButtonSize, string> = {
-  // Minimum 44px tall targets — comfortable for thumbs and accessible.
-  sm: 'min-h-9 px-3 text-sm gap-1.5 rounded-lg',
-  md: 'min-h-11 px-4 text-[0.95rem] gap-2 rounded-xl',
-  lg: 'min-h-13 px-5 text-base gap-2.5 rounded-xl',
+  sm: 'min-h-9 px-3 text-[0.8125rem] gap-1.5 rounded-lg',
+  md: 'min-h-11 px-4 text-sm gap-2 rounded-lg',
+  lg: 'min-h-12 px-5 text-[0.9375rem] gap-2 rounded-lg',
 }
 
+// Medium weight, not bold: buttons no longer have to compete with headings.
 const BASE =
-  'inline-flex items-center justify-center font-semibold transition-colors duration-150 ' +
-  'disabled:opacity-45 disabled:cursor-not-allowed select-none'
+  'inline-flex items-center justify-center font-medium transition-colors ' +
+  'disabled:opacity-50 disabled:cursor-not-allowed select-none'
 
 interface CommonProps {
   variant?: ButtonVariant
@@ -57,9 +55,9 @@ export function Button({
       className={cx(BASE, VARIANTS[variant], SIZES[size], fullWidth && 'w-full', className)}
       {...rest}
     >
-      {icon ? <Icon name={icon} size={size === 'sm' ? 16 : 18} /> : null}
+      {icon ? <Icon name={icon} size={size === 'sm' ? 15 : 17} /> : null}
       {children}
-      {iconRight ? <Icon name={iconRight} size={size === 'sm' ? 16 : 18} /> : null}
+      {iconRight ? <Icon name={iconRight} size={size === 'sm' ? 15 : 17} /> : null}
     </button>
   )
 }
@@ -69,7 +67,6 @@ interface LinkButtonProps extends CommonProps {
   'aria-label'?: string
 }
 
-/** In-app navigation styled as a button. */
 export function LinkButton({
   to,
   variant = 'primary',
@@ -87,26 +84,20 @@ export function LinkButton({
       className={cx(BASE, VARIANTS[variant], SIZES[size], fullWidth && 'w-full', className)}
       {...rest}
     >
-      {icon ? <Icon name={icon} size={size === 'sm' ? 16 : 18} /> : null}
+      {icon ? <Icon name={icon} size={size === 'sm' ? 15 : 17} /> : null}
       {children}
-      {iconRight ? <Icon name={iconRight} size={size === 'sm' ? 16 : 18} /> : null}
+      {iconRight ? <Icon name={iconRight} size={size === 'sm' ? 15 : 17} /> : null}
     </Link>
   )
 }
 
 interface ExternalButtonProps extends CommonProps {
   href?: string
-  /** Shown (and announced) when the action has nothing to link to yet. */
+  /** Shown (and announced) when the academy has not supplied the detail yet. */
   disabledReason?: string
   target?: string
 }
 
-/**
- * A link out of the app (tel:, mailto:, maps, registration pages).
- *
- * When the academy has not supplied the detail yet, this renders a disabled
- * control with an honest explanation instead of a dead link.
- */
 export function ExternalButton({
   href,
   disabledReason,
@@ -128,7 +119,7 @@ export function ExternalButton({
         aria-label={disabledReason ? `${String(children)} — ${disabledReason}` : undefined}
         className={cx(BASE, VARIANTS[variant], SIZES[size], fullWidth && 'w-full', className)}
       >
-        {icon ? <Icon name={icon} size={size === 'sm' ? 16 : 18} /> : null}
+        {icon ? <Icon name={icon} size={size === 'sm' ? 15 : 17} /> : null}
         {children}
       </button>
     )
@@ -141,9 +132,21 @@ export function ExternalButton({
       rel={isInPageProtocol ? undefined : 'noopener noreferrer'}
       className={cx(BASE, VARIANTS[variant], SIZES[size], fullWidth && 'w-full', className)}
     >
-      {icon ? <Icon name={icon} size={size === 'sm' ? 16 : 18} /> : null}
+      {icon ? <Icon name={icon} size={size === 'sm' ? 15 : 17} /> : null}
       {children}
-      {iconRight ? <Icon name={iconRight} size={size === 'sm' ? 16 : 18} /> : null}
+      {iconRight ? <Icon name={iconRight} size={size === 'sm' ? 15 : 17} /> : null}
     </a>
+  )
+}
+
+/** Quiet "See all →" style link used beside section headings. */
+export function TextLink({ to, children }: { to: string; children: ReactNode }) {
+  return (
+    <Link
+      to={to}
+      className="text-[0.8125rem] font-medium text-ink-500 transition-colors hover:text-ink-900"
+    >
+      {children}
+    </Link>
   )
 }

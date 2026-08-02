@@ -65,7 +65,7 @@ export function NotificationsScreen() {
       ) : null}
 
       <section>
-        <h2 className="mb-2 text-[0.68rem] font-bold tracking-[0.16em] text-ink-400 uppercase">
+        <h2 className="mb-2 eyebrow">
           What to send me
         </h2>
         <div className="space-y-2">
@@ -91,7 +91,7 @@ export function NotificationsScreen() {
       </section>
 
       <section>
-        <h2 className="mb-2 text-[0.68rem] font-bold tracking-[0.16em] text-ink-400 uppercase">
+        <h2 className="mb-2 eyebrow">
           This device
         </h2>
         <Card className="space-y-3">

@@ -39,7 +39,7 @@ export function ProgramsScreen() {
                     {program.ageRange ? <Badge tone="red">{program.ageRange}</Badge> : null}
                     {program.isSample ? <SampleBadge /> : null}
                   </div>
-                  <h2 className="text-lg font-bold text-ink-900">{program.name}</h2>
+                  <h2 className="text-lg font-semibold text-ink-900">{program.name}</h2>
                   {program.summary ? (
                     <p className="mt-1 text-sm font-semibold text-ink-500">{program.summary}</p>
                   ) : null}
@@ -49,7 +49,7 @@ export function ProgramsScreen() {
 
                   {classes.length ? (
                     <div className="mt-3.5 rounded-xl bg-ink-50 p-3">
-                      <p className="mb-1.5 text-[0.68rem] font-bold tracking-[0.14em] text-ink-400 uppercase">
+                      <p className="mb-1.5 eyebrow">
                         Class times
                       </p>
                       <ul className="space-y-1 text-sm text-ink-700">
@@ -77,7 +77,6 @@ export function ProgramsScreen() {
         </ul>
       ) : (
         <EmptyState
-          icon="medal"
           title="No programs listed yet"
           description="Program information will appear here once the academy adds it."
         />

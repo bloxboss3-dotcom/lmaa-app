@@ -110,7 +110,7 @@ export function AdminSettingsScreen() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-extrabold tracking-tight text-ink-900">Academy information</h1>
+        <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">Academy information</h1>
         <p className="mt-1 text-sm text-ink-500">
           These details power the Contact screen, the Call and Directions buttons, and the app
           footer.
@@ -172,7 +172,7 @@ export function AdminSettingsScreen() {
       </form>
 
       <Card className="bg-ink-50">
-        <h2 className="font-bold text-ink-900">Staff access</h2>
+        <h2 className="font-semibold text-ink-900">Staff access</h2>
         <p className="mt-1.5 text-sm leading-relaxed text-ink-600">
           Staff accounts are created by the academy owner in the Supabase dashboard — the app has no
           public sign-up on purpose. Full instructions are in SUPABASE_SETUP.md.

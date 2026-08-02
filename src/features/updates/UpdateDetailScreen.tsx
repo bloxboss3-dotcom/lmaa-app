@@ -38,7 +38,6 @@ export function UpdateDetailScreen() {
     return (
       <Screen className="mx-auto max-w-2xl">
         <EmptyState
-          icon="megaphone"
           title="This update is not available"
           description="It may have been removed or is no longer current."
           action={
@@ -78,7 +77,7 @@ export function UpdateDetailScreen() {
             <Badge tone="neutral">{CATEGORY_LABELS[announcement.category]}</Badge>
             {announcement.isSample ? <SampleBadge /> : null}
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-ink-900">
+          <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">
             {announcement.title}
           </h1>
           <p className="mt-2 text-sm font-medium text-ink-400">

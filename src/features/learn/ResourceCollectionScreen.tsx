@@ -69,7 +69,7 @@ export function ResourceCollectionScreen() {
           ))}
         </ul>
       ) : (
-        <EmptyState icon="book" title="Nothing here yet" description={meta.empty} />
+        <EmptyState title="Nothing here yet" description={meta.empty} />
       )}
 
       <LinkButton to="/learn" variant="ghost" icon="arrowLeft" size="sm">
@@ -150,7 +150,7 @@ function ResourceCard({
           ) : null}
           {resource.isSample ? <SampleBadge /> : null}
         </div>
-        <h2 className="font-bold text-ink-900">{resource.title}</h2>
+        <h2 className="font-semibold text-ink-900">{resource.title}</h2>
         {resource.description ? (
           <RichText text={resource.description} className="mt-1 text-sm text-ink-600" />
         ) : null}

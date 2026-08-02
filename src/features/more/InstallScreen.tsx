@@ -61,7 +61,7 @@ export function InstallScreen() {
       <Steps title="Computer" icon="download" steps={DESKTOP_STEPS} />
 
       <Card className="bg-ink-50">
-        <h2 className="font-bold text-ink-900">If you do not see the option</h2>
+        <h2 className="font-semibold text-ink-900">If you do not see the option</h2>
         <p className="mt-1.5 text-sm leading-relaxed text-ink-600">
           Some browsers do not support installing web apps. The app still works normally in your
           browser — you can bookmark this page instead. On iPhone, installing only works in Safari.
@@ -84,7 +84,7 @@ function Steps({
   return (
     <Card className={highlight ? 'border-crimson-200 ring-1 ring-crimson-100' : undefined}>
       <div className="mb-3 flex items-center gap-2">
-        <h2 className="font-bold text-ink-900">{title}</h2>
+        <h2 className="font-semibold text-ink-900">{title}</h2>
         {highlight ? <Badge tone="red">Your device</Badge> : null}
       </div>
       <ol className="space-y-2.5">

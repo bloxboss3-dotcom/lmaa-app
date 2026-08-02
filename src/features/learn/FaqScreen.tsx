@@ -33,7 +33,7 @@ export function FaqScreen() {
         <div className="space-y-6">
           {categories.map((category) => (
             <section key={category}>
-              <h2 className="mb-2 text-[0.68rem] font-bold tracking-[0.16em] text-crimson-600 uppercase">
+              <h2 className="mb-2 eyebrow">
                 {category}
               </h2>
               <ul className="space-y-2">
@@ -50,7 +50,6 @@ export function FaqScreen() {
         </div>
       ) : (
         <EmptyState
-          icon="info"
           title="No questions posted yet"
           description="Common questions and answers will appear here."
         />

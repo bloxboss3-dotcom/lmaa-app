@@ -45,7 +45,7 @@ export function MoreScreen() {
 
       {GROUPS.map((group) => (
         <section key={group.title}>
-          <h2 className="mb-2 px-1 text-[0.68rem] font-bold tracking-[0.16em] text-ink-400 uppercase">
+          <h2 className="mb-2 px-1 eyebrow">
             {group.title}
           </h2>
           <ul className="overflow-hidden rounded-[var(--radius-card)] border border-ink-100 bg-white shadow-[var(--shadow-soft)]">

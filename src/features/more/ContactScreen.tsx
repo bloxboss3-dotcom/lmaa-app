@@ -80,7 +80,7 @@ export function ContactScreen() {
 
           {social.length ? (
             <section>
-              <h2 className="mb-2 text-[0.68rem] font-bold tracking-[0.16em] text-ink-400 uppercase">
+              <h2 className="mb-2 eyebrow">
                 Follow the academy
               </h2>
               <div className="flex flex-wrap gap-2">
@@ -95,7 +95,6 @@ export function ContactScreen() {
         </>
       ) : (
         <EmptyState
-          icon="phone"
           title="Contact details are coming soon"
           description="The academy has not added its phone number, email or address to the app yet. Please ask at the front desk in the meantime."
         />
@@ -119,7 +118,7 @@ function InfoRow({
         <Icon name={icon} size={18} />
       </span>
       <div className="min-w-0">
-        <p className="text-[0.68rem] font-bold tracking-[0.14em] text-ink-400 uppercase">{label}</p>
+        <p className="eyebrow">{label}</p>
         {value ? (
           <p className="text-[0.95rem] leading-relaxed font-medium whitespace-pre-line text-ink-800">
             {value}

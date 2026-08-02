@@ -35,10 +35,10 @@ export function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="text-[0.68rem] font-bold tracking-[0.16em] text-crimson-600 uppercase">
+        <p className="eyebrow">
           {session?.role === 'admin' ? 'Administrator' : 'Editor'}
         </p>
-        <h1 className="text-2xl font-extrabold tracking-tight text-ink-900">
+        <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">
           {session?.displayName ?? session?.email ?? 'Welcome'}
         </h1>
         <p className="mt-1 text-sm text-ink-500">
@@ -126,13 +126,10 @@ export function AdminDashboard() {
             <li key={collection.key}>
               <Link
                 to={`/admin/${collection.key}`}
-                className="flex items-center gap-3 rounded-2xl border border-ink-100 bg-white p-3.5 shadow-[var(--shadow-soft)] transition-shadow hover:shadow-[var(--shadow-lift)]"
+                className="flex items-center gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-white p-3.5 transition-colors hover:bg-ink-50"
               >
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink-900 text-gold-400">
-                  <Icon name={collection.icon} size={19} />
-                </span>
                 <span className="min-w-0 flex-1">
-                  <span className="block font-bold text-ink-900">{collection.title}</span>
+                  <span className="block font-semibold text-ink-900">{collection.title}</span>
                   <span className="block text-xs text-ink-500">{collection.description}</span>
                 </span>
                 <Badge tone="neutral">{collection.list(bundle).length}</Badge>
@@ -174,11 +171,11 @@ export function AdminDashboard() {
 function Stat({ label, value, icon }: { label: string; value: number; icon: IconName }) {
   return (
     <Card className="flex items-center gap-3">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-crimson-50 text-crimson-700">
-        <Icon name={icon} size={19} />
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-ink-50 text-ink-500">
+        <Icon name={icon} size={17} />
       </span>
       <span className="min-w-0">
-        <span className="block text-xl leading-none font-extrabold text-ink-900">{value}</span>
+        <span className="block text-xl leading-none font-semibold text-ink-900">{value}</span>
         <span className="mt-1 block text-xs font-medium text-ink-500">{label}</span>
       </span>
     </Card>

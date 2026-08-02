@@ -4,14 +4,18 @@ import { Icon, type IconName } from './Icon'
 
 export type BadgeTone = 'neutral' | 'red' | 'gold' | 'dark' | 'success' | 'warning' | 'muted'
 
+/**
+ * Badges are labels, not decoration. They are quiet by default so that the one
+ * badge that matters — "Cancelled" — actually stands out.
+ */
 const TONES: Record<BadgeTone, string> = {
-  neutral: 'bg-ink-100 text-ink-700',
-  red: 'bg-crimson-50 text-crimson-700 ring-1 ring-crimson-100',
-  gold: 'bg-gold-100 text-gold-700 ring-1 ring-gold-200',
+  neutral: 'bg-ink-50 text-ink-600',
+  red: 'bg-crimson-50 text-crimson-700',
+  gold: 'bg-gold-100 text-gold-700',
   dark: 'bg-ink-900 text-white',
-  success: 'bg-emerald-50 text-emerald-700 ring-1 ring-emerald-100',
-  warning: 'bg-amber-50 text-amber-800 ring-1 ring-amber-200',
-  muted: 'bg-white text-ink-500 ring-1 ring-ink-200',
+  success: 'bg-emerald-50 text-emerald-700',
+  warning: 'bg-amber-50 text-amber-800',
+  muted: 'bg-transparent text-ink-500 ring-1 ring-ink-200',
 }
 
 interface BadgeProps {
@@ -19,29 +23,27 @@ interface BadgeProps {
   tone?: BadgeTone
   icon?: IconName
   className?: string
-  uppercase?: boolean
 }
 
-export function Badge({ children, tone = 'neutral', icon, className, uppercase }: BadgeProps) {
+export function Badge({ children, tone = 'neutral', icon, className }: BadgeProps) {
   return (
     <span
       className={cx(
-        'inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[0.7rem] font-bold',
-        uppercase && 'tracking-[0.08em] uppercase',
+        'inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[0.6875rem] font-medium',
         TONES[tone],
         className,
       )}
     >
-      {icon ? <Icon name={icon} size={13} /> : null}
+      {icon ? <Icon name={icon} size={12} /> : null}
       {children}
     </span>
   )
 }
 
-/** Small "this is example content" marker used on seeded demo records. */
+/** Marks seeded demo content so nobody mistakes it for real academy news. */
 export function SampleBadge({ className }: { className?: string }) {
   return (
-    <Badge tone="warning" className={className} uppercase>
+    <Badge tone="warning" className={className}>
       Sample
     </Badge>
   )

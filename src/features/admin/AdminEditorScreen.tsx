@@ -48,7 +48,6 @@ export function AdminEditorScreen() {
   if (!isNew && !existing) {
     return (
       <EmptyState
-        icon="alert"
         title="That item no longer exists"
         description="It may have been deleted by someone else."
         action={
@@ -126,10 +125,10 @@ export function AdminEditorScreen() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-[0.68rem] font-bold tracking-[0.16em] text-crimson-600 uppercase">
+          <p className="eyebrow">
             {collection.title}
           </p>
-          <h1 className="text-2xl font-extrabold tracking-tight text-ink-900">
+          <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">
             {isNew ? `New ${collection.singular}` : `Edit ${collection.singular}`}
           </h1>
         </div>
@@ -171,11 +170,11 @@ export function AdminEditorScreen() {
 
         {preview ? (
           <Card>
-            <h2 className="mb-2 text-sm font-bold text-ink-900">
+            <h2 className="mb-2 text-sm font-semibold text-ink-900">
               How families will see this
             </h2>
             <div className="rounded-xl bg-canvas p-4">
-              <h3 className="text-lg font-bold text-ink-900">
+              <h3 className="text-lg font-semibold text-ink-900">
                 {String(values.title ?? values.question ?? values.name ?? values.className ?? '')}
               </h3>
               <RichText
