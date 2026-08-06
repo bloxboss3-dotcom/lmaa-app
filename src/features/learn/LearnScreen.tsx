@@ -71,9 +71,9 @@ export function LearnScreen() {
           <li key={item.to}>
             <Link
               to={item.to}
-              className="flex items-center gap-3.5 rounded-[var(--radius-card)] border border-ink-100 bg-white p-4 shadow-[var(--shadow-soft)] transition-shadow hover:shadow-[var(--shadow-lift)]"
+              className="flex items-center gap-3.5 rounded-[var(--radius-card)] border border-ink-100 bg-surface p-4 shadow-[var(--shadow-soft)] transition-shadow hover:shadow-[var(--shadow-lift)]"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ink-900 text-gold-400">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-gold-400">
                 <Icon name={item.icon} size={21} />
               </span>
               <span className="min-w-0 flex-1">
@@ -90,9 +90,9 @@ export function LearnScreen() {
       </ul>
 
       {features.leadership ? (
-        <Card className="border-gold-200 bg-gold-100/40">
+        <Card className="border-gold-500/30 bg-gold-500/10">
           <div className="flex items-start gap-3">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink-900 text-gold-400">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-gold-400">
               <Icon name="sparkle" size={20} />
             </span>
             <div>

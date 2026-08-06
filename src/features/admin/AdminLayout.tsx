@@ -86,7 +86,7 @@ export function AdminLayout() {
     <AdminContentContext.Provider value={value}>
       <div className="min-h-dvh bg-canvas">
         {/* Top bar */}
-        <header className="safe-top sticky top-0 z-40 border-b border-ink-100 bg-white">
+        <header className="safe-top sticky top-0 z-40 border-b border-ink-100 bg-surface">
           <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-3 md:h-16 md:px-6">
             <Link to="/admin" className="flex items-center gap-2.5">
               <LogoMark size={30} />
@@ -136,7 +136,7 @@ export function AdminLayout() {
 
           {/* Mobile section menu */}
           {menuOpen ? (
-            <nav className="border-t border-ink-100 bg-white px-3 pb-3 md:hidden">
+            <nav className="border-t border-ink-100 bg-surface px-3 pb-3 md:hidden">
               <ul className="grid grid-cols-2 gap-1.5 pt-2">
                 {navItems.map((item) => (
                   <li key={item.to}>
@@ -147,7 +147,7 @@ export function AdminLayout() {
                       className={({ isActive }) =>
                         cx(
                           'flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold',
-                          isActive ? 'bg-ink-900 text-white' : 'text-ink-600 hover:bg-ink-100',
+                          isActive ? 'bg-crimson-600 text-white' : 'text-ink-600 hover:bg-ink-100',
                         )
                       }
                     >
@@ -174,8 +174,8 @@ export function AdminLayout() {
                       cx(
                         'flex min-h-11 items-center gap-2.5 rounded-xl px-3 text-sm font-semibold transition-colors',
                         isActive
-                          ? 'bg-ink-900 text-white'
-                          : 'text-ink-600 hover:bg-white hover:text-ink-900',
+                          ? 'bg-crimson-600 text-white'
+                          : 'text-ink-600 hover:bg-ink-50 hover:text-ink-900',
                       )
                     }
                   >
@@ -189,7 +189,7 @@ export function AdminLayout() {
 
           <main className="min-w-0 flex-1 space-y-5">
             {session.isDemo ? (
-              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-200">
+              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-amber-500/12 px-4 py-3 text-sm text-amber-100 ring-1 ring-amber-500/25">
                 <Icon name="info" size={18} className="shrink-0" />
                 <p className="min-w-0 flex-1 font-medium">
                   Demo mode — changes are saved in this browser only and are not shared with
@@ -199,7 +199,7 @@ export function AdminLayout() {
             ) : null}
 
             {error ? (
-              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-crimson-50 px-4 py-3 text-sm text-crimson-900 ring-1 ring-crimson-100">
+              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-crimson-500/12 px-4 py-3 text-sm text-crimson-100 ring-1 ring-crimson-500/25">
                 <Icon name="alert" size={18} className="shrink-0" />
                 <p className="min-w-0 flex-1 font-medium">{error}</p>
                 <Button size="sm" variant="secondary" onClick={() => void load()}>

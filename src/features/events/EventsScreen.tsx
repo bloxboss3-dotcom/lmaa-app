@@ -42,7 +42,7 @@ export function EventsScreen() {
               onClick={() => setTab(value)}
               className={cx(
                 'min-h-8 rounded-md px-3 text-[0.8125rem] capitalize transition-colors',
-                active ? 'bg-white font-medium text-ink-900 shadow-[var(--shadow-soft)]' : 'text-ink-500',
+                active ? 'bg-surface font-medium text-ink-900 shadow-[var(--shadow-soft)]' : 'text-ink-500',
               )}
             >
               {value}
@@ -90,7 +90,7 @@ function EventRow({ event, now, past }: { event: AcademyEvent; now: Date; past: 
       <span
         className={cx(
           'flex w-11 shrink-0 flex-col items-center rounded-lg py-1.5',
-          past ? 'bg-ink-50 text-ink-500' : 'bg-crimson-50 text-crimson-800',
+          past ? 'bg-ink-50 text-ink-500' : 'bg-crimson-500/12 text-crimson-200',
         )}
       >
         <span className="text-[0.625rem] font-medium tracking-wide uppercase">

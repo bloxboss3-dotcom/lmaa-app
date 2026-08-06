@@ -48,7 +48,7 @@ export function MoreScreen() {
           <h2 className="mb-2 px-1 eyebrow">
             {group.title}
           </h2>
-          <ul className="overflow-hidden rounded-[var(--radius-card)] border border-ink-100 bg-white shadow-[var(--shadow-soft)]">
+          <ul className="overflow-hidden rounded-[var(--radius-card)] border border-ink-100 bg-surface shadow-[var(--shadow-soft)]">
             {group.rows.map((row, index) => (
               <li key={row.to}>
                 <Link

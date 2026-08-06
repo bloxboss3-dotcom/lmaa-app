@@ -68,8 +68,8 @@ export function UpdatesScreen() {
                 className={cx(
                   'shrink-0 rounded-lg px-3 py-1.5 text-[0.8125rem] transition-colors',
                   active
-                    ? 'bg-ink-900 font-medium text-white'
-                    : 'bg-white text-ink-600 ring-1 ring-ink-100 hover:bg-ink-50',
+                    ? 'bg-crimson-600 font-medium text-white'
+                    : 'bg-surface text-ink-600 ring-1 ring-ink-100 hover:bg-ink-50',
                 )}
               >
                 {value === 'all' ? 'All' : CATEGORY_LABELS[value]}

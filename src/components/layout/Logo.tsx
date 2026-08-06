@@ -16,10 +16,9 @@ export function LogoMark({ size = 32, className }: { size?: number; className?: 
       role="img"
       aria-label="Lee's Martial Arts Academy"
     >
-      <rect width="64" height="64" rx="14" fill="var(--color-ink-900)" />
-      <polygon points="32,14 51,26.5 51,33.5 32,21 13,33.5 13,26.5" fill="var(--color-crimson-600)" />
-      <polygon points="32,24 51,36.5 51,43.5 32,31 13,43.5 13,36.5" fill="#ffffff" />
-      <rect x="13" y="48" width="38" height="3" fill="var(--color-gold-400)" />
+      <polygon points="32,10 54,24.5 54,33 32,18.5 10,33 10,24.5" fill="#c9302c" />
+      <polygon points="32,23 54,37.5 54,46 32,31.5 10,46 10,37.5" fill="#ffffff" />
+      <rect x="10" y="51" width="44" height="3.5" fill="#cfae5f" />
     </svg>
   )
 }

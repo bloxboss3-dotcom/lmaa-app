@@ -28,7 +28,7 @@ export function Card({ children, padded = true, className, ...rest }: CardProps)
     <div
       className={cx(
         'rounded-[var(--radius-card)] border',
-        !supplies(className, 'bg') && 'bg-white',
+        !supplies(className, 'bg') && 'bg-surface',
         !supplies(className, 'border') && 'border-ink-100',
         padded && 'p-4',
         className,
@@ -52,7 +52,7 @@ export function CardLink({ to, children, className, ...rest }: CardLinkProps) {
     <Link
       to={to}
       className={cx(
-        'block rounded-[var(--radius-card)] border border-ink-100 bg-white transition-colors',
+        'block rounded-[var(--radius-card)] border border-ink-100 bg-surface transition-colors',
         'hover:border-ink-200 active:bg-ink-50',
         className,
       )}
@@ -77,7 +77,7 @@ interface SectionHeadingProps {
 export function SectionHeading({ title, action, className }: SectionHeadingProps) {
   return (
     <div className={cx('mb-2.5 flex items-baseline justify-between gap-3', className)}>
-      <h2 className="text-[0.95rem] font-semibold text-ink-900">{title}</h2>
+      <h2 className="eyebrow">{title}</h2>
       {action}
     </div>
   )
@@ -113,7 +113,7 @@ export function Rows({ children, className }: { children: ReactNode; className?:
   return (
     <div
       className={cx(
-        'divide-y divide-ink-100 overflow-hidden rounded-[var(--radius-card)] border border-ink-100 bg-white',
+        'divide-y divide-ink-100 overflow-hidden rounded-[var(--radius-card)] border border-ink-100 bg-surface',
         className,
       )}
     >

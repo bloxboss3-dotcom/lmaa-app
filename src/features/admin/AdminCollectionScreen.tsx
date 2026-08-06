@@ -134,7 +134,7 @@ export function AdminCollectionScreen() {
                     type="button"
                     onClick={() => setPendingDelete(record)}
                     aria-label={`Delete ${collection.primaryText(record)}`}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-400 hover:bg-crimson-50 hover:text-crimson-700"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-400 hover:bg-crimson-500/15 hover:text-crimson-300"
                   >
                     <Icon name="trash" size={16} />
                   </button>

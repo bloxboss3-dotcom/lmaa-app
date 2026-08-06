@@ -6,14 +6,8 @@ import { EmptyState, Rows, SectionHeading, Skeleton } from '@/components/ui/Card
 import { Icon, type IconName } from '@/components/ui/Icon'
 import { headlineAnnouncement } from '@/domain/announcements'
 import { nextEvent, relativeDayLabel } from '@/domain/events'
-import { formatClock, formatDate, formatRelative, greeting, telHref } from '@/domain/format'
-import {
-  effectiveTimes,
-  formatTime,
-  isoWeekday,
-  upcomingToday,
-  weekdayLabel,
-} from '@/domain/schedule'
+import { formatClock, formatDate, formatRelative, telHref } from '@/domain/format'
+import { effectiveTimes, formatTime, isoWeekday, upcomingToday } from '@/domain/schedule'
 import type { ScheduleEntry } from '@/domain/types'
 import { useDocumentTitle, useNow } from '@/lib/hooks'
 import { useInstallPrompt } from '@/pwa/usePwa'
@@ -42,22 +36,37 @@ export function HomeScreen() {
   return (
     <Screen className="mx-auto max-w-2xl">
       <header>
-        <p className="eyebrow">
-          {greeting(now)} · {formatDate(now)}
-        </p>
-        <h1 className="mt-1 text-[1.375rem] font-semibold tracking-tight text-ink-900">
-          {todayClasses.length
-            ? `${todayClasses.length} ${todayClasses.length === 1 ? 'class' : 'classes'} left today`
-            : hadClassesToday
-              ? "Today's classes are finished"
-              : 'No classes today'}
+        <p className="eyebrow eyebrow-accent">{formatDate(now)}</p>
+        {/* The single loud moment on the screen — everything else stays quiet. */}
+        <h1 className="display mt-2 text-ink-900">
+          {todayClasses.length ? (
+            <>
+              <span className="text-crimson-500">
+                {todayClasses.length} {todayClasses.length === 1 ? 'class' : 'classes'}
+              </span>
+              <br />
+              left today
+            </>
+          ) : hadClassesToday ? (
+            <>
+              Today&rsquo;s classes
+              <br />
+              <span className="text-crimson-500">are finished</span>
+            </>
+          ) : (
+            <>
+              No classes
+              <br />
+              <span className="text-crimson-500">today</span>
+            </>
+          )}
         </h1>
       </header>
 
       {/* ------------------------------------------------- today's classes */}
       <section>
         <SectionHeading
-          title={weekdayLabel(isoWeekday(now))}
+          title="Today"
           action={<TextLink to="/schedule">Full schedule</TextLink>}
         />
         {loading ? (
@@ -75,7 +84,7 @@ export function HomeScreen() {
             action={
               <Link
                 to="/schedule"
-                className="text-sm font-medium text-crimson-700 hover:underline"
+                className="text-sm font-medium text-crimson-400 hover:underline"
               >
                 See the week →
               </Link>
@@ -172,7 +181,7 @@ export function HomeScreen() {
           />
           <Link
             to="/more/contact"
-            className="flex min-h-[62px] flex-col items-center justify-center gap-1.5 rounded-[var(--radius-card)] border border-ink-100 bg-white text-ink-700 transition-colors hover:bg-ink-50"
+            className="flex min-h-[62px] flex-col items-center justify-center gap-1.5 rounded-[var(--radius-card)] border border-ink-100 bg-surface text-ink-700 transition-colors hover:bg-ink-50"
           >
             <Icon name="mail" size={18} />
             <span className="text-xs font-medium">Contact</span>
@@ -242,7 +251,7 @@ function ContactAction({
       href={href}
       target={inPage ? undefined : '_blank'}
       rel={inPage ? undefined : 'noopener noreferrer'}
-      className={`${base} border-ink-100 bg-white text-ink-700 hover:bg-ink-50`}
+      className={`${base} border-ink-100 bg-surface text-ink-700 hover:bg-ink-50`}
     >
       <Icon name={icon} size={18} />
       <span>{label}</span>
@@ -257,7 +266,7 @@ function InstallNudge() {
   if (!install.canPrompt && !install.isIos) return null
 
   return (
-    <div className="flex items-center gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-white px-4 py-3">
+    <div className="flex items-center gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-surface px-4 py-3">
       <Icon name="download" size={18} className="shrink-0 text-ink-400" />
       <p className="min-w-0 flex-1 text-sm text-ink-600">Add LMAA to your home screen</p>
       {install.canPrompt ? (
@@ -265,7 +274,7 @@ function InstallNudge() {
           Install
         </Button>
       ) : (
-        <Link to="/more/install" className="text-sm font-medium text-crimson-700 hover:underline">
+        <Link to="/more/install" className="text-sm font-medium text-crimson-400 hover:underline">
           How
         </Link>
       )}

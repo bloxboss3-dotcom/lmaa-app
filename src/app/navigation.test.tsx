@@ -31,7 +31,7 @@ describe('family navigation', () => {
     renderApp('/')
     // The first heading answers "when is class?", not "hello".
     const heading = await screen.findByRole('heading', { level: 1 })
-    expect(heading.textContent).toMatch(/class(es)? left today|classes are finished|no classes today/i)
+    expect(heading.textContent).toMatch(/left today|are finished|no classes/i)
     expect(screen.getByRole('heading', { name: /next event/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /latest update/i })).toBeInTheDocument()
   })

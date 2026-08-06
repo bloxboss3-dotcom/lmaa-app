@@ -64,7 +64,7 @@ export function FaqScreen() {
 
 function FaqItem({ faq }: { faq: Faq }) {
   return (
-    <details className="group rounded-[var(--radius-card)] border border-ink-100 bg-white shadow-[var(--shadow-soft)]">
+    <details className="group rounded-[var(--radius-card)] border border-ink-100 bg-surface shadow-[var(--shadow-soft)]">
       <summary className="flex min-h-[52px] cursor-pointer list-none items-center gap-3 px-4 py-3 font-semibold text-ink-900 [&::-webkit-details-marker]:hidden">
         <span className="min-w-0 flex-1">{faq.question}</span>
         {faq.isSample ? <SampleBadge /> : null}

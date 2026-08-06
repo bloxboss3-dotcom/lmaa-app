@@ -15,12 +15,12 @@ import { cx } from '@/lib/cx'
  */
 
 const CONTROL =
-  'w-full rounded-xl border bg-white px-3.5 py-2.5 text-[0.95rem] text-ink-900 ' +
+  'w-full rounded-xl border bg-surface px-3.5 py-2.5 text-[0.95rem] text-ink-900 ' +
   'placeholder:text-ink-300 transition-colors min-h-11 ' +
   'disabled:bg-ink-50 disabled:text-ink-400'
 
 const CONTROL_OK = 'border-ink-200 focus:border-ink-400'
-const CONTROL_ERROR = 'border-crimson-400 bg-crimson-50/40'
+const CONTROL_ERROR = 'border-crimson-400 bg-crimson-500/8'
 
 interface FieldShellProps {
   label: string
@@ -45,11 +45,11 @@ function FieldShell({
     <div className={cx('space-y-1.5', className)}>
       <label htmlFor={htmlFor} className="block text-sm font-semibold text-ink-800">
         {label}
-        {required ? <span className="ml-1 text-crimson-600">*</span> : null}
+        {required ? <span className="ml-1 text-crimson-400">*</span> : null}
       </label>
       {children}
       {error ? (
-        <p id={`${htmlFor}-error`} className="text-sm font-medium text-crimson-700">
+        <p id={`${htmlFor}-error`} className="text-sm font-medium text-crimson-400">
           {error}
         </p>
       ) : hint ? (
@@ -157,7 +157,7 @@ export function SelectField({
         className={cx(CONTROL, 'appearance-none pr-9', error ? CONTROL_ERROR : CONTROL_OK)}
         style={{
           backgroundImage:
-            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2355555f' stroke-width='2' stroke-linecap='round'><path d='m5 9 7 7 7-7'/></svg>\")",
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239a9aa1' stroke-width='2' stroke-linecap='round'><path d='m5 9 7 7 7-7'/></svg>\")",
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'right 0.75rem center',
           backgroundSize: '1.1rem',
@@ -186,7 +186,7 @@ export function Checkbox({ label, hint, className, ...rest }: CheckboxProps) {
     <label
       htmlFor={controlId}
       className={cx(
-        'flex min-h-11 cursor-pointer items-start gap-3 rounded-xl border border-ink-200 bg-white px-3.5 py-3',
+        'flex min-h-11 cursor-pointer items-start gap-3 rounded-xl border border-ink-200 bg-surface px-3.5 py-3',
         'transition-colors hover:border-ink-300',
         className,
       )}

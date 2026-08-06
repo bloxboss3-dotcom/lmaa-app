@@ -118,7 +118,7 @@ export function AdminSettingsScreen() {
       </div>
 
       {readOnly ? (
-        <div className="flex items-start gap-2.5 rounded-xl bg-ink-100 px-4 py-3 text-sm text-ink-700">
+        <div className="flex items-start gap-2.5 rounded-xl bg-ink-50 px-4 py-3 text-sm text-ink-600">
           <Icon name="lock" size={18} className="mt-0.5 shrink-0" />
           <p>
             Editors can manage content but not academy information. Ask an administrator to make

@@ -1,62 +1,63 @@
 @import 'tailwindcss';
 
 /* ==========================================================================
-   LMAA design tokens
+   LMAA design tokens — "Dojang"
 
-   Direction: quiet, editorial, easy to scan. Hairline borders instead of
-   shadows, a warm neutral palette instead of cold grey, one accent colour used
-   sparingly, and a small type scale with real contrast between levels.
+   Black ground, red for energy, restrained gold for rank. Confident and
+   athletic, but tuned for a parent reading it one-handed in a car park:
+   sentence-case content, uppercase reserved for small labels, and secondary
+   text kept well above the 4.5:1 contrast floor rather than the dim grey a
+   dark theme usually gets away with.
+
+   The `ink` scale runs light-on-dark: ink-900 is the brightest text,
+   ink-50/100 are the darkest fills.
    ========================================================================== */
 @theme {
-  /* Warm neutrals — cold blue-greys made every screen feel like a dashboard. */
-  --color-ink-950: #0c0b0a;
-  --color-ink-900: #171614;
-  --color-ink-850: #201e1c;
-  --color-ink-800: #2b2825;
-  --color-ink-700: #3d3935;
-  --color-ink-600: #55504a;
-  --color-ink-500: #6d675f;
-  --color-ink-400: #736c63;
-  --color-ink-300: #a9a29a;
-  --color-ink-200: #d6d1ca;
-  --color-ink-100: #e9e5df;
-  --color-ink-50: #f3f0eb;
+  --color-ink-900: #f6f6f7; /* primary text */
+  --color-ink-800: #e7e7e9;
+  --color-ink-700: #d3d3d7;
+  --color-ink-600: #b6b6bc;
+  --color-ink-500: #9a9aa1; /* secondary text  — 8.5:1 on the ground */
+  --color-ink-400: #85858c; /* muted labels    — 5.4:1 on the ground */
+  --color-ink-300: #5f5f66; /* decorative only (chevrons, dividers) */
+  --color-ink-200: #3a3a40; /* strong borders, input outlines */
+  --color-ink-100: #232327; /* hairlines, quiet fills */
+  --color-ink-50: #17171a; /* subtle fills */
 
-  --color-crimson-50: #fdf2f2;
-  --color-crimson-100: #fbe1e2;
-  --color-crimson-200: #f6c4c6;
-  --color-crimson-300: #ec9296;
-  --color-crimson-400: #dd5b62;
-  --color-crimson-500: #c92c36;
-  --color-crimson-600: #b3121f;
-  --color-crimson-700: #930f19;
-  --color-crimson-800: #720c14;
-  --color-crimson-900: #52080e;
+  --color-crimson-100: #ffe3e4;
+  --color-crimson-200: #ffbfc2;
+  --color-crimson-300: #f8919a;
+  --color-crimson-400: #ea5c68;
+  --color-crimson-500: #d92f3c;
+  --color-crimson-600: #c9302c; /* primary action / live + next */
+  --color-crimson-700: #a81f22;
+  --color-crimson-800: #7d1418;
+  --color-crimson-900: #4d0c0f;
 
-  --color-gold-100: #f7efdc;
-  --color-gold-200: #ecdcb4;
-  --color-gold-300: #dcc389;
-  --color-gold-400: #c9a961;
-  --color-gold-500: #b8954a;
-  --color-gold-600: #96762f;
-  --color-gold-700: #6f5722;
+  --color-gold-100: #f7e9c6;
+  --color-gold-200: #eed9a4;
+  --color-gold-300: #dfc37c;
+  --color-gold-400: #cfae5f; /* rank accent, used sparingly */
+  --color-gold-500: #b8933f;
+  --color-gold-600: #8f7130;
+  --color-gold-700: #6b5423;
 
-  --color-canvas: #f8f7f4;
-  --color-surface: #ffffff;
+  /* Layered near-blacks: pure black everywhere reads flat and cheap. */
+  --color-canvas: #0a0a0b; /* page */
+  --color-surface: #131316; /* raised: rows, cards, inputs */
+  --color-surface-2: #1a1a1e; /* raised again: hover, chips */
 
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'Noto Sans', sans-serif;
 
-  /* Calmer geometry: less bubble, more card. */
-  --radius-card: 0.875rem;
+  --radius-card: 0.75rem;
 
-  /* Shadows are the exception now, not the rule. */
-  --shadow-soft: 0 1px 2px rgb(23 22 20 / 0.05);
-  --shadow-lift: 0 4px 16px -8px rgb(23 22 20 / 0.22);
+  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-lift: 0 10px 30px -12px rgb(0 0 0 / 0.8);
 
-  --animate-fade-up: fade-up 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
-  --animate-fade-in: fade-in 0.22s ease-out both;
+  --animate-fade-up: fade-up 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.2s ease-out both;
   --animate-sheet-up: sheet-up 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
 
   @keyframes fade-up {
@@ -92,7 +93,7 @@
 /* ================================================================== base == */
 @layer base {
   :root {
-    color-scheme: light;
+    color-scheme: dark;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -100,22 +101,20 @@
     background-color: var(--color-canvas);
     color: var(--color-ink-900);
     font-family: var(--font-sans);
-    font-size: 0.9375rem; /* 15px — comfortable on a phone without shouting */
-    line-height: 1.55;
+    font-size: 0.9375rem;
+    line-height: 1.5;
     font-synthesis-weight: none;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
 
-  /* Headings are semibold, not black. Weight was doing the work that size and
-     spacing should do, which is why everything read as equally important. */
   h1,
   h2,
   h3,
   h4 {
     font-weight: 600;
     letter-spacing: -0.015em;
-    line-height: 1.25;
+    line-height: 1.2;
     text-wrap: balance;
   }
 
@@ -123,8 +122,9 @@
     text-wrap: pretty;
   }
 
+  /* Red reads as "focus" on this ground far better than a white ring. */
   :focus-visible {
-    outline: 2px solid var(--color-ink-900);
+    outline: 2px solid var(--color-crimson-500);
     outline-offset: 2px;
     border-radius: 0.3rem;
   }
@@ -173,12 +173,26 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  /* Small label used above groups. Grey, not red — the accent is for actions. */
+
+  /* Small structural label. Uppercase is for labels ONLY — never for class
+     names or body copy, which are markedly slower to read in caps. */
   .eyebrow {
     font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.09em;
+    font-weight: 700;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-ink-400);
+  }
+  .eyebrow-accent {
+    color: var(--color-crimson-400);
+  }
+
+  /* The one loud moment per screen. */
+  .display {
+    font-size: clamp(1.75rem, 8vw, 2.125rem);
+    line-height: 0.98;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
 }

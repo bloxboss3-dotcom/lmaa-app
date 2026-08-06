@@ -16,7 +16,7 @@ export function BottomNav({ unreadCount = 0 }: BottomNavProps) {
   return (
     <nav
       aria-label="Main"
-      className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-ink-100 bg-white/95 backdrop-blur md:hidden"
+      className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-ink-100 bg-surface/95 backdrop-blur md:hidden"
     >
       <ul className="mx-auto flex max-w-lg items-stretch">
         {PRIMARY_NAV.map((item) => (
@@ -28,7 +28,7 @@ export function BottomNav({ unreadCount = 0 }: BottomNavProps) {
                 cx(
                   'flex min-h-[54px] flex-col items-center justify-center gap-0.5 px-1 pt-1.5 pb-1',
                   'text-[0.6875rem] transition-colors',
-                  isActive ? 'font-medium text-crimson-700' : 'text-ink-500',
+                  isActive ? 'font-medium text-crimson-400' : 'text-ink-500',
                 )
               }
             >

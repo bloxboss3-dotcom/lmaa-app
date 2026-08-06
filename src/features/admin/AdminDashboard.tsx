@@ -98,7 +98,7 @@ export function AdminDashboard() {
             <ul className="space-y-3">
               {todo.map((item) => (
                 <li key={item.text} className="flex items-start gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-800">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-500/15 text-amber-200">
                     <Icon name="alert" size={14} />
                   </span>
                   <span className="min-w-0 flex-1 text-sm leading-relaxed text-ink-700">
@@ -107,7 +107,7 @@ export function AdminDashboard() {
                   {item.to ? (
                     <Link
                       to={item.to}
-                      className="shrink-0 text-sm font-semibold text-crimson-700 hover:underline"
+                      className="shrink-0 text-sm font-semibold text-crimson-400 hover:underline"
                     >
                       Fix
                     </Link>
@@ -126,7 +126,7 @@ export function AdminDashboard() {
             <li key={collection.key}>
               <Link
                 to={`/admin/${collection.key}`}
-                className="flex items-center gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-white p-3.5 transition-colors hover:bg-ink-50"
+                className="flex items-center gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-surface p-3.5 transition-colors hover:bg-ink-50"
               >
                 <span className="min-w-0 flex-1">
                   <span className="block font-semibold text-ink-900">{collection.title}</span>

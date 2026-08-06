@@ -46,7 +46,7 @@ export function RouteErrorScreen() {
           </button>
           <a
             href="#/"
-            className="flex min-h-11 items-center rounded-xl border border-ink-200 bg-white px-5 font-semibold text-ink-800"
+            className="flex min-h-11 items-center rounded-xl border border-ink-200 bg-surface px-5 font-semibold text-ink-800"
           >
             Home
           </a>

@@ -10,11 +10,11 @@ export type BadgeTone = 'neutral' | 'red' | 'gold' | 'dark' | 'success' | 'warni
  */
 const TONES: Record<BadgeTone, string> = {
   neutral: 'bg-ink-50 text-ink-600',
-  red: 'bg-crimson-50 text-crimson-700',
-  gold: 'bg-gold-100 text-gold-700',
-  dark: 'bg-ink-900 text-white',
-  success: 'bg-emerald-50 text-emerald-700',
-  warning: 'bg-amber-50 text-amber-800',
+  red: 'bg-crimson-500/12 text-crimson-200',
+  gold: 'bg-gold-500/15 text-gold-200',
+  dark: 'bg-ink-800 text-canvas',
+  success: 'bg-emerald-500/15 text-emerald-300',
+  warning: 'bg-amber-500/12 text-amber-200',
   muted: 'bg-transparent text-ink-500 ring-1 ring-ink-200',
 }
 

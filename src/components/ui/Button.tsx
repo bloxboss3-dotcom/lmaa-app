@@ -8,9 +8,9 @@ export type ButtonSize = 'sm' | 'md' | 'lg'
 
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: 'bg-crimson-600 text-white hover:bg-crimson-700 active:bg-crimson-800',
-  secondary: 'bg-white text-ink-800 border border-ink-200 hover:bg-ink-50',
+  secondary: 'bg-surface text-ink-800 border border-ink-200 hover:bg-ink-50',
   ghost: 'bg-transparent text-ink-600 hover:bg-ink-100 hover:text-ink-900',
-  dark: 'bg-ink-900 text-white hover:bg-ink-800',
+  dark: 'bg-ink-900 text-canvas hover:bg-ink-700',
 }
 
 const SIZES: Record<ButtonSize, string> = {

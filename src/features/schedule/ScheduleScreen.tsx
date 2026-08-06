@@ -106,8 +106,8 @@ export function ScheduleScreen() {
               className={cx(
                 'flex min-w-[3.1rem] shrink-0 flex-col items-center rounded-xl border px-2 py-2 transition-colors',
                 active
-                  ? 'border-ink-900 bg-ink-900 text-white'
-                  : 'border-ink-100 bg-white text-ink-600 hover:bg-ink-50',
+                  ? 'border-crimson-600 bg-crimson-600 text-white'
+                  : 'border-ink-100 bg-surface text-ink-600 hover:bg-ink-50',
               )}
             >
               <span className="text-[0.6875rem] tracking-wide uppercase">{entry.short}</span>
@@ -115,7 +115,7 @@ export function ScheduleScreen() {
                 <span
                   className={cx(
                     'mt-1 h-1 w-1 rounded-full',
-                    active ? 'bg-white' : 'bg-crimson-600',
+                    active ? 'bg-surface' : 'bg-crimson-600',
                   )}
                   aria-hidden="true"
                 />
@@ -132,8 +132,8 @@ export function ScheduleScreen() {
           className={cx(
             'shrink-0 rounded-xl border px-3 text-[0.8125rem] transition-colors',
             day === 'week'
-              ? 'border-ink-900 bg-ink-900 text-white'
-              : 'border-ink-100 bg-white text-ink-600 hover:bg-ink-50',
+              ? 'border-crimson-600 bg-crimson-600 text-white'
+              : 'border-ink-100 bg-surface text-ink-600 hover:bg-ink-50',
           )}
         >
           All week
@@ -157,7 +157,7 @@ export function ScheduleScreen() {
         </button>
 
         {filtersOpen ? (
-          <div className="mt-3 grid gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-white p-3 sm:grid-cols-2">
+          <div className="mt-3 grid gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-surface p-3 sm:grid-cols-2">
             <SelectField
               label="Program"
               value={filters.program}
@@ -270,7 +270,12 @@ function ClassRow({
   const noticeActive = noticeAppliesOn(entry, todayIso)
 
   return (
-    <div className={cx('px-4 py-3', isNext && 'bg-crimson-50/40')}>
+    <div
+      className={cx(
+        'px-4 py-3',
+        isNext && 'border-l-[3px] border-crimson-600 bg-gradient-to-r from-crimson-600/12 to-transparent',
+      )}
+    >
       <div className="flex items-baseline gap-3">
         <span
           className={cx(
@@ -304,7 +309,7 @@ function ClassRow({
             <p
               className={cx(
                 'mt-2 rounded-lg px-2.5 py-1.5 text-sm',
-                cancelled ? 'bg-crimson-50 text-crimson-800' : 'bg-amber-50 text-amber-900',
+                cancelled ? 'bg-crimson-500/12 text-crimson-200' : 'bg-amber-500/12 text-amber-200',
               )}
             >
               <span className="font-medium">

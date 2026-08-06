@@ -83,7 +83,7 @@ export function ResourceCollectionScreen() {
         className="sm:max-w-2xl"
       >
         {embed ? (
-          <div className="aspect-video w-full overflow-hidden rounded-xl bg-ink-900">
+          <div className="aspect-video w-full overflow-hidden rounded-xl bg-black">
             <iframe
               src={embed.embedUrl}
               title={videoResource?.title ?? 'Video'}

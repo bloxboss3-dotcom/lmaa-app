@@ -37,17 +37,17 @@ export function AdminLoginScreen() {
   }
 
   return (
-    <div className="grid min-h-dvh place-items-center bg-ink-900 px-4 py-10">
+    <div className="grid min-h-dvh place-items-center bg-canvas px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center text-center">
           <LogoMark size={54} />
-          <h1 className="mt-4 text-xl font-extrabold text-white">Lee&rsquo;s Martial Arts Academy</h1>
-          <p className="mt-1 text-sm text-white/60">Staff content manager</p>
+          <h1 className="mt-4 text-xl font-semibold text-ink-900">Lee&rsquo;s Martial Arts Academy</h1>
+          <p className="mt-1 text-sm text-ink-500">Staff content manager</p>
         </div>
 
         {mode === 'demo' ? (
           <Card className="space-y-4">
-            <div className="flex gap-3 rounded-xl bg-amber-50 p-3 text-sm text-amber-900">
+            <div className="flex gap-3 rounded-xl bg-amber-500/15 p-3 text-sm text-amber-100">
               <Icon name="info" size={18} className="mt-0.5 shrink-0" />
               <p>
                 <strong className="font-bold">This is a demonstration.</strong> No database is
@@ -97,7 +97,7 @@ export function AdminLoginScreen() {
               />
 
               {error ? (
-                <p className="flex items-start gap-2 rounded-xl bg-crimson-50 px-3 py-2.5 text-sm font-medium text-crimson-800">
+                <p className="flex items-start gap-2 rounded-xl bg-crimson-500/12 px-3 py-2.5 text-sm font-medium text-crimson-100">
                   <Icon name="alert" size={17} className="mt-0.5 shrink-0" />
                   {error}
                 </p>
@@ -116,7 +116,7 @@ export function AdminLoginScreen() {
         )}
 
         <div className="mt-6 text-center">
-          <Link to="/" className="text-sm font-semibold text-white/60 hover:text-white">
+          <Link to="/" className="text-sm font-medium text-ink-500 hover:text-ink-900">
             ← Back to the family app
           </Link>
         </div>
