@@ -69,7 +69,7 @@ export function ResourceCollectionScreen() {
           ))}
         </ul>
       ) : (
-        <EmptyState icon="book" title="Nothing here yet" description={meta.empty} />
+        <EmptyState title="Nothing here yet" description={meta.empty} />
       )}
 
       <LinkButton to="/learn" variant="ghost" icon="arrowLeft" size="sm">
@@ -83,7 +83,7 @@ export function ResourceCollectionScreen() {
         className="sm:max-w-2xl"
       >
         {embed ? (
-          <div className="aspect-video w-full overflow-hidden rounded-xl bg-ink-900">
+          <div className="aspect-video w-full overflow-hidden rounded-xl bg-black">
             <iframe
               src={embed.embedUrl}
               title={videoResource?.title ?? 'Video'}
@@ -150,7 +150,7 @@ function ResourceCard({
           ) : null}
           {resource.isSample ? <SampleBadge /> : null}
         </div>
-        <h2 className="font-bold text-ink-900">{resource.title}</h2>
+        <h2 className="font-semibold text-ink-900">{resource.title}</h2>
         {resource.description ? (
           <RichText text={resource.description} className="mt-1 text-sm text-ink-600" />
         ) : null}

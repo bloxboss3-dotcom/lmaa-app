@@ -27,10 +27,13 @@ function navLink(name: RegExp) {
 }
 
 describe('family navigation', () => {
-  it('opens on the home dashboard', async () => {
+  it('leads with today rather than a welcome banner', async () => {
     renderApp('/')
-    expect(await screen.findByText(/Welcome to Lee's Martial Arts Academy/i)).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: /classes today/i })).toBeInTheDocument()
+    // The first heading answers "when is class?", not "hello".
+    const heading = await screen.findByRole('heading', { level: 1 })
+    expect(heading.textContent).toMatch(/left today|are finished|no classes/i)
+    expect(screen.getByRole('heading', { name: /next event/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /latest update/i })).toBeInTheDocument()
   })
 
   it('moves between the five primary destinations', async () => {
@@ -50,14 +53,17 @@ describe('family navigation', () => {
     expect(await screen.findByRole('heading', { name: /^learn$/i })).toBeInTheDocument()
 
     await user.click(navLink(/^home$/i))
-    expect(await screen.findByText(/Welcome to Lee's Martial Arts Academy/i)).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /latest update/i })).toBeInTheDocument()
   })
 
   it('renders a deep link straight away, the way a refresh does', async () => {
+    const user = userEvent.setup()
     renderApp('/schedule')
     expect(await screen.findByRole('heading', { name: /class schedule/i })).toBeInTheDocument()
-    // The real seeded LMAA classes are present.
-    expect(await screen.findAllByText(/little tigers/i)).not.toHaveLength(0)
+
+    // The real seeded LMAA classes are present somewhere in the week.
+    await user.click(screen.getByRole('button', { name: /all week/i }))
+    expect(await screen.findAllByRole('heading', { name: /little tigers/i })).not.toHaveLength(0)
   })
 
   it('opens an announcement from the updates feed', async () => {
@@ -107,6 +113,14 @@ describe('events', () => {
       expect(screen.getByRole('radio', { name: /past/i })).toHaveAttribute('aria-checked', 'true')
     })
   })
+
+  it('keeps the schedule readable without opening any filters', async () => {
+    renderApp('/schedule')
+    // Day strip + list only: no stacked control rows before the content.
+    expect(await screen.findByRole('button', { name: /all week/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /^filter$/i })).toBeInTheDocument()
+    expect(screen.queryByLabelText(/program/i)).not.toBeInTheDocument()
+  })
 })
 
 describe('schedule filters', () => {
@@ -114,10 +128,10 @@ describe('schedule filters', () => {
     const user = userEvent.setup()
     renderApp('/schedule')
 
-    await user.click(await screen.findByRole('radio', { name: /this week/i }))
-    await user.click(screen.getByRole('radio', { name: /little tigers/i }))
+    await user.click(await screen.findByRole('button', { name: /all week/i }))
+    await user.click(screen.getByRole('button', { name: /^filter$/i }))
+    await user.selectOptions(await screen.findByLabelText(/program/i), 'little-tigers')
 
-    // Class cards render their name as a heading; the filter chips do not.
     await waitFor(() => {
       expect(screen.queryAllByRole('heading', { name: /teen & adult/i })).toHaveLength(0)
     })

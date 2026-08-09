@@ -1,12 +1,12 @@
 import { cx } from '@/lib/cx'
 
 /**
- * LMAA placeholder mark: three rank chevrons over a gold belt line.
+ * LMAA placeholder mark: rank chevrons over a gold belt line.
  *
  * Original artwork drawn for this app. Replace with the official LMAA logo
  * once the vector file is supplied (see CONTENT_NEEDED.md).
  */
-export function LogoMark({ size = 36, className }: { size?: number; className?: string }) {
+export function LogoMark({ size = 32, className }: { size?: number; className?: string }) {
   return (
     <svg
       viewBox="0 0 64 64"
@@ -16,10 +16,9 @@ export function LogoMark({ size = 36, className }: { size?: number; className?: 
       role="img"
       aria-label="Lee's Martial Arts Academy"
     >
-      <rect width="64" height="64" rx="16" fill="var(--color-ink-900)" />
-      <polygon points="32,12 52,25 52,32.5 32,19.5 12,32.5 12,25" fill="var(--color-crimson-600)" />
-      <polygon points="32,22.5 52,35.5 52,43 32,30 12,43 12,35.5" fill="#ffffff" />
-      <rect x="12" y="48.5" width="40" height="3.5" fill="var(--color-gold-500)" />
+      <polygon points="32,10 54,24.5 54,33 32,18.5 10,33 10,24.5" fill="#c9302c" />
+      <polygon points="32,23 54,37.5 54,46 32,31.5 10,46 10,37.5" fill="#ffffff" />
+      <rect x="10" y="51" width="44" height="3.5" fill="#cfae5f" />
     </svg>
   )
 }
@@ -27,30 +26,23 @@ export function LogoMark({ size = 36, className }: { size?: number; className?: 
 interface WordmarkProps {
   className?: string
   tone?: 'light' | 'dark'
-  subtitle?: string
 }
 
-export function Wordmark({ className, tone = 'dark', subtitle }: WordmarkProps) {
+/**
+ * Compact lockup. The stacked two-line version repeated the academy name that
+ * the Home screen was already showing in full.
+ */
+export function Wordmark({ className, tone = 'dark' }: WordmarkProps) {
   return (
-    <span className={cx('flex items-center gap-2.5', className)}>
-      <LogoMark size={34} />
-      <span className="leading-tight">
-        <span
-          className={cx(
-            'block text-[0.95rem] font-extrabold tracking-tight',
-            tone === 'light' ? 'text-white' : 'text-ink-900',
-          )}
-        >
-          Lee&rsquo;s Martial Arts
-        </span>
-        <span
-          className={cx(
-            'block text-[0.62rem] font-bold tracking-[0.22em] uppercase',
-            tone === 'light' ? 'text-gold-400' : 'text-crimson-600',
-          )}
-        >
-          {subtitle ?? 'Academy'}
-        </span>
+    <span className={cx('flex items-center gap-2', className)}>
+      <LogoMark size={26} />
+      <span
+        className={cx(
+          'text-[0.9375rem] font-semibold tracking-tight',
+          tone === 'light' ? 'text-white' : 'text-ink-900',
+        )}
+      >
+        Lee&rsquo;s Martial Arts
       </span>
     </span>
   )

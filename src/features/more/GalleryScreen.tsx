@@ -48,7 +48,6 @@ export function GalleryScreen() {
         </ul>
       ) : (
         <EmptyState
-          icon="image"
           title="No photos yet"
           description="The academy has not added photos to the app. Only photos owned by LMAA, with permission from the families shown, should be published here."
         />

@@ -75,7 +75,7 @@ export function AdminCollectionScreen() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-ink-900">{collection.title}</h1>
+          <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">{collection.title}</h1>
           <p className="mt-1 text-sm text-ink-500">{collection.description}</p>
         </div>
         <LinkButton to={`/admin/${collection.key}/new`} icon="plus">
@@ -108,7 +108,7 @@ export function AdminCollectionScreen() {
                   <div className="mb-1 flex flex-wrap items-center gap-1.5">
                     <StatusBadges record={record} collectionKey={collection.key} />
                   </div>
-                  <p className="truncate font-bold text-ink-900">
+                  <p className="truncate font-semibold text-ink-900">
                     {collection.primaryText(record)}
                   </p>
                   <p className="truncate text-sm text-ink-500">
@@ -134,7 +134,7 @@ export function AdminCollectionScreen() {
                     type="button"
                     onClick={() => setPendingDelete(record)}
                     aria-label={`Delete ${collection.primaryText(record)}`}
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-400 hover:bg-crimson-50 hover:text-crimson-700"
+                    className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-400 hover:bg-crimson-500/15 hover:text-crimson-300"
                   >
                     <Icon name="trash" size={16} />
                   </button>
@@ -145,7 +145,6 @@ export function AdminCollectionScreen() {
         </ul>
       ) : (
         <EmptyState
-          icon={collection.icon}
           title={query ? 'Nothing matches that search' : `No ${collection.title.toLowerCase()} yet`}
           description={
             query
@@ -158,7 +157,7 @@ export function AdminCollectionScreen() {
                 Clear search
               </Button>
             ) : (
-              <LinkButton to={`/admin/${collection.key}/new`} size="sm" icon="plus">
+              <LinkButton to={`/admin/${collection.key}/new`} size="sm">
                 New {collection.singular}
               </LinkButton>
             )

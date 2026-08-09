@@ -33,7 +33,7 @@ export function FaqScreen() {
         <div className="space-y-6">
           {categories.map((category) => (
             <section key={category}>
-              <h2 className="mb-2 text-[0.68rem] font-bold tracking-[0.16em] text-crimson-600 uppercase">
+              <h2 className="mb-2 eyebrow">
                 {category}
               </h2>
               <ul className="space-y-2">
@@ -50,7 +50,6 @@ export function FaqScreen() {
         </div>
       ) : (
         <EmptyState
-          icon="info"
           title="No questions posted yet"
           description="Common questions and answers will appear here."
         />
@@ -65,7 +64,7 @@ export function FaqScreen() {
 
 function FaqItem({ faq }: { faq: Faq }) {
   return (
-    <details className="group rounded-[var(--radius-card)] border border-ink-100 bg-white shadow-[var(--shadow-soft)]">
+    <details className="group rounded-[var(--radius-card)] border border-ink-100 bg-surface shadow-[var(--shadow-soft)]">
       <summary className="flex min-h-[52px] cursor-pointer list-none items-center gap-3 px-4 py-3 font-semibold text-ink-900 [&::-webkit-details-marker]:hidden">
         <span className="min-w-0 flex-1">{faq.question}</span>
         {faq.isSample ? <SampleBadge /> : null}

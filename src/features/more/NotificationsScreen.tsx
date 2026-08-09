@@ -47,14 +47,14 @@ export function NotificationsScreen() {
       />
 
       {!provider.isConfigured ? (
-        <Card className="border-amber-200 bg-amber-50">
+        <Card className="border-amber-500/25 bg-amber-500/10">
           <div className="flex gap-3">
-            <span className="mt-0.5 shrink-0 text-amber-700">
+            <span className="mt-0.5 shrink-0 text-amber-300">
               <Icon name="info" size={20} />
             </span>
             <div>
-              <h2 className="font-bold text-amber-900">Notifications are not connected yet</h2>
-              <p className="mt-1 text-sm leading-relaxed text-amber-900/85">
+              <h2 className="font-bold text-amber-200">Notifications are not connected yet</h2>
+              <p className="mt-1 text-sm leading-relaxed text-amber-100/85">
                 The academy has not switched on push notifications. Your choices below are saved on
                 this device and will be used as soon as notifications go live. Until then, open the
                 app to see the latest updates.
@@ -65,7 +65,7 @@ export function NotificationsScreen() {
       ) : null}
 
       <section>
-        <h2 className="mb-2 text-[0.68rem] font-bold tracking-[0.16em] text-ink-400 uppercase">
+        <h2 className="mb-2 eyebrow">
           What to send me
         </h2>
         <div className="space-y-2">
@@ -91,7 +91,7 @@ export function NotificationsScreen() {
       </section>
 
       <section>
-        <h2 className="mb-2 text-[0.68rem] font-bold tracking-[0.16em] text-ink-400 uppercase">
+        <h2 className="mb-2 eyebrow">
           This device
         </h2>
         <Card className="space-y-3">

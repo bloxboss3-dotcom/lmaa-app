@@ -18,7 +18,7 @@ export function AppShell() {
     <div className="min-h-dvh bg-canvas">
       <a
         href="#main"
-        className="sr-only rounded-lg bg-ink-900 px-4 py-2 font-semibold text-white focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50"
+        className="sr-only rounded-lg bg-crimson-600 px-4 py-2 font-semibold text-white focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50"
       >
         Skip to content
       </a>

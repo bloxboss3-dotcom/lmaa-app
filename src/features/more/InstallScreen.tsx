@@ -39,9 +39,9 @@ export function InstallScreen() {
       />
 
       {install.isInstalled ? (
-        <Card className="flex items-center gap-3 border-emerald-200 bg-emerald-50">
-          <Icon name="check" size={22} className="shrink-0 text-emerald-700" />
-          <p className="font-semibold text-emerald-900">
+        <Card className="flex items-center gap-3 border-emerald-500/25 bg-emerald-500/10">
+          <Icon name="check" size={22} className="shrink-0 text-emerald-300" />
+          <p className="font-semibold text-emerald-200">
             The app is already installed on this device.
           </p>
         </Card>
@@ -61,7 +61,7 @@ export function InstallScreen() {
       <Steps title="Computer" icon="download" steps={DESKTOP_STEPS} />
 
       <Card className="bg-ink-50">
-        <h2 className="font-bold text-ink-900">If you do not see the option</h2>
+        <h2 className="font-semibold text-ink-900">If you do not see the option</h2>
         <p className="mt-1.5 text-sm leading-relaxed text-ink-600">
           Some browsers do not support installing web apps. The app still works normally in your
           browser — you can bookmark this page instead. On iPhone, installing only works in Safari.
@@ -82,15 +82,15 @@ function Steps({
   highlight?: boolean
 }) {
   return (
-    <Card className={highlight ? 'border-crimson-200 ring-1 ring-crimson-100' : undefined}>
+    <Card className={highlight ? 'border-crimson-600/40 ring-1 ring-crimson-600/20' : undefined}>
       <div className="mb-3 flex items-center gap-2">
-        <h2 className="font-bold text-ink-900">{title}</h2>
+        <h2 className="font-semibold text-ink-900">{title}</h2>
         {highlight ? <Badge tone="red">Your device</Badge> : null}
       </div>
       <ol className="space-y-2.5">
         {steps.map((step, index) => (
           <li key={step} className="flex gap-3 text-[0.95rem] leading-relaxed text-ink-700">
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-ink-900 text-xs font-bold text-white">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-crimson-600 text-xs font-bold text-white">
               {index + 1}
             </span>
             {step}

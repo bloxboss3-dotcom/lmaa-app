@@ -35,7 +35,6 @@ export function EventDetailScreen() {
     return (
       <Screen className="mx-auto max-w-2xl">
         <EmptyState
-          icon="star"
           title="This event is not available"
           description="It may have been removed from the academy calendar."
           action={
@@ -97,7 +96,7 @@ export function EventDetailScreen() {
             )}
             {event.isSample ? <SampleBadge /> : null}
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight text-ink-900">{event.title}</h1>
+          <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">{event.title}</h1>
         </header>
 
         <Card className="space-y-3">
@@ -177,7 +176,7 @@ function DetailRow({
         <Icon name={icon} size={18} />
       </span>
       <div className="min-w-0">
-        <p className="text-[0.68rem] font-bold tracking-[0.14em] text-ink-400 uppercase">{label}</p>
+        <p className="eyebrow">{label}</p>
         <p className="text-[0.95rem] leading-relaxed font-medium text-ink-800">{children}</p>
       </div>
     </div>

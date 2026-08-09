@@ -61,14 +61,14 @@ export function Dialog({
         aria-label={title}
         tabIndex={-1}
         className={cx(
-          'relative z-10 max-h-[92vh] w-full overflow-y-auto rounded-t-3xl bg-white p-5 shadow-[var(--shadow-lift)]',
+          'relative z-10 max-h-[92vh] w-full overflow-y-auto rounded-t-3xl bg-surface p-5 shadow-[var(--shadow-lift)]',
           'animate-[var(--animate-sheet-up)] safe-bottom sm:max-w-lg sm:rounded-3xl',
           className,
         )}
       >
         <div className="mb-4 flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-lg font-bold text-ink-900">{title}</h2>
+            <h2 className="text-lg font-semibold text-ink-900">{title}</h2>
             {description ? (
               <p className="mt-1 text-sm leading-relaxed text-ink-600">{description}</p>
             ) : null}

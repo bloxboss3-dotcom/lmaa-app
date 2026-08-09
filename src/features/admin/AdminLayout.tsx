@@ -86,15 +86,13 @@ export function AdminLayout() {
     <AdminContentContext.Provider value={value}>
       <div className="min-h-dvh bg-canvas">
         {/* Top bar */}
-        <header className="safe-top sticky top-0 z-40 border-b border-ink-800 bg-ink-900 text-white">
+        <header className="safe-top sticky top-0 z-40 border-b border-ink-100 bg-surface">
           <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-3 md:h-16 md:px-6">
             <Link to="/admin" className="flex items-center gap-2.5">
               <LogoMark size={30} />
-              <span className="text-sm leading-tight font-extrabold">
+              <span className="text-sm leading-tight font-semibold text-ink-900">
                 LMAA
-                <span className="block text-[0.6rem] font-bold tracking-[0.18em] text-gold-400 uppercase">
-                  Content manager
-                </span>
+                <span className="eyebrow block">Content manager</span>
               </span>
             </Link>
 
@@ -110,7 +108,7 @@ export function AdminLayout() {
             <div className="ml-auto flex items-center gap-1.5">
               <Link
                 to="/"
-                className="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-white/75 hover:bg-white/10 hover:text-white sm:flex"
+                className="hidden items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-ink-600 hover:bg-ink-100 hover:text-ink-900 sm:flex"
               >
                 <Icon name="eye" size={17} /> View app
               </Link>
@@ -119,7 +117,7 @@ export function AdminLayout() {
                 onClick={() => {
                   void signOut().then(() => navigate('/'))
                 }}
-                className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-white/75 hover:bg-white/10 hover:text-white"
+                className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold text-ink-600 hover:bg-ink-100 hover:text-ink-900"
               >
                 <Icon name="logout" size={17} />
                 <span className="hidden sm:inline">Sign out</span>
@@ -127,7 +125,7 @@ export function AdminLayout() {
               <button
                 type="button"
                 onClick={() => setMenuOpen((open) => !open)}
-                className="flex h-10 w-10 items-center justify-center rounded-lg text-white/80 hover:bg-white/10 md:hidden"
+                className="flex h-10 w-10 items-center justify-center rounded-lg text-ink-600 hover:bg-ink-100 md:hidden"
                 aria-expanded={menuOpen}
                 aria-label="Admin sections"
               >
@@ -138,7 +136,7 @@ export function AdminLayout() {
 
           {/* Mobile section menu */}
           {menuOpen ? (
-            <nav className="border-t border-ink-800 bg-ink-900 px-3 pb-3 md:hidden">
+            <nav className="border-t border-ink-100 bg-surface px-3 pb-3 md:hidden">
               <ul className="grid grid-cols-2 gap-1.5 pt-2">
                 {navItems.map((item) => (
                   <li key={item.to}>
@@ -149,7 +147,7 @@ export function AdminLayout() {
                       className={({ isActive }) =>
                         cx(
                           'flex min-h-11 items-center gap-2 rounded-lg px-3 text-sm font-semibold',
-                          isActive ? 'bg-crimson-600 text-white' : 'text-white/70 hover:bg-white/10',
+                          isActive ? 'bg-crimson-600 text-white' : 'text-ink-600 hover:bg-ink-100',
                         )
                       }
                     >
@@ -176,8 +174,8 @@ export function AdminLayout() {
                       cx(
                         'flex min-h-11 items-center gap-2.5 rounded-xl px-3 text-sm font-semibold transition-colors',
                         isActive
-                          ? 'bg-ink-900 text-white'
-                          : 'text-ink-600 hover:bg-white hover:text-ink-900',
+                          ? 'bg-crimson-600 text-white'
+                          : 'text-ink-600 hover:bg-ink-50 hover:text-ink-900',
                       )
                     }
                   >
@@ -191,7 +189,7 @@ export function AdminLayout() {
 
           <main className="min-w-0 flex-1 space-y-5">
             {session.isDemo ? (
-              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900 ring-1 ring-amber-200">
+              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-amber-500/12 px-4 py-3 text-sm text-amber-100 ring-1 ring-amber-500/25">
                 <Icon name="info" size={18} className="shrink-0" />
                 <p className="min-w-0 flex-1 font-medium">
                   Demo mode — changes are saved in this browser only and are not shared with
@@ -201,7 +199,7 @@ export function AdminLayout() {
             ) : null}
 
             {error ? (
-              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-crimson-50 px-4 py-3 text-sm text-crimson-900 ring-1 ring-crimson-100">
+              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-crimson-500/12 px-4 py-3 text-sm text-crimson-100 ring-1 ring-crimson-500/25">
                 <Icon name="alert" size={18} className="shrink-0" />
                 <p className="min-w-0 flex-1 font-medium">{error}</p>
                 <Button size="sm" variant="secondary" onClick={() => void load()}>
