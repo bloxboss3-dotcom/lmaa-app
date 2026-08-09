@@ -138,6 +138,36 @@ export function availableLevels(entries: ScheduleEntry[]): string[] {
   return [...levels].sort((a, b) => a.localeCompare(b))
 }
 
+export interface NextClassDay {
+  day: Weekday
+  /** 0 = today, 1 = tomorrow, and so on. */
+  daysAhead: number
+  entries: ScheduleEntry[]
+}
+
+/**
+ * The next weekday that actually has classes.
+ *
+ * The academy is closed at weekends, so a family opening the app on a Sunday
+ * would otherwise be told only what is *not* happening. `startOffset` of 0
+ * considers today first (useful for picking a sensible default day on the
+ * Schedule screen); 1 skips today (useful once today's classes have finished).
+ * Returns null only when the timetable is completely empty.
+ */
+export function nextClassDay(
+  entries: ScheduleEntry[],
+  now: Date = new Date(),
+  startOffset: 0 | 1 = 1,
+): NextClassDay | null {
+  const today = isoWeekday(now)
+  for (let ahead = startOffset; ahead < startOffset + 7; ahead += 1) {
+    const day = (((today - 1 + ahead) % 7) + 1) as Weekday
+    const dayEntries = entriesForDay(entries, day)
+    if (dayEntries.length) return { day, daysAhead: ahead, entries: dayEntries }
+  }
+  return null
+}
+
 /** Classes still to come today, based on the current wall-clock time. */
 export function upcomingToday(
   entries: ScheduleEntry[],

@@ -117,10 +117,12 @@ function InfoRow({
       <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-ink-600">
         <Icon name={icon} size={18} />
       </span>
+      {/* `min-w-0` plus `break-words` below: without both, a long URL or email
+          address runs off the right edge of a phone instead of wrapping. */}
       <div className="min-w-0">
         <p className="eyebrow">{label}</p>
         {value ? (
-          <p className="text-[0.95rem] leading-relaxed font-medium whitespace-pre-line text-ink-800">
+          <p className="text-[0.95rem] leading-relaxed font-medium break-words whitespace-pre-line text-ink-800">
             {value}
           </p>
         ) : (

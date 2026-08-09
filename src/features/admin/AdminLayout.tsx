@@ -6,7 +6,7 @@ import type { ContentBundle } from '@/data'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
-import { LogoMark } from '@/components/layout/Logo'
+import { Wordmark } from '@/components/layout/Logo'
 import { cx } from '@/lib/cx'
 import { useDocumentTitle } from '@/lib/hooks'
 import { AdminContentContext, type AdminContentValue } from './adminContext'
@@ -89,11 +89,8 @@ export function AdminLayout() {
         <header className="safe-top sticky top-0 z-40 border-b border-ink-100 bg-surface">
           <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-3 md:h-16 md:px-6">
             <Link to="/admin" className="flex items-center gap-2.5">
-              <LogoMark size={30} />
-              <span className="text-sm leading-tight font-semibold text-ink-900">
-                LMAA
-                <span className="eyebrow block">Content manager</span>
-              </span>
+              <Wordmark height={20} decorative />
+              <span className="eyebrow hidden sm:block">Content manager</span>
             </Link>
 
             {/* Wrapped rather than given a `hidden` class: Tailwind resolves
@@ -189,7 +186,7 @@ export function AdminLayout() {
 
           <main className="min-w-0 flex-1 space-y-5">
             {session.isDemo ? (
-              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-amber-500/12 px-4 py-3 text-sm text-amber-100 ring-1 ring-amber-500/25">
+              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800 ring-1 ring-amber-200">
                 <Icon name="info" size={18} className="shrink-0" />
                 <p className="min-w-0 flex-1 font-medium">
                   Demo mode — changes are saved in this browser only and are not shared with
@@ -199,7 +196,7 @@ export function AdminLayout() {
             ) : null}
 
             {error ? (
-              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-crimson-500/12 px-4 py-3 text-sm text-crimson-100 ring-1 ring-crimson-500/25">
+              <div className="flex flex-wrap items-center gap-3 rounded-xl bg-crimson-50 px-4 py-3 text-sm text-crimson-700 ring-1 ring-crimson-200">
                 <Icon name="alert" size={18} className="shrink-0" />
                 <p className="min-w-0 flex-1 font-medium">{error}</p>
                 <Button size="sm" variant="secondary" onClick={() => void load()}>

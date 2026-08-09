@@ -17,7 +17,7 @@ export function StatusBanners() {
     <div className="space-y-2" aria-live="polite">
       {!online ? (
         <div className="flex items-start gap-2.5 rounded-xl bg-ink-50 px-4 py-3 text-sm font-medium text-ink-900 ring-1 ring-ink-100">
-          <Icon name="wifiOff" size={18} className="mt-0.5 shrink-0 text-gold-400" />
+          <Icon name="wifiOff" size={18} className="mt-0.5 shrink-0 text-gold-700" />
           <p>
             You are offline. You can still read what you have already opened — new updates will
             appear when you reconnect.
@@ -26,14 +26,14 @@ export function StatusBanners() {
       ) : null}
 
       {degraded && online ? (
-        <div className="flex items-start gap-2.5 rounded-xl bg-amber-500/12 px-4 py-3 text-sm font-medium text-amber-100 ring-1 ring-amber-500/25">
+        <div className="flex items-start gap-2.5 rounded-xl bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800 ring-1 ring-amber-200">
           <Icon name="info" size={18} className="mt-0.5 shrink-0" />
           <p>We are having trouble reaching the academy&rsquo;s content right now.</p>
         </div>
       ) : null}
 
       {error && !degraded ? (
-        <div className="flex items-start gap-2.5 rounded-xl bg-crimson-500/12 px-4 py-3 text-sm font-medium text-crimson-100 ring-1 ring-crimson-500/25">
+        <div className="flex items-start gap-2.5 rounded-xl bg-crimson-50 px-4 py-3 text-sm font-medium text-crimson-700 ring-1 ring-crimson-200">
           <Icon name="alert" size={18} className="mt-0.5 shrink-0" />
           <p>{error}</p>
         </div>
@@ -41,7 +41,7 @@ export function StatusBanners() {
 
       {updateReady ? (
         <div className="flex flex-wrap items-center gap-3 rounded-xl bg-ink-50 px-4 py-3 text-sm text-ink-900 ring-1 ring-ink-100">
-          <Icon name="refresh" size={18} className="shrink-0 text-gold-400" />
+          <Icon name="refresh" size={18} className="shrink-0 text-gold-700" />
           <p className="min-w-0 flex-1 font-medium">A new version of the app is ready.</p>
           <div className="flex gap-2">
             <button

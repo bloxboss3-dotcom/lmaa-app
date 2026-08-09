@@ -16,6 +16,7 @@ import {
   formatTimeRange,
   isoWeekday,
   minutesOfDay,
+  nextClassDay,
   noticeAppliesOn,
   toIsoDate,
   weekdayLabel,
@@ -43,7 +44,9 @@ export function ScheduleScreen() {
   const today = isoWeekday(now)
   const todayIso = toIsoDate(now)
 
-  const [day, setDay] = useState<DaySelection>(today)
+  // Null until a family picks a day, so the default can follow the timetable
+  // once it loads instead of being frozen at first render.
+  const [chosenDay, setChosenDay] = useState<DaySelection | null>(null)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [filters, setFilters] = useStoredState<StoredFilters>(STORAGE_KEYS.scheduleFilters, {
     program: 'all',
@@ -53,6 +56,17 @@ export function ScheduleScreen() {
 
   const levels = useMemo(() => availableLevels(bundle.schedule), [bundle.schedule])
   const filtersActive = filters.program !== 'all' || filters.level !== 'all'
+
+  /**
+   * Opening the schedule on a Sunday and being shown an empty Sunday is a
+   * useless first screen, so a closed day falls forward to the next day that
+   * teaches. An explicit tap always wins.
+   */
+  const defaultDay = useMemo<DaySelection>(() => {
+    if (entriesForDay(bundle.schedule, today).length) return today
+    return nextClassDay(bundle.schedule, now, 0)?.day ?? today
+  }, [bundle.schedule, today, now])
+  const day = chosenDay ?? defaultDay
 
   const matches = useMemo(
     () => (entry: ScheduleEntry) => {
@@ -93,68 +107,76 @@ export function ScheduleScreen() {
     <Screen className="mx-auto max-w-2xl">
       <PageIntro eyebrow={formatDate(now)} title="Class schedule" />
 
-      {/* Day strip: one tap to any day, plus the whole week. */}
-      <div className="no-scrollbar -mx-4 flex gap-1.5 overflow-x-auto px-4 md:-mx-6 md:px-6">
+      {/* Day strip. Seven equal columns rather than a scrolling row: a strip
+          that runs off the edge of a phone hides the days nobody scrolls to. */}
+      <div className="grid grid-cols-7 gap-1">
         {WEEKDAYS.map((entry) => {
           const active = day === entry.value
+          const teaches = entriesForDay(bundle.schedule, entry.value).length > 0
           return (
             <button
               key={entry.value}
               type="button"
-              onClick={() => setDay(entry.value)}
+              onClick={() => setChosenDay(entry.value)}
               aria-pressed={active}
+              aria-label={`${entry.label}${teaches ? '' : ' — no classes'}`}
               className={cx(
-                'flex min-w-[3.1rem] shrink-0 flex-col items-center rounded-xl border px-2 py-2 transition-colors',
+                'flex min-h-11 flex-col items-center justify-center rounded-xl border py-1.5 transition-colors',
                 active
                   ? 'border-crimson-600 bg-crimson-600 text-white'
-                  : 'border-ink-100 bg-surface text-ink-600 hover:bg-ink-50',
+                  : teaches
+                    ? 'border-ink-100 bg-surface text-ink-700 hover:bg-ink-50'
+                    // ink-400 rather than ink-300: a closed day still has to be
+                  // legible, not just visibly quieter.
+                  : 'border-ink-100 bg-transparent text-ink-400',
               )}
             >
-              <span className="text-[0.6875rem] tracking-wide uppercase">{entry.short}</span>
-              {entry.value === today ? (
-                <span
-                  className={cx(
-                    'mt-1 h-1 w-1 rounded-full',
-                    active ? 'bg-surface' : 'bg-crimson-600',
-                  )}
-                  aria-hidden="true"
-                />
-              ) : (
-                <span className="mt-1 h-1 w-1" aria-hidden="true" />
-              )}
+              <span className="text-[0.6875rem] font-semibold tracking-wide uppercase">
+                {entry.short}
+              </span>
+              <span
+                className={cx(
+                  'mt-1 h-1 w-1 rounded-full',
+                  entry.value === today ? (active ? 'bg-white' : 'bg-crimson-600') : 'bg-transparent',
+                )}
+                aria-hidden="true"
+              />
             </button>
           )
         })}
-        <button
-          type="button"
-          onClick={() => setDay('week')}
-          aria-pressed={day === 'week'}
-          className={cx(
-            'shrink-0 rounded-xl border px-3 text-[0.8125rem] transition-colors',
-            day === 'week'
-              ? 'border-crimson-600 bg-crimson-600 text-white'
-              : 'border-ink-100 bg-surface text-ink-600 hover:bg-ink-50',
-          )}
-        >
-          All week
-        </button>
       </div>
 
       {/* Filters stay out of the way until someone wants them. */}
       <div>
-        <button
-          type="button"
-          onClick={() => setFiltersOpen((open) => !open)}
-          className="flex items-center gap-1.5 text-sm text-ink-500 transition-colors hover:text-ink-900"
-        >
-          <Icon name="filter" size={15} />
-          {filtersActive ? 'Filters on' : 'Filter'}
-          <Icon
-            name="chevronDown"
-            size={14}
-            className={cx('transition-transform', filtersOpen && 'rotate-180')}
-          />
-        </button>
+        <div className="flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={() => setFiltersOpen((open) => !open)}
+            className="flex min-h-9 items-center gap-1.5 text-sm text-ink-500 transition-colors hover:text-ink-900"
+          >
+            <Icon name="filter" size={15} />
+            {filtersActive ? 'Filters on' : 'Filter'}
+            <Icon
+              name="chevronDown"
+              size={14}
+              className={cx('transition-transform', filtersOpen && 'rotate-180')}
+            />
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setChosenDay(day === 'week' ? defaultDay : 'week')}
+            aria-pressed={day === 'week'}
+            className={cx(
+              'min-h-9 rounded-lg border px-3 text-[0.8125rem] font-medium transition-colors',
+              day === 'week'
+                ? 'border-crimson-600 bg-crimson-600 text-white'
+                : 'border-ink-200 bg-surface text-ink-700 hover:bg-ink-50',
+            )}
+          >
+            All week
+          </button>
+        </div>
 
         {filtersOpen ? (
           <div className="mt-3 grid gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-surface p-3 sm:grid-cols-2">
@@ -220,7 +242,7 @@ export function ScheduleScreen() {
                 Clear filters
               </Button>
             ) : day !== 'week' ? (
-              <Button size="sm" variant="secondary" onClick={() => setDay('week')}>
+              <Button size="sm" variant="secondary" onClick={() => setChosenDay('week')}>
                 View the week
               </Button>
             ) : undefined
@@ -273,7 +295,7 @@ function ClassRow({
     <div
       className={cx(
         'px-4 py-3',
-        isNext && 'border-l-[3px] border-crimson-600 bg-gradient-to-r from-crimson-600/12 to-transparent',
+        isNext && 'border-l-[3px] border-crimson-600 bg-gradient-to-r from-crimson-50 to-transparent',
       )}
     >
       <div className="flex items-baseline gap-3">
@@ -309,7 +331,7 @@ function ClassRow({
             <p
               className={cx(
                 'mt-2 rounded-lg px-2.5 py-1.5 text-sm',
-                cancelled ? 'bg-crimson-500/12 text-crimson-200' : 'bg-amber-500/12 text-amber-200',
+                cancelled ? 'bg-crimson-50 text-crimson-700' : 'bg-amber-50 text-amber-800',
               )}
             >
               <span className="font-medium">

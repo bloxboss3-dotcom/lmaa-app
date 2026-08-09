@@ -10,9 +10,11 @@ interface Toast {
 }
 
 const TONE_STYLES: Record<ToastTone, { className: string; icon: IconName }> = {
-  success: { className: 'bg-ink-50 text-ink-900 ring-1 ring-ink-200', icon: 'check' },
+  // Toasts float over the page, so they are solid rather than tinted — a pale
+  // chip on pale paper is easy to miss entirely.
+  success: { className: 'bg-ink-900 text-white', icon: 'check' },
   error: { className: 'bg-crimson-700 text-white', icon: 'alert' },
-  info: { className: 'bg-ink-50 text-ink-900 ring-1 ring-ink-200', icon: 'info' },
+  info: { className: 'bg-ink-900 text-white', icon: 'info' },
 }
 
 /** Success/error feedback for every admin action. */

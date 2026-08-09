@@ -97,9 +97,12 @@ describe('DemoRepository', () => {
 
   it('stops labelling content as a sample once a human edits it', async () => {
     const repository = new DemoRepository()
-    const [seeded] = await repository.listFaqs()
-    expect(seeded.isSample).toBe(true)
-    const edited = await repository.saveFaq({ ...seeded, answer: 'A real answer.' })
+    // The draft privacy policy is the only seeded record still flagged as a
+    // sample — everything else is the academy's own published information.
+    const pages = await repository.listPages()
+    const draft = pages.find((page) => page.slug === 'privacy')
+    expect(draft?.isSample).toBe(true)
+    const edited = await repository.savePage({ ...draft!, body: 'An approved policy.' })
     expect(edited.isSample).toBe(false)
   })
 

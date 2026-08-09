@@ -4,194 +4,145 @@ Everything the app is still missing, in one checklist. Each item says **where it
 you can add it as soon as you have it.
 
 The app is deliberately honest about gaps: missing details show as "Not added yet" or a
-disabled button rather than a fake value or a broken link. Nothing below has been
-invented.
+disabled button rather than a fake value or a broken link. Nothing below has been invented.
+
+> **Most of this list is now done.** The app was populated from the academy's own website,
+> **leesmartialartsacademy.com** — see [§0](#0-please-confirm-what-was-taken-from-your-website)
+> first, because that content needs a quick check rather than a rewrite.
 
 ---
 
-## 1. Brand and artwork
+## 0. Please confirm what was taken from your website
 
-- [ ] **Final LMAA logo** — vector (`.svg`, `.ai` or `.eps`) if it exists, otherwise the
-      largest PNG available with a transparent background.
-      *Replaces* the placeholder chevron mark in `src/components/layout/Logo.tsx`.
-- [ ] **Square app-icon source** — one square image, **1024 × 1024 px** minimum, no
-      transparency, no text near the edges. The important part of the mark must sit inside
-      the middle **80%** (the "safe zone") so Android's circular mask does not crop it.
-      *Used to regenerate* `public/icons/` (see `scripts/generate-icons.mjs`).
-- [ ] **Official brand colours** — exact hex codes for the academy red and gold.
-      *Currently placeholders:* near-black `#0b0b0d`, deep red `#c1121f`, gold `#c9a24d`.
-      *Change in* `src/index.css` (the `@theme` block).
+All of the following came straight off LMAA's public website and is now live in the app.
+None of it was invented, but a website can go stale — please confirm each line is still
+right, then tick it off. Anything wrong can be fixed in **Admin** in under a minute.
+
+- [ ] **Logo** — `src/assets/brand/lmaa-logo.png`, taken from
+      `leesmartialartsacademy.com/images/logo.png`. Used for the app icon, the staff
+      sign-in screen and the home-screen icon. The "LMAA" lettering was cropped from the
+      same file for the app header.
+      *If you have the original vector or a larger PNG, send it — see [§1](#1-brand-artwork-still-wanted).*
+- [ ] **Contact details** — (503) 682-2318 · lmaa.wilsonville@gmail.com ·
+      8263 SW Wilsonville Rd, Ste A, Wilsonville, OR 97070 · Mon–Fri 1:00–8:40 PM ·
+      Instagram @lmaa\_\_wilsonville
+- [ ] **The full weekly class schedule** — all 34 classes, Monday to Friday, exactly as
+      published on the website's Schedule section. **This is the single most important
+      thing to check**, because families will plan their week around it.
+- [ ] **The four programs** — Little Tigers, Kids Taekwondo, Teen & Adult Taekwondo,
+      Family Class, with the descriptions from the website.
+- [ ] **14 FAQ answers** — the "Questions every parent asks" section.
+- [ ] **About the academy** — the founding story, Master Lee's quote, the 6th Dan / Kukkiwon
+      / World Taekwondo credentials, and the four named instructors.
+- [ ] **Tenets & the LMAA Pledge** — the five tenets with their Korean names, and the
+      five-line pledge.
+- [ ] **The belt journey** — thirteen belts, white through black, with the quarterly
+      testing months.
+- [ ] **Beyond class** — camps, birthday parties, tournaments, Mom & Me / Dad & Me,
+      Parents Night Out, the Halloween party and the holiday potluck.
+
+Two deliberate omissions you may want to revisit:
+
+- The **"2 weeks free + first month free" summer offer** was **not** added. It is a
+  new-student offer with an end date, and the app is for families who have already joined.
+  Post it yourself in **Admin → Updates** if you want it there — updates support an expiry
+  date, so it can remove itself automatically.
+- **Black-belt classes** ("All Black Belt", "Black Belt Club") are not filed under any one
+  program, because they take black belts of every age and filing them under the children's
+  or the adults' program would mislead a parent using the program filter. They are found by
+  level instead. Change this in **Admin → Class schedule** if you would rather group them.
+
+---
+
+## 1. Brand artwork still wanted
+
+- [ ] **Vector logo** (`.svg`, `.ai` or `.eps`) if one exists. The app currently uses the
+      588 × 570 px PNG from the website, which is sharp enough everywhere it is shown but
+      would be sharper still from vector.
+- [ ] **Square app-icon source** — one square image, **1024 × 1024 px** minimum, with the
+      mark inside the middle **80%** (the "safe zone") so Android's circular mask does not
+      crop it. The current icons are generated from the website logo on the brand paper
+      background; a purpose-made square version would read better at home-screen size.
+      *Regenerate with* `npm run icons`.
 - [ ] **A hero photo (optional)** — a wide academy photo, at least **1600 × 900 px**, that
       LMAA owns.
 
-> **Do not supply artwork LMAA does not own.** No stock photos without a licence, no
-> images from another academy, no logos containing third-party marks.
+> **Do not supply artwork LMAA does not own.** No stock photos without a licence, no images
+> from another academy, no logos containing third-party marks.
 
 ---
 
-## 2. Academy details → *Admin → Academy information*
+## 2. Class schedule → *Admin → Class schedule*
 
-These power the Contact screen, the **Call** and **Directions** buttons and the app footer.
-Every one of them is blank today.
+The full published timetable is in the app. Still worth adding:
 
-- [ ] Phone number (exactly as families should see it)
-- [ ] Email address
-- [ ] Street address (each line as it should appear)
-- [ ] Map link — open the academy in Google Maps, tap **Share**, copy the link
-- [ ] Website address
-- [ ] Office / front-desk hours
-- [ ] Support email (where app problems should be reported — can be the same address)
-- [ ] Social links: Facebook, Instagram, YouTube, TikTok
-- [ ] Tagline — one short line for the home screen
-- [ ] Academy description — one or two paragraphs
-
----
-
-## 3. Class schedule → *Admin → Class schedule*
-
-**Already in the app** (supplied by LMAA, please confirm it is still correct):
-
-| Class | Ages | Days and times |
-| --- | --- | --- |
-| Little Tigers | 4–5 | Mon & Wed 4:25–4:55 PM · Tue & Thu 3:40–4:10 PM |
-| Children White Belt | 6–12 | Mon & Wed 3:40–4:20 PM · Tue & Thu 5:00–5:40 PM |
-| Family & All-Level | All | Mon & Wed 7:15–7:55 PM · Fri 6:40–7:20 PM |
-| Teen & Adult | 13+ | Mon–Thu 8:00–8:40 PM |
-
-**Still needed:**
-
-- [ ] Class times for **colour-belt / advanced children's classes** (not supplied — no
-      times have been invented)
-- [ ] Any **weekend classes**
-- [ ] Any **leadership, demo team, sparring or competition team** class times
-- [ ] Any **private lesson** or **open mat** slots that should be public
+- [ ] Any **weekend classes**, private lessons or open-mat slots that should be public
 - [ ] A short description for each class (what a family should expect)
-- [ ] Eligibility notes where they matter (e.g. "white belts only", "must be enrolled")
+- [ ] Eligibility notes where they matter (e.g. "must be enrolled", "gear required")
+- [ ] Tell us whenever the timetable changes — or edit it yourself in Admin
+
+Temporary changes (a cancelled class, a one-off time change) are handled in Admin without
+touching the timetable itself: set the class to **Cancelled** or **Time changed**, add a
+plain-language note, and families see a badge on that class.
 
 ---
 
-## 4. Programs → *Admin → Programs*
+## 3. Events → *Admin → Events*
 
-The four programs above exist with placeholder descriptions.
+**The Events screen is empty on purpose.** The website describes camps, parties and
+tournaments but publishes no dates, and inventing a belt-test date is exactly the kind of
+thing a parent would plan around. Nothing goes in until you add it.
 
-- [ ] A real description for each program (2–4 sentences)
-- [ ] Any programs missing from the list
-- [ ] Confirmation of the correct age range for each
+- [ ] **Belt testing dates** — testing is quarterly (March, June, September, December);
+      the app needs the actual dates and times
+- [ ] **Summer camp dates** and how to book
+- [ ] **Tournament and demo team dates**
+- [ ] **Mom & Me / Dad & Me** Saturdays
+- [ ] **Parents Night Out**, the Halloween party, the holiday potluck
+- [ ] For each: location, who it is for, and a registration or waiver link if there is one
 
----
-
-## 5. Updates → *Admin → Updates*
-
-- [ ] **Delete the sample posts.** Three demo announcements ship with the app and are
-      labelled **Sample** in the interface. They exist to show how the feed works.
-- [ ] Anything families should already know about (closures, testing dates, deadlines)
-
----
-
-## 6. Events → *Admin → Events*
-
-- [ ] **Delete the two sample events** (labelled **Sample** in the interface)
-- [ ] Real upcoming events: name, date, start and end time, location, description
-- [ ] Registration links, where you use them
-- [ ] Waiver / permission form links
-- [ ] An image for each event, if you have one (about **1200 × 675 px**)
-- [ ] Who each event is for ("all students", "green belt and above", "families welcome")
+Every event gets an **Add to calendar** button and a **Directions** button automatically.
 
 ---
 
-## 7. Learning resources → *Admin → Learning resources*
+## 4. Learning resources → *Admin → Learning resources*
 
-The app ships with **labelled placeholders only**. No curriculum, technique descriptions
-or terminology have been written — that has to come from the academy.
+The **Curriculum videos** and **Binder & documents** sections are empty. They will stay
+empty until LMAA supplies real material — no martial arts instruction has been written by
+the app.
 
-- [ ] **The current LMAA binder** as a PDF
-- [ ] Terminology sheet, forms list, and any other handouts
-- [ ] **Curriculum video links**, per program/level
-- [ ] ✅ **Written confirmation that LMAA owns, or has permission to publish, every video
-      and document added.** This matters both legally and for the App Store review later.
-- [ ] Thumbnail images for videos (optional; about **640 × 360 px**)
-
-> YouTube and Vimeo links play inside the app using their privacy-friendly players. Any
-> other link opens in the browser instead.
+- [ ] **Curriculum videos** — YouTube or Vimeo links, one per form/technique, tagged with
+      the program and belt level. **LMAA must own the video or have permission to use it.**
+- [ ] **The student binder** (PDF) and any terminology sheets or printable handouts
+- [ ] Any parent guides or at-home practice sheets
 
 ---
 
-## 8. Questions → *Admin → Questions*
+## 5. Photo gallery → *Admin → Photo gallery*
 
-Four placeholder questions ship with the app, each labelled **Sample**, with no real
-answers.
+**Empty on purpose.** Photographs of students are the one thing the app will never source
+for you.
 
-- [ ] Real answers to those four:
-  - What should my child wear to their first class?
-  - How do I know when my child is ready to test?
-  - What happens if we miss a class?
-  - How do I contact the academy?
-- [ ] The other questions your front desk answers every week
+- [ ] Photos LMAA owns, with **written confirmation** that everyone shown (or their parent
+      or guardian, for anyone under 18) has agreed to the photo being used in the app
+- [ ] A caption and photo credit for each
 
 ---
 
-## 9. Photo gallery → *Admin → Photo gallery*
+## 6. Privacy policy → *Admin → Information pages → Privacy Policy*
 
-The gallery is **empty on purpose** — no stock or third-party photos were used.
-
-- [ ] Academy-owned photos (about **1200 px** on the long edge)
-- [ ] ✅ **Photo-use permission for every identifiable person, especially every child.**
-      Record who gave permission in the "Permission note" field on each photo.
-- [ ] A caption for each photo
-
----
-
-## 10. Information pages → *Admin → Information pages*
-
-- [ ] **About LMAA** — the academy's story, instructors, style taught
-- [ ] **Privacy policy** — a placeholder is in place describing what the app actually does
-      today (no accounts, no child data, no tracking). **Someone at LMAA must read and
-      approve it before launch.** If you add family accounts, analytics or push
-      notifications later, it must be updated first — see
-      [SECURITY_AND_PRIVACY.md](SECURITY_AND_PRIVACY.md).
-- [ ] **Support** — what a family should do if the app misbehaves, and who replies
+- [ ] **The privacy policy is a draft and is marked as such in the app.** It must be read
+      and approved by LMAA before launch. It currently states, accurately, that the app
+      collects no student or child information, requires no account, and stores read marks
+      only on the family's own device. If that changes — especially if push notifications
+      are switched on — the policy must be updated **before** the feature goes live.
 
 ---
 
-## 11. Notifications (when you are ready)
+## 7. Nice to have
 
-- [ ] Decide whether push notifications are wanted at all
-- [ ] Choose a provider (OneSignal is documented in [SUPABASE_SETUP.md](SUPABASE_SETUP.md))
-- [ ] Decide who is allowed to send them
-- [ ] Agree what is worth a notification (closures and cancellations, probably; every post,
-      probably not)
-
-Until this is done the app says plainly that notifications are not connected, and the
-"Send push notification" checkbox stays disabled.
-
----
-
-## 12. For the native iPhone / Android release later
-
-Not needed for the web app — collect these before starting the store submissions
-(details in [NATIVE_APP_RELEASE_CHECKLIST.md](NATIVE_APP_RELEASE_CHECKLIST.md)).
-
-- [ ] Confirmed permanent app name
-- [ ] Confirmed bundle identifier (proposed: `com.leesmartialartsacademy.app`)
-- [ ] Legal business name and address exactly as registered
-- [ ] **D-U-N-S number** (free from Dun & Bradstreet; can take up to two weeks)
-- [ ] An email address on the academy's own domain
-- [ ] A public LMAA website that names the business
-- [ ] Apple Developer Program organization account (annual fee)
-- [ ] Google Play organization developer account (one-time fee)
-- [ ] Support URL and privacy-policy URL that will still be live in a year
-- [ ] Store screenshots, description and age rating decision
-- [ ] Who owns the store accounts, and who else needs access
-
----
-
-## Quick priority order
-
-1. **Section 2** — contact details. Without them the Call and Directions buttons stay
-   disabled.
-2. **Section 3** — confirm the schedule and fill the gaps. This is the feature families
-   will open most.
-3. **Sections 5 and 6** — delete the sample posts and events.
-4. **Section 10** — approve the privacy policy.
-5. **Section 1** — the real logo and icon.
-6. Everything else.
+- [ ] A short welcome message from Master Lee to replace the app's own welcome update
+- [ ] Facebook / YouTube / TikTok links, if the academy uses them (Instagram is already in)
+- [ ] Confirmation of which staff should have **Administrator** access and which should be
+      **Editors** (see `SUPABASE_SETUP.md` — accounts are created by the owner, there is no
+      public sign-up)

@@ -20,7 +20,7 @@ const CONTROL =
   'disabled:bg-ink-50 disabled:text-ink-400'
 
 const CONTROL_OK = 'border-ink-200 focus:border-ink-400'
-const CONTROL_ERROR = 'border-crimson-400 bg-crimson-500/8'
+const CONTROL_ERROR = 'border-crimson-600 bg-crimson-50'
 
 interface FieldShellProps {
   label: string
@@ -45,11 +45,11 @@ function FieldShell({
     <div className={cx('space-y-1.5', className)}>
       <label htmlFor={htmlFor} className="block text-sm font-semibold text-ink-800">
         {label}
-        {required ? <span className="ml-1 text-crimson-400">*</span> : null}
+        {required ? <span className="ml-1 text-crimson-700">*</span> : null}
       </label>
       {children}
       {error ? (
-        <p id={`${htmlFor}-error`} className="text-sm font-medium text-crimson-400">
+        <p id={`${htmlFor}-error`} className="text-sm font-medium text-crimson-700">
           {error}
         </p>
       ) : hint ? (

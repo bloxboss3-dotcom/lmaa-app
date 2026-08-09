@@ -3,7 +3,8 @@
 The official family app for **Lee's Martial Arts Academy** — class schedules, academy
 updates, events and student learning resources, in one place, on any phone.
 
-It is a mobile-first Progressive Web App built with React, TypeScript and Vite. It is
+It is a mobile-first Progressive Web App built with React, TypeScript and Vite, styled in
+the academy's own brand — see [BRAND.md](BRAND.md). It is
 published as a static site on GitHub Pages by GitHub Actions, works offline, installs to
 a phone home screen, and is built so the same code can later be packaged as an iPhone and
 Android app with Capacitor.
@@ -27,9 +28,11 @@ Android app with Capacitor.
 
 The app runs in one of two modes, decided automatically at build time:
 
-- **Demo mode** (no Supabase configured) — the app loads built-in seed content, including
-  the academy's real class schedule. A clearly labelled local admin demo lets anyone try
-  the content tools; changes are saved in that browser only.
+- **Demo mode** (no Supabase configured) — the app loads built-in seed content: the
+  academy's real contact details, its full weekly class schedule, the four programs, the
+  FAQ answers, the tenets and the belt journey, all taken from LMAA's own published
+  material. A clearly labelled local admin demo lets anyone try the content tools; changes
+  are saved in that browser only.
 - **Connected mode** (Supabase configured) — content comes from the database, staff sign
   in with real accounts, and edits are published to every family.
 
@@ -59,7 +62,8 @@ The app runs in demo mode out of the box — no database or keys required.
 | `npm test` | Vitest test suite |
 | `npm run verify` | Lint + types + tests + build (what CI runs) |
 | `npm run format` | Prettier |
-| `npm run icons` | Regenerate the placeholder app icons |
+| `npm run icons` | Regenerate the app icons from the LMAA logo |
+| `npm run seed:sql` | Regenerate `supabase/seed.sql` from the demo seed data |
 | `npm run cap:sync` | Build and copy the web app into the native projects |
 
 ---
@@ -69,6 +73,7 @@ The app runs in demo mode out of the box — no database or keys required.
 | File | What it covers |
 | --- | --- |
 | [SETUP_GUIDE_FOR_KEVIN.md](SETUP_GUIDE_FOR_KEVIN.md) | Non-technical guide: run it, deploy it, fix it, edit content |
+| [BRAND.md](BRAND.md) | The academy's brand identity: logo, colour, type, voice, and where each came from |
 | [CONTENT_NEEDED.md](CONTENT_NEEDED.md) | Checklist of everything LMAA still has to supply |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | How the code is organised and why; extension points |
 | [SUPABASE_SETUP.md](SUPABASE_SETUP.md) | Connecting the database, staff accounts, storage, push |

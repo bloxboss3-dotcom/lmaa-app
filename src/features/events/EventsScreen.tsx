@@ -21,6 +21,10 @@ export function EventsScreen() {
 
   const { upcoming, past } = useMemo(() => partitionEvents(bundle.events, now), [bundle.events, now])
   const shown = tab === 'upcoming' ? upcoming : past
+  // The academy runs camps, parties and tournaments year-round but does not
+  // always publish dates. When the calendar is bare, send families to what the
+  // academy has said rather than leaving the tab a dead end.
+  const hasBeyondClass = bundle.pages.some((page) => page.slug === 'beyond-class')
 
   return (
     <Screen className="mx-auto max-w-2xl">
@@ -67,8 +71,18 @@ export function EventsScreen() {
         </Rows>
       ) : tab === 'upcoming' ? (
         <EmptyState
-          title="No upcoming events"
-          description="Nothing on the calendar right now — new events appear here first."
+          title="No dates on the calendar yet"
+          description="Belt tests, camps, tournaments and parties appear here as soon as the academy posts the dates."
+          action={
+            hasBeyondClass ? (
+              <Link
+                to="/more/page/beyond-class"
+                className="text-sm font-medium text-crimson-700 hover:underline"
+              >
+                What the academy runs →
+              </Link>
+            ) : undefined
+          }
         />
       ) : (
         <EmptyState
@@ -90,7 +104,7 @@ function EventRow({ event, now, past }: { event: AcademyEvent; now: Date; past: 
       <span
         className={cx(
           'flex w-11 shrink-0 flex-col items-center rounded-lg py-1.5',
-          past ? 'bg-ink-50 text-ink-500' : 'bg-crimson-500/12 text-crimson-200',
+          past ? 'bg-ink-50 text-ink-500' : 'bg-crimson-50 text-crimson-700',
         )}
       >
         <span className="text-[0.625rem] font-medium tracking-wide uppercase">

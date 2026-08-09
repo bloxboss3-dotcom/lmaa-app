@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="LMAA">
-  <rect width="64" height="64" rx="14" fill="#0b0b0d" />
-  <polygon points="32,12 52,25 52,32.5 32,19.5 12,32.5 12,25" fill="#b00e1b" />
-  <polygon points="32,22.5 52,35.5 52,43 32,30 12,43 12,35.5" fill="#ffffff" />
-  <rect x="12" y="48.5" width="40" height="3.5" fill="#c9a24d" />
-</svg>
