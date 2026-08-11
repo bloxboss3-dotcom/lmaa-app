@@ -27,13 +27,23 @@ function navLink(name: RegExp) {
 }
 
 describe('family navigation', () => {
-  it('leads with today rather than a welcome banner', async () => {
+  it('leads with class times rather than a welcome banner', async () => {
     renderApp('/')
-    // The first heading answers "when is class?", not "hello".
+    // The first heading answers "when is class?", not "hello". Which branch it
+    // lands on depends on the day and time the suite runs.
     const heading = await screen.findByRole('heading', { level: 1 })
-    expect(heading.textContent).toMatch(/left today|are finished|no classes/i)
-    expect(screen.getByRole('heading', { name: /next event/i })).toBeInTheDocument()
+    expect(heading.textContent).toMatch(/left today|classes are done|closed today|no classes/i)
+    // …and the classes themselves follow, either today's or the next day's.
+    expect(screen.getByRole('heading', { name: /^today$|^next classes/i })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: /latest update/i })).toBeInTheDocument()
+  })
+
+  it('hides the events section entirely when nothing is scheduled', async () => {
+    renderApp('/')
+    await screen.findByRole('heading', { level: 1 })
+    // A box announcing "no events" advertises an empty app instead of telling a
+    // parent something they can act on, so the section is dropped altogether.
+    expect(screen.queryByRole('heading', { name: /next event/i })).not.toBeInTheDocument()
   })
 
   it('moves between the five primary destinations', async () => {
@@ -91,9 +101,13 @@ describe('family navigation', () => {
     expect(screen.getByText(/student resources/i)).toBeInTheDocument()
   })
 
-  it('is honest when contact details have not been supplied', async () => {
+  it('offers the academy’s real phone number and address as actions', async () => {
     renderApp('/more/contact')
-    expect(await screen.findByText(/contact details are coming soon/i)).toBeInTheDocument()
+    expect(await screen.findByText(/8263 SW Wilsonville Rd/i)).toBeInTheDocument()
+    // A phone number that is only text is a phone number a parent has to
+    // re-type one-handed in a car park — it must be a tel: link.
+    const call = screen.getByRole('link', { name: /call/i })
+    expect(call).toHaveAttribute('href', 'tel:+15036822318')
   })
 
   it('keeps the staff sign-in link discreet but reachable', async () => {

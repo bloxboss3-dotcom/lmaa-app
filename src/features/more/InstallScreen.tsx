@@ -39,9 +39,9 @@ export function InstallScreen() {
       />
 
       {install.isInstalled ? (
-        <Card className="flex items-center gap-3 border-emerald-500/25 bg-emerald-500/10">
-          <Icon name="check" size={22} className="shrink-0 text-emerald-300" />
-          <p className="font-semibold text-emerald-200">
+        <Card className="flex items-center gap-3 border-emerald-200 bg-emerald-50">
+          <Icon name="check" size={22} className="shrink-0 text-emerald-800" />
+          <p className="font-semibold text-emerald-800">
             The app is already installed on this device.
           </p>
         </Card>
@@ -82,7 +82,7 @@ function Steps({
   highlight?: boolean
 }) {
   return (
-    <Card className={highlight ? 'border-crimson-600/40 ring-1 ring-crimson-600/20' : undefined}>
+    <Card className={highlight ? 'border-crimson-200 ring-1 ring-crimson-100' : undefined}>
       <div className="mb-3 flex items-center gap-2">
         <h2 className="font-semibold text-ink-900">{title}</h2>
         {highlight ? <Badge tone="red">Your device</Badge> : null}

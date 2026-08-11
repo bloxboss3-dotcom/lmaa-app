@@ -1,40 +1,40 @@
 #!/usr/bin/env node
 /**
- * Generates the placeholder LMAA app icons (PNG) used by the PWA manifest,
- * the iOS home screen and the browser favicon.
+ * Generates the LMAA app icons (PNG) used by the PWA manifest, the iOS home
+ * screen and the browser favicon.
  *
- * These are ORIGINAL geometric placeholders (rank chevrons on a black field
- * with a deep-red and gold accent). They are deliberately simple so they read
- * clearly at 48px. Replace them with the final LMAA logo before launch —
- * see CONTENT_NEEDED.md for the required source artwork.
+ * The artwork is the academy's own logo — the flying-kick lockup from
+ * leesmartialartsacademy.com — composited onto the brand paper background.
+ * The source lives at src/assets/brand/lmaa-logo.png; re-run this script after
+ * replacing it with a higher-resolution original.
  *
  * Usage: npm run icons
  *
- * No image libraries are used: the PNGs are encoded here with zlib so the
- * repository stays free of heavy native build dependencies.
+ * No image libraries are used: the PNGs are decoded and re-encoded here with
+ * zlib so the repository stays free of heavy native build dependencies.
  */
-import { deflateSync } from 'node:zlib'
-import { mkdirSync, writeFileSync } from 'node:fs'
+import { deflateSync, inflateSync } from 'node:zlib'
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const OUT_DIR = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'icons')
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
+const SOURCE = join(ROOT, 'src', 'assets', 'brand', 'lmaa-logo.png')
+const OUT_DIR = join(ROOT, 'public', 'icons')
 
-const INK = [11, 11, 13, 255] // #0b0b0d  near-black field
-const RED = [176, 14, 27, 255] // #b00e1b  deep red
-const WHITE = [255, 255, 255, 255]
-const GOLD = [201, 162, 77, 255] // #c9a24d restrained gold
+/** Brand paper — the same warm off-white the app and the website sit on. */
+const PAPER = [247, 244, 238, 255] // #f7f4ee
 const CLEAR = [0, 0, 0, 0]
 
 /* ------------------------------------------------------------------ canvas */
 
-function createCanvas(size) {
-  return { size, data: new Uint8ClampedArray(size * size * 4) }
+function createCanvas(width, height = width) {
+  return { width, height, data: new Uint8ClampedArray(width * height * 4) }
 }
 
 function setPixel(canvas, x, y, [r, g, b, a]) {
-  if (x < 0 || y < 0 || x >= canvas.size || y >= canvas.size) return
-  const i = (y * canvas.size + x) * 4
+  if (x < 0 || y < 0 || x >= canvas.width || y >= canvas.height) return
+  const i = (y * canvas.width + x) * 4
   if (a === 255) {
     canvas.data[i] = r
     canvas.data[i + 1] = g
@@ -42,7 +42,8 @@ function setPixel(canvas, x, y, [r, g, b, a]) {
     canvas.data[i + 3] = 255
     return
   }
-  // simple source-over blend
+  if (a === 0) return
+  // source-over blend
   const sa = a / 255
   const da = canvas.data[i + 3] / 255
   const oa = sa + da * (1 - sa)
@@ -54,14 +55,8 @@ function setPixel(canvas, x, y, [r, g, b, a]) {
 }
 
 function fillAll(canvas, color) {
-  for (let y = 0; y < canvas.size; y += 1) {
-    for (let x = 0; x < canvas.size; x += 1) setPixel(canvas, x, y, color)
-  }
-}
-
-function fillRect(canvas, x0, y0, w, h, color) {
-  for (let y = Math.round(y0); y < Math.round(y0 + h); y += 1) {
-    for (let x = Math.round(x0); x < Math.round(x0 + w); x += 1) setPixel(canvas, x, y, color)
+  for (let y = 0; y < canvas.height; y += 1) {
+    for (let x = 0; x < canvas.width; x += 1) setPixel(canvas, x, y, color)
   }
 }
 
@@ -77,63 +72,54 @@ function fillRoundedRect(canvas, x0, y0, w, h, radius, color) {
   }
 }
 
-/** Even-odd polygon fill. `points` is a flat list of [x, y] pairs. */
-function fillPolygon(canvas, points, color) {
-  const ys = points.map((p) => p[1])
-  const minY = Math.max(0, Math.floor(Math.min(...ys)))
-  const maxY = Math.min(canvas.size - 1, Math.ceil(Math.max(...ys)))
-  for (let y = minY; y <= maxY; y += 1) {
-    const sample = y + 0.5
-    const crossings = []
-    for (let i = 0; i < points.length; i += 1) {
-      const [x1, y1] = points[i]
-      const [x2, y2] = points[(i + 1) % points.length]
-      if (y1 === y2) continue
-      if (sample >= Math.min(y1, y2) && sample < Math.max(y1, y2)) {
-        crossings.push(x1 + ((sample - y1) / (y2 - y1)) * (x2 - x1))
-      }
-    }
-    crossings.sort((a, b) => a - b)
-    for (let i = 0; i + 1 < crossings.length; i += 2) {
-      const from = Math.round(crossings[i])
-      const to = Math.round(crossings[i + 1])
-      for (let x = from; x < to; x += 1) setPixel(canvas, x, y, color)
-    }
-  }
-}
-
-/** Average an over-sampled canvas down to `target` px for cheap antialiasing. */
-function downsample(canvas, target) {
-  const factor = canvas.size / target
-  const out = createCanvas(target)
-  for (let y = 0; y < target; y += 1) {
-    for (let x = 0; x < target; x += 1) {
+/** Box-filter resize in premultiplied space so edges do not fringe. */
+function resize(source, targetWidth, targetHeight) {
+  const out = createCanvas(targetWidth, targetHeight)
+  for (let y = 0; y < targetHeight; y += 1) {
+    const sy0 = Math.floor((y * source.height) / targetHeight)
+    const sy1 = Math.max(sy0 + 1, Math.floor(((y + 1) * source.height) / targetHeight))
+    for (let x = 0; x < targetWidth; x += 1) {
+      const sx0 = Math.floor((x * source.width) / targetWidth)
+      const sx1 = Math.max(sx0 + 1, Math.floor(((x + 1) * source.width) / targetWidth))
       let r = 0
       let g = 0
       let b = 0
       let a = 0
       let n = 0
-      for (let sy = Math.floor(y * factor); sy < Math.floor((y + 1) * factor); sy += 1) {
-        for (let sx = Math.floor(x * factor); sx < Math.floor((x + 1) * factor); sx += 1) {
-          const i = (sy * canvas.size + sx) * 4
-          const alpha = canvas.data[i + 3] / 255
-          r += canvas.data[i] * alpha
-          g += canvas.data[i + 1] * alpha
-          b += canvas.data[i + 2] * alpha
-          a += canvas.data[i + 3]
+      for (let sy = sy0; sy < sy1; sy += 1) {
+        for (let sx = sx0; sx < sx1; sx += 1) {
+          const i = (sy * source.width + sx) * 4
+          const alpha = source.data[i + 3] / 255
+          r += source.data[i] * alpha
+          g += source.data[i + 1] * alpha
+          b += source.data[i + 2] * alpha
+          a += source.data[i + 3]
           n += 1
         }
       }
-      if (!n) continue
-      const avgAlpha = a / n / 255
-      const o = (y * target + x) * 4
-      out.data[o] = avgAlpha > 0 ? r / n / avgAlpha : 0
-      out.data[o + 1] = avgAlpha > 0 ? g / n / avgAlpha : 0
-      out.data[o + 2] = avgAlpha > 0 ? b / n / avgAlpha : 0
+      const avg = a / n / 255
+      const o = (y * targetWidth + x) * 4
+      out.data[o] = avg > 0 ? r / n / avg : 0
+      out.data[o + 1] = avg > 0 ? g / n / avg : 0
+      out.data[o + 2] = avg > 0 ? b / n / avg : 0
       out.data[o + 3] = a / n
     }
   }
   return out
+}
+
+function drawImage(canvas, image, dx, dy) {
+  for (let y = 0; y < image.height; y += 1) {
+    for (let x = 0; x < image.width; x += 1) {
+      const i = (y * image.width + x) * 4
+      setPixel(canvas, dx + x, dy + y, [
+        image.data[i],
+        image.data[i + 1],
+        image.data[i + 2],
+        image.data[i + 3],
+      ])
+    }
+  }
 }
 
 /* --------------------------------------------------------------- png codec */
@@ -163,21 +149,89 @@ function chunk(type, data) {
   return Buffer.concat([length, typeAndData, crc])
 }
 
+function paeth(a, b, c) {
+  const p = a + b - c
+  const pa = Math.abs(p - a)
+  const pb = Math.abs(p - b)
+  const pc = Math.abs(p - c)
+  if (pa <= pb && pa <= pc) return a
+  return pb <= pc ? b : c
+}
+
+/** Minimal PNG reader: 8-bit RGB/RGBA, non-interlaced — enough for our source. */
+function decodePng(buffer) {
+  let pos = 8
+  let width = 0
+  let height = 0
+  let colorType = 6
+  const idat = []
+  while (pos < buffer.length) {
+    const length = buffer.readUInt32BE(pos)
+    const type = buffer.toString('ascii', pos + 4, pos + 8)
+    const data = buffer.subarray(pos + 8, pos + 8 + length)
+    if (type === 'IHDR') {
+      width = data.readUInt32BE(0)
+      height = data.readUInt32BE(4)
+      if (data[8] !== 8) throw new Error(`Unsupported bit depth ${data[8]} in ${SOURCE}`)
+      colorType = data[9]
+      if (data[12] !== 0) throw new Error(`Interlaced PNGs are not supported (${SOURCE})`)
+    } else if (type === 'IDAT') {
+      idat.push(data)
+    } else if (type === 'IEND') {
+      break
+    }
+    pos += 12 + length
+  }
+  const channels = colorType === 6 ? 4 : colorType === 2 ? 3 : 0
+  if (!channels) throw new Error(`Unsupported colour type ${colorType} in ${SOURCE}`)
+
+  const raw = inflateSync(Buffer.concat(idat))
+  const stride = width * channels
+  const canvas = createCanvas(width, height)
+  let prev = Buffer.alloc(stride)
+  let offset = 0
+  for (let y = 0; y < height; y += 1) {
+    const filter = raw[offset]
+    offset += 1
+    const line = Buffer.from(raw.subarray(offset, offset + stride))
+    offset += stride
+    for (let x = 0; x < stride; x += 1) {
+      const a = x >= channels ? line[x - channels] : 0
+      const b = prev[x]
+      const c = x >= channels ? prev[x - channels] : 0
+      if (filter === 1) line[x] = (line[x] + a) & 0xff
+      else if (filter === 2) line[x] = (line[x] + b) & 0xff
+      else if (filter === 3) line[x] = (line[x] + ((a + b) >> 1)) & 0xff
+      else if (filter === 4) line[x] = (line[x] + paeth(a, b, c)) & 0xff
+    }
+    for (let x = 0; x < width; x += 1) {
+      const o = (y * width + x) * 4
+      canvas.data[o] = line[x * channels]
+      canvas.data[o + 1] = line[x * channels + 1]
+      canvas.data[o + 2] = line[x * channels + 2]
+      canvas.data[o + 3] = channels === 4 ? line[x * channels + 3] : 255
+    }
+    prev = line
+  }
+  return canvas
+}
+
 function encodePng(canvas) {
-  const { size, data } = canvas
-  const raw = Buffer.alloc((size * 4 + 1) * size)
+  const { width, height, data } = canvas
+  const stride = width * 4
+  const raw = Buffer.alloc((stride + 1) * height)
   let p = 0
-  for (let y = 0; y < size; y += 1) {
-    raw[p] = 0 // filter: none
+  for (let y = 0; y < height; y += 1) {
+    raw[p] = 0 // filter: none — the artwork is flat colour, which deflates well
     p += 1
-    for (let x = 0; x < size * 4; x += 1) {
-      raw[p] = data[y * size * 4 + x]
+    for (let x = 0; x < stride; x += 1) {
+      raw[p] = data[y * stride + x]
       p += 1
     }
   }
   const ihdr = Buffer.alloc(13)
-  ihdr.writeUInt32BE(size, 0)
-  ihdr.writeUInt32BE(size, 4)
+  ihdr.writeUInt32BE(width, 0)
+  ihdr.writeUInt32BE(height, 4)
   ihdr[8] = 8 // bit depth
   ihdr[9] = 6 // colour type: RGBA
   return Buffer.concat([
@@ -190,93 +244,55 @@ function encodePng(canvas) {
 
 /* ----------------------------------------------------------------- artwork */
 
-/** A single upward chevron (rank stripe). */
-function chevron(cx, apexY, halfWidth, dropHeight, thickness) {
-  return [
-    [cx, apexY],
-    [cx + halfWidth, apexY + dropHeight],
-    [cx + halfWidth, apexY + dropHeight + thickness],
-    [cx, apexY + thickness],
-    [cx - halfWidth, apexY + dropHeight + thickness],
-    [cx - halfWidth, apexY + dropHeight],
-  ]
-}
+const logo = decodePng(readFileSync(SOURCE))
 
 /**
- * Draws the LMAA placeholder mark.
- * `inset` keeps the artwork inside the maskable safe zone when needed.
+ * Composites the logo onto a square tile.
+ *
+ * `inset` is the share of the tile left as margin on each side. Maskable icons
+ * need a generous one because launchers crop to a circle; standard icons need
+ * only enough to stop the artwork touching the rounded corners.
  */
-function drawMark(canvas, { background, inset = 0, rounded = 0 }) {
-  const S = canvas.size
+function render({ size, inset, background, rounded = 0, supersample = 3 }) {
+  const S = size * supersample
+  const canvas = createCanvas(S)
+
   if (background === 'rounded') {
     fillAll(canvas, CLEAR)
-    fillRoundedRect(canvas, 0, 0, S, S, rounded, INK)
+    fillRoundedRect(canvas, 0, 0, S, S, rounded * supersample, PAPER)
   } else {
-    fillAll(canvas, INK)
+    fillAll(canvas, PAPER)
   }
 
+  // Fit the logo inside the safe box, preserving its aspect ratio.
   const box = S * (1 - inset * 2)
-  const originX = S / 2
-  const originY = S * inset
+  const scale = Math.min(box / logo.width, box / logo.height)
+  const w = Math.max(1, Math.round(logo.width * scale))
+  const h = Math.max(1, Math.round(logo.height * scale))
+  drawImage(canvas, resize(logo, w, h), Math.round((S - w) / 2), Math.round((S - h) / 2))
 
-  const halfWidth = box * 0.3
-  const drop = box * 0.2
-  const thickness = box * 0.115
-  const gap = box * 0.045
-
-  // Deep-red anchor chevron behind the white one, offset for depth.
-  fillPolygon(
-    canvas,
-    chevron(originX, originY + box * 0.235, halfWidth, drop, thickness),
-    RED,
-  )
-  // Primary white chevron.
-  fillPolygon(
-    canvas,
-    chevron(originX, originY + box * 0.235 + thickness + gap, halfWidth, drop, thickness),
-    WHITE,
-  )
-  // Gold base bar — the "black belt" line.
-  fillRect(
-    canvas,
-    originX - halfWidth,
-    originY + box * 0.235 + (thickness + gap) * 2 + drop + thickness * 0.35,
-    halfWidth * 2,
-    box * 0.055,
-    GOLD,
-  )
-}
-
-function render({ size, inset = 0, background = 'solid', rounded = 0, supersample = 4 }) {
-  const big = createCanvas(size * supersample)
-  drawMark(big, {
-    background,
-    inset,
-    rounded: rounded * supersample,
-  })
-  return downsample(big, size)
+  return resize(canvas, size, size)
 }
 
 /* -------------------------------------------------------------------- main */
 
 const targets = [
   // Standard PWA icons — rounded so they look intentional on desktop installs.
-  { file: 'icon-192.png', size: 192, background: 'rounded', rounded: 40, inset: 0.16 },
-  { file: 'icon-512.png', size: 512, background: 'rounded', rounded: 106, inset: 0.16 },
+  { file: 'icon-192.png', size: 192, background: 'rounded', rounded: 40, inset: 0.1 },
+  { file: 'icon-512.png', size: 512, background: 'rounded', rounded: 106, inset: 0.1 },
   // Maskable icons — full bleed, artwork inside the 80% safe zone.
-  { file: 'maskable-192.png', size: 192, background: 'solid', inset: 0.24 },
-  { file: 'maskable-512.png', size: 512, background: 'solid', inset: 0.24 },
+  { file: 'maskable-192.png', size: 192, background: 'solid', inset: 0.19 },
+  { file: 'maskable-512.png', size: 512, background: 'solid', inset: 0.19 },
   // iOS home screen — full square, no transparency (iOS applies its own mask).
-  { file: 'apple-touch-icon.png', size: 180, background: 'solid', inset: 0.18 },
+  { file: 'apple-touch-icon.png', size: 180, background: 'solid', inset: 0.1 },
   // Favicons.
-  { file: 'favicon-32.png', size: 32, background: 'solid', inset: 0.1 },
-  { file: 'favicon-16.png', size: 16, background: 'solid', inset: 0.06 },
+  { file: 'favicon-32.png', size: 32, background: 'solid', inset: 0.04 },
+  { file: 'favicon-16.png', size: 16, background: 'solid', inset: 0.02 },
 ]
 
 mkdirSync(OUT_DIR, { recursive: true })
 for (const target of targets) {
-  const canvas = render(target)
-  writeFileSync(join(OUT_DIR, target.file), encodePng(canvas))
+  writeFileSync(join(OUT_DIR, target.file), encodePng(render(target)))
   process.stdout.write(`  ✓ icons/${target.file} (${target.size}×${target.size})\n`)
 }
-process.stdout.write(`\nPlaceholder icons written to public/icons.\n`)
+process.stdout.write(`\nIcons written to public/icons from ${SOURCE.replace(ROOT + '/', '')}.\n`)

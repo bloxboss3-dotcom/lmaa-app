@@ -1,60 +1,109 @@
 @import 'tailwindcss';
 
 /* ==========================================================================
-   LMAA design tokens — "Dojang"
+   LMAA design tokens
 
-   Black ground, red for energy, restrained gold for rank. Confident and
-   athletic, but tuned for a parent reading it one-handed in a car park:
-   sentence-case content, uppercase reserved for small labels, and secondary
-   text kept well above the 4.5:1 contrast floor rather than the dim grey a
-   dark theme usually gets away with.
+   Taken from the academy's own brand: the logo (blue "LM", red "AA", gold
+   "MASTER C.Y. LEE", black flying kick) and the palette and type published on
+   leesmartialartsacademy.com. Nothing here is invented — the hexes below are
+   the same custom properties the website ships.
 
-   The `ink` scale runs light-on-dark: ink-900 is the brightest text,
-   ink-50/100 are the darkest fills.
+     paper  #f7f4ee   warm off-white ground
+     ink    #0c1322   near-black text
+     red    #c8102e   primary action           (5.36:1 on paper)
+     blue   #1e4f9e   secondary / information  (7.17:1 on paper)
+     gold   #e3a82b   rank + celebration accent — a FILL, never small text
+
+   Oswald sets the headings, Inter the body, matching the website. Both are
+   self-hosted so the app still renders correctly offline and no font CDN sees
+   a family's IP address.
+
+   The `ink` scale runs the conventional way: ink-900 is the darkest text,
+   ink-50 the lightest fill.
    ========================================================================== */
+
+/* --------------------------------------------------------------- webfonts */
+/* Variable latin subsets. `swap` means text is readable immediately and simply
+   reflows once the file lands — a blank screen is worse than a font shift.
+   Hangul in the tenets falls back to the platform Korean font by design;
+   shipping a CJK subset would cost families several hundred kilobytes. */
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/fonts/inter-latin.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Oswald';
+  src: url('./assets/fonts/oswald-latin.woff2') format('woff2');
+  font-weight: 500 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --color-ink-900: #f6f6f7; /* primary text */
-  --color-ink-800: #e7e7e9;
-  --color-ink-700: #d3d3d7;
-  --color-ink-600: #b6b6bc;
-  --color-ink-500: #9a9aa1; /* secondary text  — 8.5:1 on the ground */
-  --color-ink-400: #85858c; /* muted labels    — 5.4:1 on the ground */
-  --color-ink-300: #5f5f66; /* decorative only (chevrons, dividers) */
-  --color-ink-200: #3a3a40; /* strong borders, input outlines */
-  --color-ink-100: #232327; /* hairlines, quiet fills */
-  --color-ink-50: #17171a; /* subtle fills */
+  --color-ink-900: #0c1322; /* headings */
+  --color-ink-800: #28303f; /* body text */
+  --color-ink-700: #3d4552;
+  --color-ink-600: #4e5765; /* strong secondary  — 6.7:1 */
+  --color-ink-500: #5d6675; /* secondary text    — 5.3:1 */
+  --color-ink-400: #646d7c; /* muted labels      — 4.8:1 */
+  --color-ink-300: #9aa2b1; /* decorative only (chevrons) */
+  --color-ink-200: #d8d2c6; /* strong borders, input outlines */
+  --color-ink-100: #e6e0d4; /* hairlines — the website's --line */
+  --color-ink-50: #f0ebe1; /* subtle warm fills */
 
-  --color-crimson-100: #ffe3e4;
-  --color-crimson-200: #ffbfc2;
-  --color-crimson-300: #f8919a;
-  --color-crimson-400: #ea5c68;
-  --color-crimson-500: #d92f3c;
-  --color-crimson-600: #c9302c; /* primary action / live + next */
-  --color-crimson-700: #a81f22;
-  --color-crimson-800: #7d1418;
-  --color-crimson-900: #4d0c0f;
+  /* Brand red. `crimson` is kept as the scale name so component intent reads
+     the same, but 600/700 are now the academy's exact red and red-dark. */
+  --color-crimson-50: #fbe9ea;
+  --color-crimson-100: #f6d2d6;
+  --color-crimson-200: #eda6ae;
+  --color-crimson-300: #e07b88;
+  --color-crimson-400: #d94a5c;
+  --color-crimson-500: #d81f39;
+  --color-crimson-600: #c8102e; /* primary action / live + next */
+  --color-crimson-700: #a00d25; /* hover, and red text on tinted fills */
+  --color-crimson-800: #7c0a1c;
+  --color-crimson-900: #560712;
 
-  --color-gold-100: #f7e9c6;
-  --color-gold-200: #eed9a4;
-  --color-gold-300: #dfc37c;
-  --color-gold-400: #cfae5f; /* rank accent, used sparingly */
-  --color-gold-500: #b8933f;
-  --color-gold-600: #8f7130;
-  --color-gold-700: #6b5423;
+  /* Brand blue — the "LM" of the logo. Used for information, never alarm. */
+  --color-royal-50: #e8eff9;
+  --color-royal-100: #d0e0f3;
+  --color-royal-200: #a3c0e4;
+  --color-royal-300: #6d97d0;
+  --color-royal-400: #3f6fb5;
+  --color-royal-500: #2a5da8;
+  --color-royal-600: #1e4f9e; /* 7.2:1 on paper */
+  --color-royal-700: #183f7d;
+  --color-royal-800: #132f5d;
+  --color-royal-900: #0d2141;
 
-  /* Layered near-blacks: pure black everywhere reads flat and cheap. */
-  --color-canvas: #0a0a0b; /* page */
-  --color-surface: #131316; /* raised: rows, cards, inputs */
-  --color-surface-2: #1a1a1e; /* raised again: hover, chips */
+  /* Brand gold. 500 is the logo gold and is a FILL only (1.9:1 on paper);
+     700 is the readable text weight. */
+  --color-gold-50: #fdf5e2;
+  --color-gold-100: #fbeac0;
+  --color-gold-200: #f5d78a;
+  --color-gold-300: #eec155;
+  --color-gold-400: #e8b33a;
+  --color-gold-500: #e3a82b; /* logo gold — fills, rules, belt marks */
+  --color-gold-600: #b8830f;
+  --color-gold-700: #8a6410; /* readable gold text — 4.9:1 */
+  --color-gold-800: #6a4c0c;
+
+  --color-canvas: #f7f4ee; /* page — the website's --paper */
+  --color-surface: #ffffff; /* raised: cards, rows, inputs */
+  --color-surface-2: #f2eee6; /* raised again: hover, chips */
 
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     'Noto Sans', sans-serif;
+  --font-display: 'Oswald', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
-  --radius-card: 0.75rem;
+  --radius-card: 0.875rem; /* 14px — the website's --radius */
 
-  --shadow-soft: 0 1px 2px rgb(0 0 0 / 0.5);
-  --shadow-lift: 0 10px 30px -12px rgb(0 0 0 / 0.8);
+  --shadow-soft: 0 1px 2px rgb(12 19 34 / 0.06);
+  --shadow-lift: 0 12px 40px -14px rgb(12 19 34 / 0.22);
 
   --animate-fade-up: fade-up 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-fade-in: fade-in 0.2s ease-out both;
@@ -93,13 +142,13 @@
 /* ================================================================== base == */
 @layer base {
   :root {
-    color-scheme: dark;
+    color-scheme: light;
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
     background-color: var(--color-canvas);
-    color: var(--color-ink-900);
+    color: var(--color-ink-800);
     font-family: var(--font-sans);
     font-size: 0.9375rem;
     line-height: 1.5;
@@ -108,13 +157,17 @@
     overflow-x: hidden;
   }
 
+  /* Oswald is a condensed grotesque: it carries headings the way the academy's
+     own signage does, and it buys back horizontal room on a phone. */
   h1,
   h2,
   h3,
   h4 {
+    font-family: var(--font-display);
     font-weight: 600;
-    letter-spacing: -0.015em;
-    line-height: 1.2;
+    letter-spacing: 0.005em;
+    line-height: 1.15;
+    color: var(--color-ink-900);
     text-wrap: balance;
   }
 
@@ -122,9 +175,8 @@
     text-wrap: pretty;
   }
 
-  /* Red reads as "focus" on this ground far better than a white ring. */
   :focus-visible {
-    outline: 2px solid var(--color-crimson-500);
+    outline: 2px solid var(--color-crimson-600);
     outline-offset: 2px;
     border-radius: 0.3rem;
   }
@@ -175,24 +227,40 @@
   }
 
   /* Small structural label. Uppercase is for labels ONLY — never for class
-     names or body copy, which are markedly slower to read in caps. */
+     names or body copy, which are markedly slower to read in caps.
+     ink-500 rather than ink-400 because eyebrows sit on tinted fills as well
+     as on the page: ink-400 measures 4.39:1 on ink-50, just under AA. */
   .eyebrow {
-    font-size: 0.6875rem;
-    font-weight: 700;
-    letter-spacing: 0.16em;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-ink-400);
+    color: var(--color-ink-500);
   }
   .eyebrow-accent {
-    color: var(--color-crimson-400);
+    color: var(--color-crimson-700);
   }
 
-  /* The one loud moment per screen. */
+  /* The one loud moment per screen — the website's headline voice. */
   .display {
-    font-size: clamp(1.75rem, 8vw, 2.125rem);
-    line-height: 0.98;
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 8.5vw, 2.375rem);
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: 0.01em;
     text-transform: uppercase;
+    color: var(--color-ink-900);
+  }
+
+  /* Thin gold rule under a heading — the belt line from the logo. */
+  .rule-gold::after {
+    content: '';
+    display: block;
+    width: 2.25rem;
+    height: 3px;
+    margin-top: 0.5rem;
+    border-radius: 2px;
+    background: var(--color-gold-500);
   }
 }

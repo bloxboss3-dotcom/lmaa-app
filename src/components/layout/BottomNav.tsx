@@ -28,7 +28,7 @@ export function BottomNav({ unreadCount = 0 }: BottomNavProps) {
                 cx(
                   'flex min-h-[54px] flex-col items-center justify-center gap-0.5 px-1 pt-1.5 pb-1',
                   'text-[0.6875rem] transition-colors',
-                  isActive ? 'font-medium text-crimson-400' : 'text-ink-500',
+                  isActive ? 'font-semibold text-crimson-600' : 'text-ink-500',
                 )
               }
             >

@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Lee's Martial Arts Academy Family App — schedules, updates, events and learning resources for LMAA families.",
+  "description": "Lee's Martial Arts Academy Family App \u2014 schedules, updates, events and learning resources for LMAA families.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b --noEmit && vite build",
@@ -16,6 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "icons": "node scripts/generate-icons.mjs",
+    "seed:sql": "node scripts/generate-supabase-seed.mjs",
     "verify": "npm run lint && npm run typecheck && npm run test && npm run build",
     "cap:sync": "npm run build && cap sync",
     "cap:add:ios": "cap add ios",

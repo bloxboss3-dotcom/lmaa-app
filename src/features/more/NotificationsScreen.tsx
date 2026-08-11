@@ -47,14 +47,14 @@ export function NotificationsScreen() {
       />
 
       {!provider.isConfigured ? (
-        <Card className="border-amber-500/25 bg-amber-500/10">
+        <Card className="border-amber-200 bg-amber-50">
           <div className="flex gap-3">
-            <span className="mt-0.5 shrink-0 text-amber-300">
+            <span className="mt-0.5 shrink-0 text-amber-800">
               <Icon name="info" size={20} />
             </span>
             <div>
-              <h2 className="font-bold text-amber-200">Notifications are not connected yet</h2>
-              <p className="mt-1 text-sm leading-relaxed text-amber-100/85">
+              <h2 className="font-bold text-amber-800">Notifications are not connected yet</h2>
+              <p className="mt-1 text-sm leading-relaxed text-amber-800">
                 The academy has not switched on push notifications. Your choices below are saved on
                 this device and will be used as soon as notifications go live. Until then, open the
                 app to see the latest updates.

@@ -74,11 +74,23 @@ export function fromDateTimeLocalInput(value: string): string {
   return Number.isNaN(date.getTime()) ? '' : date.toISOString()
 }
 
-/** Digits only, for `tel:` links. */
+/**
+ * Builds a `tel:` link.
+ *
+ * Plain 10-digit US numbers are promoted to E.164 (+1…) because a bare
+ * national number can fail to dial from a phone on an international SIM or in
+ * a roaming context — and a family standing outside a locked dojang door is
+ * exactly when the Call button has to work. Anything already carrying a `+`,
+ * or that is not a NANP-shaped number, is passed through untouched.
+ */
 export function telHref(phone: string | undefined): string | undefined {
   if (!phone) return undefined
-  const digits = phone.replace(/[^\d+]/g, '')
-  return digits ? `tel:${digits}` : undefined
+  const cleaned = phone.replace(/[^\d+]/g, '')
+  if (!cleaned) return undefined
+  if (cleaned.startsWith('+')) return `tel:${cleaned}`
+  if (/^\d{10}$/.test(cleaned)) return `tel:+1${cleaned}`
+  if (/^1\d{10}$/.test(cleaned)) return `tel:+${cleaned}`
+  return `tel:${cleaned}`
 }
 
 export function mailtoHref(email: string | undefined): string | undefined {

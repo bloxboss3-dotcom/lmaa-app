@@ -7,7 +7,14 @@ import { Icon, type IconName } from '@/components/ui/Icon'
 import { headlineAnnouncement } from '@/domain/announcements'
 import { nextEvent, relativeDayLabel } from '@/domain/events'
 import { formatClock, formatDate, formatRelative, telHref } from '@/domain/format'
-import { effectiveTimes, formatTime, isoWeekday, upcomingToday } from '@/domain/schedule'
+import {
+  effectiveTimes,
+  formatTime,
+  isoWeekday,
+  nextClassDay,
+  upcomingToday,
+  weekdayLabel,
+} from '@/domain/schedule'
 import type { ScheduleEntry } from '@/domain/types'
 import { useDocumentTitle, useNow } from '@/lib/hooks'
 import { useInstallPrompt } from '@/pwa/usePwa'
@@ -29,6 +36,16 @@ export function HomeScreen() {
   const hadClassesToday = bundle.schedule.some(
     (entry) => entry.published && entry.dayOfWeek === isoWeekday(now),
   )
+  // On a closed day (the academy shuts at weekends) showing an empty box is a
+  // wasted screen. Fall forward to the next day that actually has classes.
+  const upcomingDay = todayClasses.length
+    ? null
+    : nextClassDay(bundle.schedule, now, hadClassesToday ? 1 : 0)
+  const nextDayWord = upcomingDay
+    ? upcomingDay.daysAhead === 1
+      ? 'tomorrow'
+      : weekdayLabel(upcomingDay.day)
+    : ''
   const featuredEvent = nextEvent(bundle.events, now)
   const headline = headlineAnnouncement(bundle.announcements, now)
   const { settings } = bundle
@@ -41,32 +58,38 @@ export function HomeScreen() {
         <h1 className="display mt-2 text-ink-900">
           {todayClasses.length ? (
             <>
-              <span className="text-crimson-500">
+              <span className="text-crimson-600">
                 {todayClasses.length} {todayClasses.length === 1 ? 'class' : 'classes'}
               </span>
               <br />
               left today
             </>
-          ) : hadClassesToday ? (
+          ) : upcomingDay ? (
             <>
-              Today&rsquo;s classes
+              {hadClassesToday ? "Today's classes are done" : 'Closed today'}
               <br />
-              <span className="text-crimson-500">are finished</span>
+              <span className="text-crimson-600">Back {nextDayWord}</span>
             </>
           ) : (
             <>
               No classes
               <br />
-              <span className="text-crimson-500">today</span>
+              <span className="text-crimson-600">scheduled yet</span>
             </>
           )}
         </h1>
       </header>
 
-      {/* ------------------------------------------------- today's classes */}
+      {/* ------------------------------------- today's, or the next, classes */}
       <section>
         <SectionHeading
-          title="Today"
+          title={
+            todayClasses.length
+              ? 'Today'
+              : upcomingDay
+                ? `Next classes · ${weekdayLabel(upcomingDay.day)}`
+                : 'Class schedule'
+          }
           action={<TextLink to="/schedule">Full schedule</TextLink>}
         />
         {loading ? (
@@ -77,14 +100,20 @@ export function HomeScreen() {
               <ClassRow key={entry.id} entry={entry} />
             ))}
           </Rows>
+        ) : upcomingDay ? (
+          <Rows>
+            {upcomingDay.entries.slice(0, 4).map((entry) => (
+              <ClassRow key={entry.id} entry={entry} />
+            ))}
+          </Rows>
         ) : (
           <EmptyState
-            title={hadClassesToday ? 'Nothing else today' : 'No classes scheduled today'}
-            description="The full weekly timetable is on the Schedule tab."
+            title="No classes in the timetable yet"
+            description="An administrator can add the weekly class times in the admin area."
             action={
               <Link
                 to="/schedule"
-                className="text-sm font-medium text-crimson-400 hover:underline"
+                className="text-sm font-medium text-crimson-700 hover:underline"
               >
                 See the week →
               </Link>
@@ -94,11 +123,14 @@ export function HomeScreen() {
       </section>
 
       {/* ------------------------------------------------------ next event */}
-      <section>
-        <SectionHeading title="Next event" action={<TextLink to="/events">All events</TextLink>} />
-        {loading ? (
-          <Skeleton className="h-20" />
-        ) : featuredEvent ? (
+      {/* Hidden entirely when there is nothing on: a box that says "no events"
+          is an advert for an empty app, not information a parent can use. */}
+      {featuredEvent || loading ? (
+        <section>
+          <SectionHeading title="Next event" action={<TextLink to="/events">All events</TextLink>} />
+          {loading ? (
+            <Skeleton className="h-20" />
+          ) : featuredEvent ? (
           <Rows>
             <Link
               to={`/events/${featuredEvent.id}`}
@@ -124,43 +156,42 @@ export function HomeScreen() {
                   {featuredEvent.allDay ? ' · All day' : ` · ${formatClock(featuredEvent.startAt)}`}
                 </span>
               </span>
-              <Icon name="chevronRight" size={18} className="shrink-0 text-ink-300" />
-            </Link>
-          </Rows>
-        ) : (
-          <EmptyState title="No events posted yet" />
-        )}
-      </section>
+                <Icon name="chevronRight" size={18} className="shrink-0 text-ink-300" />
+              </Link>
+            </Rows>
+          ) : null}
+        </section>
+      ) : null}
 
       {/* ---------------------------------------------------- latest update */}
-      <section>
-        <SectionHeading
-          title="Latest update"
-          action={<TextLink to="/updates">All updates</TextLink>}
-        />
-        {loading ? (
-          <Skeleton className="h-20" />
-        ) : headline ? (
-          <Rows>
-            <Link
-              to={`/updates/${headline.id}`}
-              className="block px-4 py-3.5 transition-colors hover:bg-ink-50"
-            >
-              <span className="flex items-center gap-2">
-                {headline.pinned ? <Badge tone="red">Pinned</Badge> : null}
-                {headline.isSample ? <SampleBadge /> : null}
-                <span className="ml-auto text-xs text-ink-400">
-                  {formatRelative(headline.publishedAt, now)}
+      {headline || loading ? (
+        <section>
+          <SectionHeading
+            title="Latest update"
+            action={<TextLink to="/updates">All updates</TextLink>}
+          />
+          {loading ? (
+            <Skeleton className="h-20" />
+          ) : headline ? (
+            <Rows>
+              <Link
+                to={`/updates/${headline.id}`}
+                className="block px-4 py-3.5 transition-colors hover:bg-ink-50"
+              >
+                <span className="flex items-center gap-2">
+                  {headline.pinned ? <Badge tone="red">Pinned</Badge> : null}
+                  {headline.isSample ? <SampleBadge /> : null}
+                  <span className="ml-auto text-xs text-ink-400">
+                    {formatRelative(headline.publishedAt, now)}
+                  </span>
                 </span>
-              </span>
-              <span className="mt-1.5 block font-medium text-ink-900">{headline.title}</span>
-              <span className="clamp-2 mt-0.5 block text-sm text-ink-500">{headline.body}</span>
-            </Link>
-          </Rows>
-        ) : (
-          <EmptyState title="No announcements yet" />
-        )}
-      </section>
+                <span className="mt-1.5 block font-medium text-ink-900">{headline.title}</span>
+                <span className="clamp-2 mt-0.5 block text-sm text-ink-500">{headline.body}</span>
+              </Link>
+            </Rows>
+          ) : null}
+        </section>
+      ) : null}
 
       {/* --------------------------------------------------- reach the gym */}
       {/* Only actions the bottom navigation cannot already do. */}
@@ -274,7 +305,7 @@ function InstallNudge() {
           Install
         </Button>
       ) : (
-        <Link to="/more/install" className="text-sm font-medium text-crimson-400 hover:underline">
+        <Link to="/more/install" className="text-sm font-medium text-crimson-700 hover:underline">
           How
         </Link>
       )}

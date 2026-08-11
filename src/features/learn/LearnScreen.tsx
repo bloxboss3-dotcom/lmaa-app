@@ -12,15 +12,52 @@ interface HubItem {
   title: string
   description: string
   icon: IconName
-  count: number
+  /** Omitted for pages, which are one document rather than a collection. */
+  count?: number
 }
 
-/** The Learn hub: five clear doors, each with an honest item count. */
+/** The Learn hub: clear doors, each with an honest item count. */
 export function LearnScreen() {
   const { bundle } = useContent()
   useDocumentTitle('Learn')
 
+  const hasPage = (slug: string) => bundle.pages.some((page) => page.slug === slug)
+
   const items: HubItem[] = [
+    {
+      to: '/learn/programs',
+      title: 'Programs',
+      description: 'Who each class is for and when it meets.',
+      icon: 'medal',
+      count: bundle.programs.length,
+    },
+    ...(hasPage('belts')
+      ? [
+          {
+            to: '/more/page/belts',
+            title: 'The belt journey',
+            description: 'Thirteen steps from white to black, and what each one asks for.',
+            icon: 'sparkle' as const,
+          },
+        ]
+      : []),
+    {
+      to: '/learn/faq',
+      title: 'Frequently asked questions',
+      description: 'Answers to the questions families ask most.',
+      icon: 'info',
+      count: bundle.faqs.length,
+    },
+    ...(hasPage('tenets')
+      ? [
+          {
+            to: '/more/page/tenets',
+            title: 'Tenets & the LMAA Pledge',
+            description: 'The five tenets, and the pledge students recite every class.',
+            icon: 'shield' as const,
+          },
+        ]
+      : []),
     {
       to: '/learn/curriculum',
       title: 'Curriculum videos',
@@ -34,20 +71,6 @@ export function LearnScreen() {
       description: 'The student binder, terminology and printable handouts.',
       icon: 'file',
       count: bundle.resources.filter((item) => item.collection === 'binder').length,
-    },
-    {
-      to: '/learn/programs',
-      title: 'Programs',
-      description: 'Who each class is for and when it meets.',
-      icon: 'medal',
-      count: bundle.programs.length,
-    },
-    {
-      to: '/learn/faq',
-      title: 'Frequently asked questions',
-      description: 'Answers to the questions families ask most.',
-      icon: 'info',
-      count: bundle.faqs.length,
     },
     {
       to: '/learn/resources',
@@ -73,13 +96,13 @@ export function LearnScreen() {
               to={item.to}
               className="flex items-center gap-3.5 rounded-[var(--radius-card)] border border-ink-100 bg-surface p-4 shadow-[var(--shadow-soft)] transition-shadow hover:shadow-[var(--shadow-lift)]"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-gold-400">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-crimson-50 text-crimson-700">
                 <Icon name={item.icon} size={21} />
               </span>
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-2">
                   <span className="font-semibold text-ink-900">{item.title}</span>
-                  <Badge tone="neutral">{item.count}</Badge>
+                  {item.count !== undefined ? <Badge tone="neutral">{item.count}</Badge> : null}
                 </span>
                 <span className="mt-0.5 block text-sm text-ink-500">{item.description}</span>
               </span>
@@ -90,9 +113,9 @@ export function LearnScreen() {
       </ul>
 
       {features.leadership ? (
-        <Card className="border-gold-500/30 bg-gold-500/10">
+        <Card className="border-gold-300 bg-gold-100">
           <div className="flex items-start gap-3">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-gold-400">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-gold-700">
               <Icon name="sparkle" size={20} />
             </span>
             <div>

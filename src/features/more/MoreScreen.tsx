@@ -16,8 +16,9 @@ const GROUPS: { title: string; rows: Row[] }[] = [
   {
     title: 'The academy',
     rows: [
-      { to: '/more/about', label: 'About LMAA', icon: 'shield' },
+      { to: '/more/about', label: 'About the academy', icon: 'shield' },
       { to: '/more/contact', label: 'Contact & directions', icon: 'phone' },
+      { to: '/more/page/beyond-class', label: 'Camps, parties & events', icon: 'sparkle' },
       { to: '/more/programs', label: 'Programs', icon: 'medal' },
       { to: '/more/faq', label: 'Frequently asked questions', icon: 'info' },
       { to: '/more/gallery', label: 'Photo gallery', icon: 'image' },

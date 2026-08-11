@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
         // "prompt" => the app asks families before reloading to a new version.
         registerType: 'prompt',
         injectRegister: null,
-        includeAssets: ['favicon.svg', 'favicon.ico', 'icons/apple-touch-icon.png', 'robots.txt'],
+        includeAssets: ['icons/apple-touch-icon.png', 'icons/favicon-32.png', 'robots.txt'],
         manifest: {
           name: "Lee's Martial Arts Academy",
           short_name: 'LMAA',
@@ -40,8 +40,8 @@ export default defineConfig(({ mode }) => {
             "Schedules, updates, events and learning resources for Lee's Martial Arts Academy families.",
           lang: 'en-US',
           dir: 'ltr',
-          theme_color: '#0a0a0b',
-          background_color: '#0a0a0b',
+          theme_color: '#f7f4ee',
+          background_color: '#f7f4ee',
           display: 'standalone',
           orientation: 'portrait',
           categories: ['education', 'sports', 'lifestyle'],

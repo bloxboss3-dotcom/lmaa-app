@@ -1,49 +1,62 @@
+import logoUrl from '@/assets/brand/lmaa-logo.png'
+import wordmarkUrl from '@/assets/brand/lmaa-wordmark.png'
 import { cx } from '@/lib/cx'
 
 /**
- * LMAA placeholder mark: rank chevrons over a gold belt line.
+ * The academy's own artwork.
  *
- * Original artwork drawn for this app. Replace with the official LMAA logo
- * once the vector file is supplied (see CONTENT_NEEDED.md).
+ * `lmaa-logo.png` is the full lockup from leesmartialartsacademy.com — the
+ * flying kick, the arched academy name and the LMAA letters. `lmaa-wordmark.png`
+ * is the LMAA lettering cropped out of that same file, because the full lockup
+ * turns to mush below about 80px and app chrome has nothing like that to spare.
+ *
+ * Both are decorative wherever the academy name is already written next to
+ * them, and both are ~4.5:1 and 1:1 respectively — always set width via the
+ * `size`/height props so nothing squashes.
  */
-export function LogoMark({ size = 32, className }: { size?: number; className?: string }) {
+
+/** Full lockup. Use at 72px and above, where the arched text still reads. */
+export function LogoMark({
+  size = 96,
+  className,
+  decorative = false,
+}: {
+  size?: number
+  className?: string
+  decorative?: boolean
+}) {
   return (
-    <svg
-      viewBox="0 0 64 64"
+    <img
+      src={logoUrl}
       width={size}
-      height={size}
-      className={cx('shrink-0', className)}
-      role="img"
-      aria-label="Lee's Martial Arts Academy"
-    >
-      <polygon points="32,10 54,24.5 54,33 32,18.5 10,33 10,24.5" fill="#c9302c" />
-      <polygon points="32,23 54,37.5 54,46 32,31.5 10,46 10,37.5" fill="#ffffff" />
-      <rect x="10" y="51" width="44" height="3.5" fill="#cfae5f" />
-    </svg>
+      height={Math.round(size * (506 / 512))}
+      className={cx('shrink-0 object-contain', className)}
+      alt={decorative ? '' : "Lee's Martial Arts Academy"}
+      aria-hidden={decorative || undefined}
+      draggable={false}
+    />
   )
 }
 
-interface WordmarkProps {
+/** LMAA lettering only — legible down to about 18px tall. */
+export function Wordmark({
+  height = 22,
+  className,
+  decorative = false,
+}: {
+  height?: number
   className?: string
-  tone?: 'light' | 'dark'
-}
-
-/**
- * Compact lockup. The stacked two-line version repeated the academy name that
- * the Home screen was already showing in full.
- */
-export function Wordmark({ className, tone = 'dark' }: WordmarkProps) {
+  decorative?: boolean
+}) {
   return (
-    <span className={cx('flex items-center gap-2', className)}>
-      <LogoMark size={26} />
-      <span
-        className={cx(
-          'text-[0.9375rem] font-semibold tracking-tight',
-          tone === 'light' ? 'text-white' : 'text-ink-900',
-        )}
-      >
-        Lee&rsquo;s Martial Arts
-      </span>
-    </span>
+    <img
+      src={wordmarkUrl}
+      width={Math.round(height * (440 / 98))}
+      height={height}
+      className={cx('shrink-0 object-contain', className)}
+      alt={decorative ? '' : "Lee's Martial Arts Academy"}
+      aria-hidden={decorative || undefined}
+      draggable={false}
+    />
   )
 }
