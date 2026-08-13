@@ -55,9 +55,11 @@ jobs:
           # visible in the published JavaScript by design.
           VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
-          VITE_PUSH_ENABLED: ${{ vars.VITE_PUSH_ENABLED }}
+          # Push notifications. The VAPID PUBLIC key is safe to publish; the
+          # private half belongs only in Supabase (supabase secrets set ...).
+          # See PUSH_NOTIFICATIONS_SETUP.md.
+          VITE_VAPID_PUBLIC_KEY: ${{ vars.VITE_VAPID_PUBLIC_KEY }}
           VITE_PUSH_FUNCTION_URL: ${{ vars.VITE_PUSH_FUNCTION_URL }}
-          VITE_PUSH_APP_ID: ${{ vars.VITE_PUSH_APP_ID }}
           VITE_FEATURE_LEADERSHIP: ${{ vars.VITE_FEATURE_LEADERSHIP }}
           VITE_APP_VERSION: ${{ github.sha }}
         run: npm run build

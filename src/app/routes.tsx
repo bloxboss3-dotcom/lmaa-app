@@ -85,6 +85,22 @@ export const routes: RouteObject[] = [
           return { Component: AdminSettingsScreen }
         },
       },
+      // Declared before `:collection` so these names are not swallowed by the
+      // catch-all content route.
+      {
+        path: 'notify',
+        lazy: async () => {
+          const { AdminNotifyScreen } = await import('@/features/admin/AdminNotifyScreen')
+          return { Component: AdminNotifyScreen }
+        },
+      },
+      {
+        path: 'staff',
+        lazy: async () => {
+          const { AdminStaffScreen } = await import('@/features/admin/AdminStaffScreen')
+          return { Component: AdminStaffScreen }
+        },
+      },
       {
         path: ':collection',
         lazy: async () => {

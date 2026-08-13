@@ -17,7 +17,12 @@ import {
   type Weekday,
 } from '@/domain/types'
 import { CATEGORY_LABELS, PRIORITY_LABELS } from '@/domain/announcements'
-import { formatDate, formatDateTime, fromDateTimeLocalInput, toDateTimeLocalInput } from '@/domain/format'
+import {
+  formatDate,
+  formatDateTime,
+  fromDateTimeLocalInput,
+  toDateTimeLocalInput,
+} from '@/domain/format'
 import { WEEKDAYS, formatTimeRange, weekdayLabel } from '@/domain/schedule'
 import {
   endAfterStart,
@@ -54,7 +59,11 @@ export interface CollectionConfig<T extends AdminRecord = AdminRecord> {
   singular: string
   icon: IconName
   description: string
-  /** Announcements can offer to send a push notification. */
+  /**
+   * Whether saving this may also offer to notify families. Reserved for the
+   * three things worth interrupting someone's evening for: an announcement, an
+   * event, and a class that has moved or been cancelled.
+   */
   supportsPush?: boolean
   fields: (context: CollectionContext) => FieldDef[]
   defaults: (context: CollectionContext) => FormValues
@@ -207,6 +216,7 @@ const events = define<AcademyEvent>({
   singular: 'event',
   icon: 'star',
   description: 'Tournaments, testings, camps and celebrations.',
+  supportsPush: true,
   fields: () => [
     { name: 'title', label: 'Event name', type: 'text', required: true, wide: true },
     { name: 'startAt', label: 'Starts', type: 'datetime', required: true },
@@ -289,6 +299,7 @@ const events = define<AcademyEvent>({
 
 const schedule = define<ScheduleEntry>({
   key: 'schedule',
+  supportsPush: true,
   title: 'Class schedule',
   singular: 'class',
   icon: 'calendar',
@@ -713,7 +724,14 @@ const gallery = define<GalleryItem>({
     { name: 'sortOrder', label: 'Order', type: 'number' },
     publishedField,
   ],
-  defaults: () => ({ imageUrl: '', title: '', caption: '', credit: '', sortOrder: 100, published: true }),
+  defaults: () => ({
+    imageUrl: '',
+    title: '',
+    caption: '',
+    credit: '',
+    sortOrder: 100,
+    published: true,
+  }),
   toValues: (record) => ({
     imageUrl: record.imageUrl,
     title: record.title ?? '',

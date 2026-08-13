@@ -22,13 +22,13 @@ In this release:
 All of it stays in the browser's local storage on that one device, and none of it leaves
 it:
 
-| Stored | Why |
-| --- | --- |
-| Which announcements you have read | So the "New" badge is accurate |
-| Your notification preferences | Ready for when push notifications are switched on |
-| Your schedule filter choice | So the schedule opens the way you left it |
-| Whether you dismissed the install prompt | So it does not keep asking |
-| In demo mode only: demo content edits | So the demo is convincing |
+| Stored                                   | Why                                               |
+| ---------------------------------------- | ------------------------------------------------- |
+| Which announcements you have read        | So the "New" badge is accurate                    |
+| Your notification preferences            | Ready for when push notifications are switched on |
+| Your schedule filter choice              | So the schedule opens the way you left it         |
+| Whether you dismissed the install prompt | So it does not keep asking                        |
+| In demo mode only: demo content edits    | So the demo is convincing                         |
 
 Clearing browser data removes all of it. Nothing sensitive is stored, so nothing sensitive
 can leak from it.
@@ -72,12 +72,12 @@ immediately — it has already been published.
 
 Every table has RLS enabled (`supabase/migrations/0002_policies.sql`):
 
-| Who | Can do |
-| --- | --- |
-| Anonymous visitor | Read **published** content only — and for announcements, only after the publish time and before the expiry |
-| Editor | Read everything, and create/change/delete content |
-| Administrator | The same, plus change academy information |
-| Anyone from the browser | **Never** change roles |
+| Who                     | Can do                                                                                                     |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Anonymous visitor       | Read **published** content only — and for announcements, only after the publish time and before the expiry |
+| Editor                  | Read everything, and create/change/delete content                                                          |
+| Administrator           | The same, plus change academy information                                                                  |
+| Anyone from the browser | **Never** change roles                                                                                     |
 
 Drafts and scheduled posts are not merely hidden by the interface — the database does not
 return them to an anonymous request.
@@ -132,7 +132,7 @@ an App Store rejection reason.
 3. **Never show a fake value.** A missing phone number is an honestly disabled Call button,
    not a placeholder number someone might dial.
 4. **Never claim a save that did not happen.** If the database is unreachable, family
-   screens fall back to built-in content and say so — but admin reads and *every* write
+   screens fall back to built-in content and say so — but admin reads and _every_ write
    fail loudly instead.
 5. **Never cache live information stale-first.** Announcements and schedule changes are
    fetched network-first so a family does not read yesterday's news; only the app shell and
@@ -177,7 +177,7 @@ This is the biggest change and needs proper thought before any code is written:
 ### Leadership Academy progress data
 
 - **New data**: a student's missions, badges and instructor feedback.
-- This is information *about a child* and must be private to that family and to authorised
+- This is information _about a child_ and must be private to that family and to authorised
   instructors, enforced by RLS, not by the interface.
 - Instructor-side management belongs in the **LMAA Dojang OS**, not here.
 
@@ -199,24 +199,68 @@ This is the biggest change and needs proper thought before any code is written:
 - Keep the number of staff accounts small, give **editor** rather than **admin** unless
   someone truly needs it, and remove accounts when people leave.
 - Never share a staff password. If someone leaves, change it in Supabase the same day.
-- Keep the privacy policy in the app truthful about what the app does *today*.
+- Keep the privacy policy in the app truthful about what the app does _today_.
 
 ---
 
 ## If something goes wrong
 
 **A key was committed or published**
+
 1. Rotate it immediately in Supabase (or the provider's dashboard).
 2. Replace the value in the GitHub repository variables and re-deploy.
 3. Assume the old key is public forever — removing it from the code is not enough, because
    it stays in the git history and in browsers' caches.
 
 **A staff account is compromised**
+
 1. Change the password in Supabase → Authentication → Users.
 2. Remove the row from `user_roles` if the account should no longer have access.
 3. Review recent changes: `created_by` and `updated_by` record who touched each row.
 
 **Something private was published by accident**
+
 1. Delete or unpublish it in the admin area immediately.
 2. Remember it may already be cached in a family's browser or by a search engine — treat it
    as public and tell whoever is affected.
+
+---
+
+## Notifications: what a device registration contains
+
+Turning on notifications stores exactly three things per device, and nothing else:
+
+- the **push address** the browser issues — a long, random, unguessable URL;
+- two **encryption keys** the browser generates, so only that device can decrypt
+  the message;
+- the **topics** the family ticked (class changes, events, academy news).
+
+There is no name, no email, no phone number, and nothing identifying a student. The
+academy cannot tell whose device a registration belongs to. Turning notifications off
+deletes the row.
+
+Three rules are enforced by the database rather than by the app, and are checked by
+`supabase/tests/security.sql`:
+
+- A browser can register and deregister **only its own** device, through two functions.
+  It has no insert or delete rights on the subscription table itself, so no visitor can
+  read, alter or wipe the list.
+- The **device list is never readable from a browser**. Only the server-side sender
+  (which runs with the service role) can pull it; an ordinary signed-in user is refused
+  even the count.
+- The **VAPID private key**, which is what authorises a message as coming from the
+  academy, exists only as a Supabase Edge Function secret. It is never in the app
+  bundle, never in a `VITE_` variable, and never in the repository.
+
+## Staff access
+
+Roles are managed in-app by an administrator, with two limits enforced by Row Level
+Security:
+
+- **Nobody can promote themselves.** Changing a role requires already being an
+  administrator, so an editor cannot grant themselves anything.
+- **An administrator cannot change or remove their own row.** That prevents accidental
+  self-demotion and makes it impossible for the academy to lock itself out entirely.
+
+There is still no public sign-up. Accounts are created by the owner in Supabase, then
+given a role from the Staff access screen.

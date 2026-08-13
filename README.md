@@ -16,15 +16,16 @@ Android app with Capacitor.
 
 ## What is in this release
 
-| Area | What families get |
-| --- | --- |
-| **Home** | Today's classes, the next event, the latest announcement, quick actions, install prompt |
-| **Updates** | Announcement feed with categories, pinned and urgent posts, unread marks, detail pages |
-| **Schedule** | A real responsive timetable — today and weekly views, program/level filters, cancellation and time-change notices |
-| **Events** | Upcoming and past events, add-to-calendar (`.ics`), directions, registration and waiver links, sharing |
-| **Learn** | Curriculum videos, the LMAA binder and documents, programs, FAQs, student resources |
-| **More** | About, contact and directions, gallery, notification preferences, install help, privacy policy, app version, discreet staff sign-in |
-| **Admin** | A protected content manager for updates, events, schedule, resources, programs, FAQs, pages, gallery and academy information |
+| Area              | What families get                                                                                                                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Home**          | Today's classes, the next event, the latest announcement, quick actions, install prompt                                                                                                                     |
+| **Updates**       | Announcement feed with categories, pinned and urgent posts, unread marks, detail pages                                                                                                                      |
+| **Schedule**      | A real responsive timetable — today and weekly views, program/level filters, cancellation and time-change notices                                                                                           |
+| **Events**        | Upcoming and past events, add-to-calendar (`.ics`), directions, registration and waiver links, sharing                                                                                                      |
+| **Learn**         | Curriculum videos, the LMAA binder and documents, programs, FAQs, student resources                                                                                                                         |
+| **More**          | About, contact and directions, gallery, notification preferences, install help, privacy policy, app version, discreet staff sign-in                                                                         |
+| **Admin**         | A protected content manager for updates, events, schedule, resources, programs, FAQs, pages, gallery and academy information; one-tap templates for the events LMAA runs every year; staff access and roles |
+| **Notifications** | Real Web Push. Families choose class changes, events or academy news; staff send from the admin area or alongside a post. Nothing is ever reported as sent unless it was                                    |
 
 The app runs in one of two modes, decided automatically at build time:
 
@@ -52,34 +53,35 @@ The app runs in demo mode out of the box — no database or keys required.
 
 ### Everyday commands
 
-| Command | What it does |
-| --- | --- |
-| `npm run dev` | Development server with hot reload |
-| `npm run build` | Type-check and build the production site into `dist/` |
-| `npm run preview` | Serve the production build locally |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | TypeScript, no emit |
-| `npm test` | Vitest test suite |
-| `npm run verify` | Lint + types + tests + build (what CI runs) |
-| `npm run format` | Prettier |
-| `npm run icons` | Regenerate the app icons from the LMAA logo |
-| `npm run seed:sql` | Regenerate `supabase/seed.sql` from the demo seed data |
-| `npm run cap:sync` | Build and copy the web app into the native projects |
+| Command             | What it does                                           |
+| ------------------- | ------------------------------------------------------ |
+| `npm run dev`       | Development server with hot reload                     |
+| `npm run build`     | Type-check and build the production site into `dist/`  |
+| `npm run preview`   | Serve the production build locally                     |
+| `npm run lint`      | ESLint                                                 |
+| `npm run typecheck` | TypeScript, no emit                                    |
+| `npm test`          | Vitest test suite                                      |
+| `npm run verify`    | Lint + types + tests + build (what CI runs)            |
+| `npm run format`    | Prettier                                               |
+| `npm run icons`     | Regenerate the app icons from the LMAA logo            |
+| `npm run seed:sql`  | Regenerate `supabase/seed.sql` from the demo seed data |
+| `npm run cap:sync`  | Build and copy the web app into the native projects    |
 
 ---
 
 ## Documentation
 
-| File | What it covers |
-| --- | --- |
-| [SETUP_GUIDE_FOR_KEVIN.md](SETUP_GUIDE_FOR_KEVIN.md) | Non-technical guide: run it, deploy it, fix it, edit content |
-| [BRAND.md](BRAND.md) | The academy's brand identity: logo, colour, type, voice, and where each came from |
-| [CONTENT_NEEDED.md](CONTENT_NEEDED.md) | Checklist of everything LMAA still has to supply |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | How the code is organised and why; extension points |
-| [SUPABASE_SETUP.md](SUPABASE_SETUP.md) | Connecting the database, staff accounts, storage, push |
-| [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md) | Turning on GitHub Pages and custom domains |
-| [NATIVE_APP_RELEASE_CHECKLIST.md](NATIVE_APP_RELEASE_CHECKLIST.md) | The full App Store / Play Store route |
-| [SECURITY_AND_PRIVACY.md](SECURITY_AND_PRIVACY.md) | What is collected, what is protected, what changes later |
+| File                                                               | What it covers                                                                    |
+| ------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| [SETUP_GUIDE_FOR_KEVIN.md](SETUP_GUIDE_FOR_KEVIN.md)               | Non-technical guide: run it, deploy it, fix it, edit content                      |
+| [PUSH_NOTIFICATIONS_SETUP.md](PUSH_NOTIFICATIONS_SETUP.md)         | Turning on notifications: VAPID keys, the sender, and what is stored              |
+| [BRAND.md](BRAND.md)                                               | The academy's brand identity: logo, colour, type, voice, and where each came from |
+| [CONTENT_NEEDED.md](CONTENT_NEEDED.md)                             | Checklist of everything LMAA still has to supply                                  |
+| [ARCHITECTURE.md](ARCHITECTURE.md)                                 | How the code is organised and why; extension points                               |
+| [SUPABASE_SETUP.md](SUPABASE_SETUP.md)                             | Connecting the database, staff accounts, storage, push                            |
+| [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md)                     | Turning on GitHub Pages and custom domains                                        |
+| [NATIVE_APP_RELEASE_CHECKLIST.md](NATIVE_APP_RELEASE_CHECKLIST.md) | The full App Store / Play Store route                                             |
+| [SECURITY_AND_PRIVACY.md](SECURITY_AND_PRIVACY.md)                 | What is collected, what is protected, what changes later                          |
 
 ---
 
@@ -102,15 +104,15 @@ for a custom domain.
 Copy `.env.example` to `.env.local` for local work. Everything in a `VITE_` variable is
 **public** — it ends up in the JavaScript families download.
 
-| Variable | Purpose |
-| --- | --- |
-| `VITE_BASE_PATH` | `/repository-name/` on GitHub Pages, `/` on a custom domain |
-| `VITE_SUPABASE_URL` | Supabase project URL (browser-safe) |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase **publishable/anon** key (browser-safe) |
-| `VITE_PUSH_ENABLED` | `true` only once a secure server-side sender exists |
-| `VITE_PUSH_FUNCTION_URL` | Public URL of that server-side sender |
-| `VITE_FEATURE_LEADERSHIP` | Leadership Academy placeholder, off by default |
-| `VITE_APP_VERSION` | Shown on the More screen |
+| Variable                        | Purpose                                                     |
+| ------------------------------- | ----------------------------------------------------------- |
+| `VITE_BASE_PATH`                | `/repository-name/` on GitHub Pages, `/` on a custom domain |
+| `VITE_SUPABASE_URL`             | Supabase project URL (browser-safe)                         |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase **publishable/anon** key (browser-safe)            |
+| `VITE_PUSH_ENABLED`             | `true` only once a secure server-side sender exists         |
+| `VITE_PUSH_FUNCTION_URL`        | Public URL of that server-side sender                       |
+| `VITE_FEATURE_LEADERSHIP`       | Leadership Academy placeholder, off by default              |
+| `VITE_APP_VERSION`              | Shown on the More screen                                    |
 
 **Never** put a Supabase secret (`service_role`) key, a push provider REST key, or any
 other secret in these variables. The app actively refuses to use a Supabase key that
