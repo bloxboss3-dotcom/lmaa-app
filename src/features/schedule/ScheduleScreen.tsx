@@ -6,7 +6,12 @@ import { Button } from '@/components/ui/Button'
 import { EmptyState, Rows, Skeleton } from '@/components/ui/Card'
 import { SelectField } from '@/components/ui/Field'
 import { Icon } from '@/components/ui/Icon'
+import { buildScheduleIcs } from '@/domain/calendar'
 import { formatDate } from '@/domain/format'
+import { isMyClass } from '@/domain/myClasses'
+import { getPlatform } from '@/native/platform'
+import { useToast } from '@/components/ui/toastContext'
+import { useMyClasses } from './useMyClasses'
 import {
   WEEKDAYS,
   availableLevels,
@@ -31,6 +36,8 @@ type DaySelection = Weekday | 'week'
 interface StoredFilters {
   program: string
   level: string
+  /** Only the classes this family picked. */
+  mine?: boolean
 }
 
 /**
@@ -51,11 +58,18 @@ export function ScheduleScreen() {
   const [filters, setFilters] = useStoredState<StoredFilters>(STORAGE_KEYS.scheduleFilters, {
     program: 'all',
     level: 'all',
+    mine: false,
   })
+  const { mine, toggle: toggleMine } = useMyClasses()
+  const { notify } = useToast()
   useDocumentTitle('Class schedule')
 
+  // A family that removes its last class should not be left staring at an
+  // empty "Mine" filter with no way to understand why.
+  const mineOnly = Boolean(filters.mine) && mine.length > 0
+
   const levels = useMemo(() => availableLevels(bundle.schedule), [bundle.schedule])
-  const filtersActive = filters.program !== 'all' || filters.level !== 'all'
+  const filtersActive = filters.program !== 'all' || filters.level !== 'all' || mineOnly
 
   /**
    * Opening the schedule on a Sunday and being shown an empty Sunday is a
@@ -72,10 +86,37 @@ export function ScheduleScreen() {
     () => (entry: ScheduleEntry) => {
       if (filters.program !== 'all' && entry.programSlug !== filters.program) return false
       if (filters.level !== 'all' && entry.level !== filters.level) return false
+      if (mineOnly && !isMyClass(entry, mine)) return false
       return true
     },
-    [filters.program, filters.level],
+    [filters.program, filters.level, mineOnly, mine],
   )
+
+  /**
+   * The timetable as a calendar subscription. Built in the browser from the
+   * same data the screen shows — no server, nothing tracked.
+   */
+  const addToCalendar = (onlyMine: boolean) => {
+    const chosen = onlyMine
+      ? bundle.schedule.filter((entry) => isMyClass(entry, mine))
+      : bundle.schedule
+    if (!chosen.length) {
+      notify('There are no classes to add yet.', 'info')
+      return
+    }
+    const ics = buildScheduleIcs(chosen, {
+      now,
+      calendarName: onlyMine ? 'My LMAA classes' : 'LMAA classes',
+      location: bundle.settings.addressLines.join(', ') || undefined,
+      appUrl: `${window.location.origin}${window.location.pathname}#/schedule`,
+    })
+    getPlatform().saveFile(
+      onlyMine ? 'lmaa-my-classes.ics' : 'lmaa-classes.ics',
+      'text/calendar;charset=utf-8',
+      ics,
+    )
+    notify('Calendar file downloaded. Open it to add the classes.', 'success')
+  }
 
   const daysToShow: Weekday[] = day === 'week' ? WEEKDAYS.map((entry) => entry.value) : [day]
   const daysKey = daysToShow.join(',')
@@ -126,9 +167,9 @@ export function ScheduleScreen() {
                   ? 'border-crimson-600 bg-crimson-600 text-white'
                   : teaches
                     ? 'border-ink-100 bg-surface text-ink-700 hover:bg-ink-50'
-                    // ink-400 rather than ink-300: a closed day still has to be
-                  // legible, not just visibly quieter.
-                  : 'border-ink-100 bg-transparent text-ink-400',
+                    : // ink-400 rather than ink-300: a closed day still has to be
+                      // legible, not just visibly quieter.
+                      'border-ink-100 bg-transparent text-ink-400',
               )}
             >
               <span className="text-[0.6875rem] font-semibold tracking-wide uppercase">
@@ -137,7 +178,11 @@ export function ScheduleScreen() {
               <span
                 className={cx(
                   'mt-1 h-1 w-1 rounded-full',
-                  entry.value === today ? (active ? 'bg-white' : 'bg-crimson-600') : 'bg-transparent',
+                  entry.value === today
+                    ? active
+                      ? 'bg-white'
+                      : 'bg-crimson-600'
+                    : 'bg-transparent',
                 )}
                 aria-hidden="true"
               />
@@ -163,19 +208,55 @@ export function ScheduleScreen() {
             />
           </button>
 
-          <button
-            type="button"
-            onClick={() => setChosenDay(day === 'week' ? defaultDay : 'week')}
-            aria-pressed={day === 'week'}
-            className={cx(
-              'min-h-9 rounded-lg border px-3 text-[0.8125rem] font-medium transition-colors',
-              day === 'week'
-                ? 'border-crimson-600 bg-crimson-600 text-white'
-                : 'border-ink-200 bg-surface text-ink-700 hover:bg-ink-50',
-            )}
-          >
-            All week
-          </button>
+          <div className="flex items-center gap-2">
+            {mine.length > 0 ? (
+              <button
+                type="button"
+                onClick={() => setFilters({ ...filters, mine: !filters.mine })}
+                aria-pressed={mineOnly}
+                className={cx(
+                  'flex min-h-9 items-center gap-1.5 rounded-lg border px-3 text-[0.8125rem] font-medium transition-colors',
+                  mineOnly
+                    ? 'border-gold-500 bg-gold-100 text-gold-800'
+                    : 'border-ink-200 bg-surface text-ink-700 hover:bg-ink-50',
+                )}
+              >
+                <Icon name="star" size={14} />
+                Mine · {mine.length}
+              </button>
+            ) : null}
+            <button
+              type="button"
+              onClick={() => setChosenDay(day === 'week' ? defaultDay : 'week')}
+              aria-pressed={day === 'week'}
+              className={cx(
+                'min-h-9 rounded-lg border px-3 text-[0.8125rem] font-medium transition-colors',
+                day === 'week'
+                  ? 'border-crimson-600 bg-crimson-600 text-white'
+                  : 'border-ink-200 bg-surface text-ink-700 hover:bg-ink-50',
+              )}
+            >
+              All week
+            </button>
+          </div>
+        </div>
+
+        {/* One tap puts the timetable in the phone's own calendar, which is
+            the thing parents of busy kids ask for first. */}
+        <div className="mt-3 flex flex-wrap gap-2">
+          {mine.length > 0 ? (
+            <Button
+              size="sm"
+              variant="secondary"
+              icon="calendar"
+              onClick={() => addToCalendar(true)}
+            >
+              Add my classes to calendar
+            </Button>
+          ) : null}
+          <Button size="sm" variant="ghost" icon="calendar" onClick={() => addToCalendar(false)}>
+            {mine.length > 0 ? 'Add all classes' : 'Add timetable to my calendar'}
+          </Button>
         </div>
 
         {filtersOpen ? (
@@ -225,11 +306,15 @@ export function ScheduleScreen() {
       ) : totalShown === 0 ? (
         <EmptyState
           title={
-            filtersActive
-              ? 'No classes match these filters'
-              : day === 'week'
-                ? 'No classes published yet'
-                : `No classes on ${weekdayLabel(day as Weekday)}`
+            mineOnly && filters.program === 'all' && filters.level === 'all'
+              ? day === 'week'
+                ? 'None of your classes are on the timetable'
+                : `None of your classes on ${weekdayLabel(day as Weekday)}`
+              : filtersActive
+                ? 'No classes match these filters'
+                : day === 'week'
+                  ? 'No classes published yet'
+                  : `No classes on ${weekdayLabel(day as Weekday)}`
           }
           description={filtersActive ? undefined : 'Try another day, or view the whole week.'}
           action={
@@ -237,7 +322,7 @@ export function ScheduleScreen() {
               <Button
                 size="sm"
                 variant="secondary"
-                onClick={() => setFilters({ program: 'all', level: 'all' })}
+                onClick={() => setFilters({ program: 'all', level: 'all', mine: false })}
               >
                 Clear filters
               </Button>
@@ -267,6 +352,8 @@ export function ScheduleScreen() {
                       entry={entry}
                       todayIso={todayIso}
                       isNext={entry.id === nextUpId && group.day === today}
+                      isMine={isMyClass(entry, mine)}
+                      onToggleMine={() => toggleMine(entry.className)}
                     />
                   ))}
                 </Rows>
@@ -282,10 +369,14 @@ function ClassRow({
   entry,
   todayIso,
   isNext,
+  isMine,
+  onToggleMine,
 }: {
   entry: ScheduleEntry
   todayIso: string
   isNext?: boolean
+  isMine: boolean
+  onToggleMine: () => void
 }) {
   const times = effectiveTimes(entry)
   const cancelled = entry.status === 'cancelled'
@@ -295,10 +386,11 @@ function ClassRow({
     <div
       className={cx(
         'px-4 py-3',
-        isNext && 'border-l-[3px] border-crimson-600 bg-gradient-to-r from-crimson-50 to-transparent',
+        isNext &&
+          'border-l-[3px] border-crimson-600 bg-gradient-to-r from-crimson-50 to-transparent',
       )}
     >
-      <div className="flex items-baseline gap-3">
+      <div className="flex items-start gap-3">
         <span
           className={cx(
             'w-[4.75rem] shrink-0 tabular-nums',
@@ -311,7 +403,10 @@ function ClassRow({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h3
-              className={cx('font-medium', cancelled ? 'text-ink-400 line-through' : 'text-ink-900')}
+              className={cx(
+                'font-medium',
+                cancelled ? 'text-ink-400 line-through' : 'text-ink-900',
+              )}
             >
               {entry.className}
             </h3>
@@ -345,6 +440,26 @@ function ClassRow({
             </p>
           ) : null}
         </div>
+
+        {/* "My classes" lives on this device only — see useMyClasses. */}
+        <button
+          type="button"
+          onClick={onToggleMine}
+          aria-pressed={isMine}
+          aria-label={
+            isMine
+              ? `Remove ${entry.className} from my classes`
+              : `Add ${entry.className} to my classes`
+          }
+          className={cx(
+            '-mr-1.5 -mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-colors',
+            isMine
+              ? 'bg-gold-100 text-gold-700 ring-1 ring-gold-300'
+              : 'text-ink-300 hover:bg-ink-50 hover:text-ink-600',
+          )}
+        >
+          <Icon name="star" size={18} />
+        </button>
       </div>
     </div>
   )
