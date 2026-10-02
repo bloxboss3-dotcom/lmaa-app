@@ -65,6 +65,10 @@ export default defineConfig(({ mode }) => {
           ],
         },
         workbox: {
+          // Hand-written push + notificationclick handlers, pulled into the
+          // generated service worker. Kept as a separate readable file rather
+          // than switching the whole SW to injectManifest for 60 lines.
+          importScripts: ['push-sw.js'],
           globPatterns: ['**/*.{js,css,html,svg,png,ico,woff2}'],
           // Families never open the admin area and demo deployments never load
           // Supabase — precaching them would spend a parent's data on nothing.

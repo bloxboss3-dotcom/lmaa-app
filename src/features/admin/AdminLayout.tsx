@@ -79,7 +79,12 @@ export function AdminLayout() {
       icon: collection.icon,
       end: false,
     })),
+    { to: '/admin/notify', label: 'Send a notification', icon: 'bell' as const, end: false },
     { to: '/admin/settings', label: 'Academy info', icon: 'sliders' as const, end: false },
+    // Access control is an administrator's job, so it is not shown to editors.
+    ...(session.role === 'admin'
+      ? [{ to: '/admin/staff', label: 'Staff access', icon: 'users' as const, end: false }]
+      : []),
   ]
 
   return (
@@ -88,7 +93,14 @@ export function AdminLayout() {
         {/* Top bar */}
         <header className="safe-top sticky top-0 z-40 border-b border-ink-100 bg-surface">
           <div className="mx-auto flex h-14 max-w-6xl items-center gap-3 px-3 md:h-16 md:px-6">
-            <Link to="/admin" className="flex items-center gap-2.5">
+            {/* The logo is decorative and the "Content manager" label is hidden
+                on small screens, which would leave this link with no accessible
+                name at all on a phone. */}
+            <Link
+              to="/admin"
+              aria-label="LMAA content manager dashboard"
+              className="flex items-center gap-2.5"
+            >
               <Wordmark height={20} decorative />
               <span className="eyebrow hidden sm:block">Content manager</span>
             </Link>
@@ -111,6 +123,8 @@ export function AdminLayout() {
               </Link>
               <button
                 type="button"
+                // The visible label is hidden below `sm`, so name it explicitly.
+                aria-label="Sign out"
                 onClick={() => {
                   void signOut().then(() => navigate('/'))
                 }}

@@ -11,8 +11,20 @@ import { RichText } from '@/components/ui/RichText'
 import { useToast } from '@/components/ui/toastContext'
 import { useAdminContent } from './adminContext'
 import { findCollection, type AdminRecord } from './collections'
+import { EVENT_TEMPLATES, applyTemplate } from './eventTemplates'
 import { FormFields } from './FormFields'
 import { hasErrors, validateValues, type FormValues, type ValidationErrors } from './validation'
+
+/**
+ * Which notification topic each content type belongs to, and where tapping the
+ * notification should land. Families subscribe per topic, so a class
+ * cancellation must not arrive as "academy news".
+ */
+const PUSH_TARGETS: Record<string, { topic: string; url: string }> = {
+  announcements: { topic: 'updates', url: '#/updates' },
+  events: { topic: 'events', url: '#/events' },
+  schedule: { topic: 'schedule', url: '#/schedule' },
+}
 
 /** Create/edit screen shared by every content type. */
 export function AdminEditorScreen() {
@@ -26,7 +38,8 @@ export function AdminEditorScreen() {
 
   const isNew = id === 'new'
   const existing = useMemo(
-    () => (collection && !isNew ? collection.list(bundle).find((item) => item.id === id) : undefined),
+    () =>
+      collection && !isNew ? collection.list(bundle).find((item) => item.id === id) : undefined,
     [collection, bundle, id, isNew],
   )
 
@@ -93,7 +106,11 @@ export function AdminEditorScreen() {
         // Never claim a notification was sent: ask the provider and report back.
         const result = await notifications.send({
           title: String(nextValues.title ?? 'LMAA update'),
-          message: String(nextValues.body ?? '').slice(0, 140),
+          message: String(nextValues.body ?? nextValues.description ?? '').slice(0, 140),
+          // Deep link so tapping the notification lands on the thing it is
+          // about rather than dumping the parent on the home screen.
+          url: PUSH_TARGETS[collection.key]?.url ?? '#/updates',
+          topics: [PUSH_TARGETS[collection.key]?.topic ?? 'updates'],
         })
         notify(
           result.sent ? 'Saved and notification sent.' : `Saved. ${result.reason}`,
@@ -125,9 +142,7 @@ export function AdminEditorScreen() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="eyebrow">
-            {collection.title}
-          </p>
+          <p className="eyebrow">{collection.title}</p>
           <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">
             {isNew ? `New ${collection.singular}` : `Edit ${collection.singular}`}
           </h1>
@@ -139,6 +154,39 @@ export function AdminEditorScreen() {
           </Button>
         </div>
       </div>
+
+      {/* Setting up the same handful of events every year is the most
+          repetitive job in here. One tap fills in the wording; the academy
+          still sets the date and still has to publish it. */}
+      {collection.key === 'events' && isNew ? (
+        <Card>
+          <h2 className="text-sm font-semibold text-ink-900">Start from a usual event</h2>
+          <p className="mt-1 text-sm text-ink-500">
+            Fills in the name, details and a suggested time as a draft. Change anything you like
+            before publishing.
+          </p>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {EVENT_TEMPLATES.map((template) => (
+              <li key={template.id}>
+                <button
+                  type="button"
+                  title={template.note}
+                  onClick={() => {
+                    setValues((current) => ({ ...current, ...applyTemplate(template) }))
+                    setDirty(true)
+                    setErrors({})
+                    notify(`Filled in "${template.label}". Set the date, then publish.`, 'info')
+                  }}
+                  className="flex min-h-9 items-center gap-1.5 rounded-lg border border-ink-200 bg-surface px-3 text-[0.8125rem] font-medium text-ink-800 transition-colors hover:bg-ink-50"
+                >
+                  <Icon name={template.icon} size={15} className="text-crimson-600" />
+                  {template.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      ) : null}
 
       <form onSubmit={(event) => void save(event)} className="space-y-5" noValidate>
         <Card>
@@ -161,8 +209,8 @@ export function AdminEditorScreen() {
             {!notifications.canSend ? (
               <p className="mt-2 flex items-start gap-2 text-xs leading-relaxed text-ink-500">
                 <Icon name="info" size={14} className="mt-0.5 shrink-0" />
-                To switch this on, deploy the secure notification function described in
-                SUPABASE_SETUP.md. The provider secret must never be added to the app itself.
+                To switch this on, deploy the notification sender described in
+                PUSH_NOTIFICATIONS_SETUP.md. The signing key must never be added to the app itself.
               </p>
             ) : null}
           </Card>
@@ -170,15 +218,15 @@ export function AdminEditorScreen() {
 
         {preview ? (
           <Card>
-            <h2 className="mb-2 text-sm font-semibold text-ink-900">
-              How families will see this
-            </h2>
+            <h2 className="mb-2 text-sm font-semibold text-ink-900">How families will see this</h2>
             <div className="rounded-xl bg-canvas p-4">
               <h3 className="text-lg font-semibold text-ink-900">
                 {String(values.title ?? values.question ?? values.name ?? values.className ?? '')}
               </h3>
               <RichText
-                text={String(values.body ?? values.answer ?? values.description ?? values.summary ?? '')}
+                text={String(
+                  values.body ?? values.answer ?? values.description ?? values.summary ?? '',
+                )}
                 className="mt-2"
               />
             </div>

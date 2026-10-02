@@ -8,7 +8,11 @@ import {
   type SendResult,
 } from './provider'
 
+import { SupabasePushBackend } from './supabaseBackend'
+import { WebPushNotificationProvider } from './webPush'
+
 export * from './provider'
+export * from './webPush'
 
 /**
  * The provider used until a real push service is connected.
@@ -126,8 +130,17 @@ export class ServerFunctionNotificationProvider implements NotificationProvider 
 export function createNotificationProvider(
   getAccessToken: () => Promise<string | null> = async () => null,
 ): NotificationProvider {
-  if (env.push.enabled && env.push.functionUrl) {
-    return new ServerFunctionNotificationProvider(env.push.functionUrl, getAccessToken)
+  // Real Web Push: a device can register as soon as there is a VAPID public
+  // key and a database to record it in. Sending is gated separately, because
+  // registering families for notifications nobody can send is a promise the
+  // app would be breaking the first time a class was cancelled.
+  if (env.push.enabled) {
+    return new WebPushNotificationProvider({
+      vapidPublicKey: env.push.vapidPublicKey,
+      backend: new SupabasePushBackend(env.push.functionUrl),
+      getAccessToken,
+      canSend: env.push.canSend,
+    })
   }
   return new UnconfiguredNotificationProvider()
 }

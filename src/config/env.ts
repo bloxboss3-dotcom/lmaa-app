@@ -32,11 +32,6 @@ export function looksLikeSecretKey(key: string): boolean {
   return false
 }
 
-function bool(value: string | undefined, fallback = false): boolean {
-  if (value === undefined || value === '') return fallback
-  return value === 'true' || value === '1'
-}
-
 function str(value: string | undefined): string {
   return (value ?? '').trim()
 }
@@ -69,17 +64,21 @@ export interface AppEnvironment {
   appVersion: string
   buildMode: 'demo' | 'supabase'
   push: {
-    /** Only true when a secure server-side sender is deployed. */
+    /** True when a device can subscribe (a VAPID public key is present). */
     enabled: boolean
+    /** True when a deployed sender exists, so staff may actually send. */
+    canSend: boolean
+    /** Browser-safe VAPID public key. The private half lives only in Supabase. */
+    vapidPublicKey: string
     functionUrl: string
-    appId: string
   }
 }
 
 export const env: AppEnvironment = {
   supabaseUrl: rawSupabaseUrl,
   supabasePublishableKey: secretKeyMisconfigured ? '' : rawSupabaseKey,
-  isSupabaseConfigured: Boolean(rawSupabaseUrl) && Boolean(rawSupabaseKey) && !secretKeyMisconfigured,
+  isSupabaseConfigured:
+    Boolean(rawSupabaseUrl) && Boolean(rawSupabaseKey) && !secretKeyMisconfigured,
   secretKeyMisconfigured,
   basePath: import.meta.env.BASE_URL ?? '/',
   appVersion: str(import.meta.env.VITE_APP_VERSION) || '1.0.0',
@@ -88,9 +87,20 @@ export const env: AppEnvironment = {
       ? 'supabase'
       : 'demo',
   push: {
-    enabled: bool(import.meta.env.VITE_PUSH_ENABLED) && str(import.meta.env.VITE_PUSH_FUNCTION_URL) !== '',
+    // Subscribing needs the public key and a database to record the device in.
+    enabled:
+      str(import.meta.env.VITE_VAPID_PUBLIC_KEY) !== '' &&
+      Boolean(rawSupabaseUrl) &&
+      Boolean(rawSupabaseKey) &&
+      !secretKeyMisconfigured,
+    // Sending additionally needs the deployed Edge Function. Kept separate so
+    // the app never offers families a subscription it cannot deliver on, and
+    // never offers staff a Send button that would silently do nothing.
+    canSend:
+      str(import.meta.env.VITE_VAPID_PUBLIC_KEY) !== '' &&
+      str(import.meta.env.VITE_PUSH_FUNCTION_URL) !== '',
+    vapidPublicKey: str(import.meta.env.VITE_VAPID_PUBLIC_KEY),
     functionUrl: str(import.meta.env.VITE_PUSH_FUNCTION_URL),
-    appId: str(import.meta.env.VITE_PUSH_APP_ID),
   },
 }
 
