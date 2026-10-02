@@ -71,18 +71,19 @@ The app runs in demo mode out of the box — no database or keys required.
 
 ## Documentation
 
-| File                                                               | What it covers                                                                     |
-| ------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
-| [SETUP_GUIDE_FOR_KEVIN.md](SETUP_GUIDE_FOR_KEVIN.md)               | Non-technical guide: run it, deploy it, fix it, edit content                       |
-| [LAUNCH_KIT.md](LAUNCH_KIT.md)                                     | Getting it onto families' phones: phased checklist, door poster, announcement copy |
-| [PUSH_NOTIFICATIONS_SETUP.md](PUSH_NOTIFICATIONS_SETUP.md)         | Turning on notifications: VAPID keys, the sender, and what is stored               |
-| [BRAND.md](BRAND.md)                                               | The academy's brand identity: logo, colour, type, voice, and where each came from  |
-| [CONTENT_NEEDED.md](CONTENT_NEEDED.md)                             | Checklist of everything LMAA still has to supply                                   |
-| [ARCHITECTURE.md](ARCHITECTURE.md)                                 | How the code is organised and why; extension points                                |
-| [SUPABASE_SETUP.md](SUPABASE_SETUP.md)                             | Connecting the database, staff accounts, storage, push                             |
-| [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md)                     | Turning on GitHub Pages and custom domains                                         |
-| [NATIVE_APP_RELEASE_CHECKLIST.md](NATIVE_APP_RELEASE_CHECKLIST.md) | The full App Store / Play Store route                                              |
-| [SECURITY_AND_PRIVACY.md](SECURITY_AND_PRIVACY.md)                 | What is collected, what is protected, what changes later                           |
+| File                                                               | What it covers                                                                             |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| [SETUP_GUIDE_FOR_KEVIN.md](SETUP_GUIDE_FOR_KEVIN.md)               | Non-technical guide: run it, deploy it, fix it, edit content                               |
+| [LAUNCH_KIT.md](LAUNCH_KIT.md)                                     | Getting it onto families' phones: phased checklist, door poster, announcement copy         |
+| [PUSH_NOTIFICATIONS_SETUP.md](PUSH_NOTIFICATIONS_SETUP.md)         | Turning on notifications: VAPID keys, the sender, and what is stored                       |
+| [BRAND.md](BRAND.md)                                               | The academy's brand identity: logo, colour, type, voice, and where each came from          |
+| [BRAND_IMAGERY_BRIEF.md](BRAND_IMAGERY_BRIEF.md)                   | Shot list and prompts for generated header and launch imagery, anchored in the real dojang |
+| [CONTENT_NEEDED.md](CONTENT_NEEDED.md)                             | Checklist of everything LMAA still has to supply                                           |
+| [ARCHITECTURE.md](ARCHITECTURE.md)                                 | How the code is organised and why; extension points                                        |
+| [SUPABASE_SETUP.md](SUPABASE_SETUP.md)                             | Connecting the database, staff accounts, storage, push                                     |
+| [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md)                     | Turning on GitHub Pages and custom domains                                                 |
+| [NATIVE_APP_RELEASE_CHECKLIST.md](NATIVE_APP_RELEASE_CHECKLIST.md) | The full App Store / Play Store route                                                      |
+| [SECURITY_AND_PRIVACY.md](SECURITY_AND_PRIVACY.md)                 | What is collected, what is protected, what changes later                                   |
 
 ---
 
