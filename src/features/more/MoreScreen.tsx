@@ -2,7 +2,10 @@ import { Link } from 'react-router-dom'
 import { useContent, useRepository } from '@/app/context'
 import { env } from '@/config/env'
 import { Screen, PageIntro } from '@/components/layout/PageIntro'
+import { Button } from '@/components/ui/Button'
 import { Icon, type IconName } from '@/components/ui/Icon'
+import { useToast } from '@/components/ui/toastContext'
+import { getPlatform } from '@/native/platform'
 import { useDocumentTitle } from '@/lib/hooks'
 
 interface Row {
@@ -38,7 +41,26 @@ const GROUPS: { title: string; rows: Row[] }[] = [
 export function MoreScreen() {
   const { bundle } = useContent()
   const { mode } = useRepository()
+  const { notify } = useToast()
   useDocumentTitle('More')
+
+  const websiteUrl = bundle.settings.websiteUrl
+  const invite = async () => {
+    if (!websiteUrl) return
+    const shared = await getPlatform().share({
+      title: bundle.settings.academyName,
+      text: 'Taekwondo for ages 4 to adult in Wilsonville. New families can try two weeks free.',
+      url: websiteUrl,
+    })
+    if (!shared) {
+      try {
+        await navigator.clipboard.writeText(websiteUrl)
+        notify('Link copied — paste it to a friend.', 'success')
+      } catch {
+        notify('Sharing is not available on this device.', 'info')
+      }
+    }
+  }
 
   return (
     <Screen className="mx-auto max-w-3xl">
@@ -46,9 +68,7 @@ export function MoreScreen() {
 
       {GROUPS.map((group) => (
         <section key={group.title}>
-          <h2 className="mb-2 px-1 eyebrow">
-            {group.title}
-          </h2>
+          <h2 className="mb-2 px-1 eyebrow">{group.title}</h2>
           <ul className="overflow-hidden rounded-[var(--radius-card)] border border-ink-100 bg-surface shadow-[var(--shadow-soft)]">
             {group.rows.map((row, index) => (
               <li key={row.to}>
@@ -69,6 +89,26 @@ export function MoreScreen() {
           </ul>
         </section>
       ))}
+
+      {/* Word of mouth is how a small academy grows; make passing it on one tap. */}
+      {websiteUrl ? (
+        <section className="flex flex-wrap items-center gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-surface p-4">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-crimson-50 text-crimson-700">
+            <Icon name="users" size={20} />
+          </span>
+          <div className="min-w-0 flex-1">
+            <h2 className="text-sm font-semibold text-ink-900">
+              Know a family who would love it here?
+            </h2>
+            <p className="mt-0.5 text-sm text-ink-500">
+              Send them the academy&rsquo;s free-trial page.
+            </p>
+          </div>
+          <Button size="sm" variant="secondary" icon="share" onClick={() => void invite()}>
+            Invite a friend
+          </Button>
+        </section>
+      ) : null}
 
       <footer className="space-y-3 border-t border-ink-100 pt-5 text-center">
         <p className="text-sm font-semibold text-ink-700">{bundle.settings.academyName}</p>

@@ -3,7 +3,9 @@ import { useParams } from 'react-router-dom'
 import { useContent } from '@/app/context'
 import { Screen } from '@/components/layout/PageIntro'
 import { Badge, SampleBadge } from '@/components/ui/Badge'
-import { ExternalButton, LinkButton } from '@/components/ui/Button'
+import { Button, ExternalButton, LinkButton } from '@/components/ui/Button'
+import { useToast } from '@/components/ui/toastContext'
+import { getPlatform } from '@/native/platform'
 import { EmptyState, Skeleton } from '@/components/ui/Card'
 import { RichText } from '@/components/ui/RichText'
 import { CATEGORY_LABELS, isAnnouncementVisible } from '@/domain/announcements'
@@ -52,6 +54,24 @@ export function UpdateDetailScreen() {
 
   // Only allow http(s) and in-app hash links from admin-entered action URLs.
   const actionUrl = announcement.actionUrl
+  const { notify } = useToast()
+
+  // Updates get forwarded between parents constantly; make that one tap.
+  const share = async () => {
+    const shared = await getPlatform().share({
+      title: announcement.title,
+      text: `${announcement.title} — Lee's Martial Arts Academy`,
+      url: window.location.href,
+    })
+    if (!shared) {
+      try {
+        await navigator.clipboard.writeText(window.location.href)
+        notify('Link copied.', 'success')
+      } catch {
+        notify('Sharing is not available on this device.', 'info')
+      }
+    }
+  }
   const isInternal = actionUrl?.startsWith('#/')
   const isExternal = actionUrl ? /^https?:\/\//i.test(actionUrl) : false
 
@@ -99,9 +119,14 @@ export function UpdateDetailScreen() {
           ) : null
         ) : null}
 
-        <LinkButton to="/updates" variant="ghost" icon="arrowLeft" size="sm">
-          All updates
-        </LinkButton>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="secondary" size="sm" icon="share" onClick={() => void share()}>
+            Share
+          </Button>
+          <LinkButton to="/updates" variant="ghost" icon="arrowLeft" size="sm">
+            All updates
+          </LinkButton>
+        </div>
       </Screen>
     </article>
   )

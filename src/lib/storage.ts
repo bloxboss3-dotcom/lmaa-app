@@ -89,4 +89,6 @@ export const STORAGE_KEYS = {
   installPromptDismissed: 'lmaa.install-dismissed.v1',
   notificationPrefs: 'lmaa.notification-prefs.v1',
   scheduleFilters: 'lmaa.schedule-filters.v1',
+  myClasses: 'lmaa.my-classes.v1',
+  visitCount: 'lmaa.visit-count.v1',
 } as const
