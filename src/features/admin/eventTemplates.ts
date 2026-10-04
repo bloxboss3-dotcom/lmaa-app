@@ -36,7 +36,7 @@ export interface EventTemplate {
 export const EVENT_TEMPLATES: EventTemplate[] = [
   {
     id: 'belt-testing',
-    imageUrl: 'images/belts.jpg',
+    imageUrl: 'images/event-belt-testing.jpg',
     label: 'Belt testing',
     icon: 'medal',
     note: 'Quarterly — March, June, September and December.',
@@ -108,6 +108,7 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
   },
   {
     id: 'parents-day',
+    imageUrl: 'images/event-parents-day.jpg',
     label: 'Mom & Me / Dad & Me',
     icon: 'users',
     note: 'The Saturdays before Mother’s Day and Father’s Day.',

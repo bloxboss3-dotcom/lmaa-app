@@ -3,10 +3,11 @@ import type { AnnouncementCategory } from '@/domain/types'
 /**
  * Where the app's own illustrative images live, and which screens use them.
  *
- * These are environmental photographs of the dojang — belts, kit, the mat, a
- * potluck table — and deliberately contain no people. They are illustration,
- * not record: the real photographs of the academy belong in the gallery, with
- * permission, and nothing here stands in for a student or an instructor.
+ * They are illustration, not record. Some show students, always from behind
+ * and never with a face: the academy decided that was acceptable provided the
+ * uniform and logo are right and the picture looks natural. The real
+ * photographs of the academy still belong in the gallery, with permission, and
+ * nothing here is presented as a particular person.
  *
  * Paths are app-relative (`images/…`), not absolute URLs, so they keep working
  * if the app moves from the GitHub Pages sub-path to a custom domain. The hash
@@ -34,7 +35,10 @@ export const PAGE_HERO_IMAGES: Record<string, string> = {
 
 /** Card image for a program, by slug. Programs without one render as text. */
 export const PROGRAM_IMAGES: Record<string, string> = {
+  'little-tigers': 'images/program-little-tigers.jpg',
+  'kids-taekwondo': 'images/program-kids.jpg',
   'teen-adult': 'images/program-teen-adult.jpg',
+  'family-class': 'images/program-family.jpg',
 }
 
 /** Every image path the app references, for the existence test. */

@@ -329,53 +329,81 @@ From the academy's own website, for the room only — never to be copied as imag
 
 ## Batch 1 — what came back, and what shipped
 
-Twenty-two images arrived on 4 October 2026. Twelve matched the brief and went into the app;
-ten did not, and were held back.
+Twenty-two images arrived on 4 October 2026. The academy then made a decision that changes
+the brief: **generated students are acceptable when seen from behind, with no face visible,
+provided the uniform and the logo are right and the picture looks natural.** Everything
+below follows that rule. The earlier "no people at all" line in this document is superseded.
 
-### Shipped (in `public/images/` and `public/launch/`)
+### Shipped (`public/images/`, `public/launch/`)
 
-| File                                                      | Used for                                                                                                                                                                                                                                                     |
-| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `belts.jpg`                                               | The belt journey page, and the Belt testing event template. Shows the real LMAA progression: each senior belt carries a stripe of the _next_ colour, which is what the academy's own photographs show. White is not in the picture; the page text covers it. |
-| `event-birthday-party.jpg`                                | Birthday party template                                                                                                                                                                                                                                      |
-| `event-closed.jpg`                                        | Academy closed template                                                                                                                                                                                                                                      |
-| `event-holiday-potluck.jpg`                               | Holiday potluck template; also the default header for _community_ updates                                                                                                                                                                                    |
-| `event-summer-camp.jpg`                                   | Summer camp template; also the default header for _camps_ updates                                                                                                                                                                                            |
-| `event-tournament.jpg`                                    | Tournament template; also the default header for _events_ updates                                                                                                                                                                                            |
-| `update-schedule.jpg`                                     | Default header for _schedule_ updates (the clipboard and whistle)                                                                                                                                                                                            |
-| `update-testing.jpg`                                      | Default header for _testing_ updates (uniform, belt and bag, packed)                                                                                                                                                                                         |
-| `program-teen-adult.jpg`                                  | The Teen & Adult program card — an adult in full sparring gear, face covered by the headgear                                                                                                                                                                 |
-| `tenets.jpg`                                              | The Tenets & Pledge page — a broken board and a black belt                                                                                                                                                                                                   |
-| `launch/social-story-bg.jpg`, `launch/social-post-bg.jpg` | Launch backgrounds; the real app screenshot and headline are composited on afterwards                                                                                                                                                                        |
+| File                                                                                                                         | Used for                                                                                                                            |
+| ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `belts.jpg`                                                                                                                  | The belt journey page. Each senior belt carries a stripe of the _next_ colour, which matches the academy's own photographs.         |
+| `event-belt-testing.jpg`                                                                                                     | Belt testing template — students kneeling, one kicking, all from behind                                                             |
+| `event-parents-day.jpg`                                                                                                      | Mom & Me / Dad & Me template — a parent and child side by side, from behind                                                         |
+| `event-birthday-party.jpg`, `event-summer-camp.jpg`, `event-tournament.jpg`, `event-holiday-potluck.jpg`, `event-closed.jpg` | Their event templates; tournament, camp and potluck also serve as the default headers for _events_, _camps_ and _community_ updates |
+| `update-schedule.jpg`                                                                                                        | Default header for _schedule_ updates — a class mid-drill, from behind                                                              |
+| `update-testing.jpg`                                                                                                         | Default header for _testing_ updates — an instructor's hand tying a new belt, head out of frame                                     |
+| `program-little-tigers.jpg`, `program-kids.jpg`, `program-teen-adult.jpg`, `program-family.jpg`                              | The four program cards. `program-kids` was cropped to remove a stray arm entering from the right edge.                              |
+| `tenets.jpg`                                                                                                                 | The Tenets & Pledge page — a broken board and a black belt                                                                          |
+| `launch/social-story-bg.jpg`, `launch/social-post-bg.jpg`                                                                    | Launch backgrounds; the real app screenshot and headline are composited on afterwards                                               |
 
 _Important_ updates deliberately have no default picture: an urgent notice should not arrive
 wearing a cheerful photograph.
 
-### Held back, and why
+### Not shipped
 
-`event-belt-testing`, `event-buddy-bash`, `event-mom-and-me`, `program-children`,
-`program-family`, `program-little-tigers`, `update-celebration`, `update-schedule` (the
-training one) all contain **generated children in the academy's own uniform and logo**, and
-`program-hapkido` puts a **generated instructor** in it. They are well made — which is the
-problem. A parent would reasonably ask whose child that is and whether they signed a release,
-and the true answer would cost a school whose first tenet is integrity more than the picture
-is worth. Two also carry text artefacts in the logo (`MASTERGAD`). None of these are in the
-repository.
+- **`event-buddy-bash`** — failed on two of the four points: the small gold line under the
+  logo reads `MASTEKGAD`, and a child's face is partly visible at the back left. Replaced by
+  the regeneration prompt below.
+- **`program-hapkido`** — passes, but the only slots it fits would imply the instructor is
+  Master Lee. Kept as a spare.
+- **`belt-journey-little-tigers`** and the stripe belt worn in `program-little-tigers` — both
+  assume Little Tigers wear white belts with a coloured stripe. If they do not, say so and
+  both get replaced.
 
-`belt-journey-little-tigers` (white belts with coloured stripes) was held for a different
-reason: it is only right if Little Tigers actually use stripe belts, and that has not been
-confirmed.
+### One assumption to confirm
 
-### If a second batch is run
+Every student picture shows the full logo printed across the back of a white uniform. If the
+academy's actual uniforms do not carry that back print, the people shots should be re-run with
+plain backs.
 
-The twelve that shipped prove the style block works. The ten that did not all share one
-cause: the prompt's "no people" rule was not followed. Re-run only these, with the rule
-restated at the start **and** the end of the prompt, as objects-only scenes:
+### Regeneration prompt — run exactly as written
 
-- Mom & Me / Dad & Me → two pairs of shoes, adult and child, at the mat edge.
-- Parents Night Out → pizza boxes, board games and bean bags, evening light.
-- Little Tigers, Kids, Family program cards → the small uniform and tiny paddle; belts on
-  hooks; two uniforms on hooks, one adult and one child.
-- Schedule update → the wall clock and a pinned timetable, text out of focus.
+Paste the universal style block from above first, then **this people block**, then the shot.
 
-For anything that genuinely needs people in it, the answer is the academy's own photographs.
+```text
+PEOPLE RULE, which overrides anything else: any person is seen only from directly behind,
+head turned fully away from the camera. No face, no profile, no partial face, not even
+blurred in the background — background students also face away. Hands must have five
+fingers; no limb may enter the frame without the body it belongs to.
+
+UNIFORM AND LOGO, exactly and only this: plain white Taekwondo uniform. On the back, the
+words LEE'S MARTIAL ARTS ACADEMY in black capitals arched over a black flying-side-kick
+silhouette, and beneath the silhouette the letters LMAA, with LM in blue and AA in red.
+There is no other text anywhere on the uniform or the walls — no small gold line, no names,
+no website, no numbers. On the wall: the Korean flag, the same logo as a mural, the US flag.
+```
+
+**Shot A — `event-parents-night-out.jpg`, 16:9, 1600 × 900.** Evening in the dojang, the
+storefront windows dark with a few parking-lot lights outside, the room lit warm from the
+ceiling panels. A folding table at the edge of the blue mat with three pizza boxes, a stack of
+paper plates and a couple of board games. On the mat, four or five children in ordinary
+clothes — hoodies, t-shirts, socks, no uniforms — sitting cross-legged with their backs to the
+camera, facing a projector screen on the far wall that shows only a soft white glow. Relaxed,
+cheerful, nobody turned toward us. 35mm from standing height behind the children.
+
+**Shot B — `event-halloween.jpg`, 16:9, 1600 × 900.** Dusk. Three carved pumpkins among the
+red, blue and yellow kick pads on the white window shelf, a bowl of wrapped candy beside them,
+orange and black paper streamers taped along the white wall. In the middle distance, two
+children in white uniforms seen from behind, each with a small paper bat clipped to the back
+of their belt, walking away toward the far wall. Fun, not spooky.
+
+**Shot C — `update-general.jpg`, 16:9, 1600 × 900.** The whole class lined up in rows in the
+ready stance, every student seen from directly behind, uniforms white, the Korean flag and
+the LMAA mural soft on the far wall. The nearest student fills the left third of the frame
+and is in focus; the rows recede out of focus. Calm, orderly, morning window light. This is
+the all-purpose header, so keep it quiet.
+
+Pick with the same checklist as before, with one line added at the top: **zoom to 100% on
+every logo and read it letter by letter before saving.**
