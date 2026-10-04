@@ -324,3 +324,58 @@ Send the folder, or add it to the repository under `public/images/`. I will comp
 ## Reference photos
 
 From the academy's own website, for the room only — never to be copied as images: `https://www.leesmartialartsacademy.com/images/class-seated.jpg`, `https://www.leesmartialartsacademy.com/images/prog-adults.jpg`, `https://www.leesmartialartsacademy.com/images/storefront.jpg` (for how the glass and the daylight behave).
+
+---
+
+## Batch 1 — what came back, and what shipped
+
+Twenty-two images arrived on 4 October 2026. Twelve matched the brief and went into the app;
+ten did not, and were held back.
+
+### Shipped (in `public/images/` and `public/launch/`)
+
+| File                                                      | Used for                                                                                                                                                                                                                                                     |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `belts.jpg`                                               | The belt journey page, and the Belt testing event template. Shows the real LMAA progression: each senior belt carries a stripe of the _next_ colour, which is what the academy's own photographs show. White is not in the picture; the page text covers it. |
+| `event-birthday-party.jpg`                                | Birthday party template                                                                                                                                                                                                                                      |
+| `event-closed.jpg`                                        | Academy closed template                                                                                                                                                                                                                                      |
+| `event-holiday-potluck.jpg`                               | Holiday potluck template; also the default header for _community_ updates                                                                                                                                                                                    |
+| `event-summer-camp.jpg`                                   | Summer camp template; also the default header for _camps_ updates                                                                                                                                                                                            |
+| `event-tournament.jpg`                                    | Tournament template; also the default header for _events_ updates                                                                                                                                                                                            |
+| `update-schedule.jpg`                                     | Default header for _schedule_ updates (the clipboard and whistle)                                                                                                                                                                                            |
+| `update-testing.jpg`                                      | Default header for _testing_ updates (uniform, belt and bag, packed)                                                                                                                                                                                         |
+| `program-teen-adult.jpg`                                  | The Teen & Adult program card — an adult in full sparring gear, face covered by the headgear                                                                                                                                                                 |
+| `tenets.jpg`                                              | The Tenets & Pledge page — a broken board and a black belt                                                                                                                                                                                                   |
+| `launch/social-story-bg.jpg`, `launch/social-post-bg.jpg` | Launch backgrounds; the real app screenshot and headline are composited on afterwards                                                                                                                                                                        |
+
+_Important_ updates deliberately have no default picture: an urgent notice should not arrive
+wearing a cheerful photograph.
+
+### Held back, and why
+
+`event-belt-testing`, `event-buddy-bash`, `event-mom-and-me`, `program-children`,
+`program-family`, `program-little-tigers`, `update-celebration`, `update-schedule` (the
+training one) all contain **generated children in the academy's own uniform and logo**, and
+`program-hapkido` puts a **generated instructor** in it. They are well made — which is the
+problem. A parent would reasonably ask whose child that is and whether they signed a release,
+and the true answer would cost a school whose first tenet is integrity more than the picture
+is worth. Two also carry text artefacts in the logo (`MASTERGAD`). None of these are in the
+repository.
+
+`belt-journey-little-tigers` (white belts with coloured stripes) was held for a different
+reason: it is only right if Little Tigers actually use stripe belts, and that has not been
+confirmed.
+
+### If a second batch is run
+
+The twelve that shipped prove the style block works. The ten that did not all share one
+cause: the prompt's "no people" rule was not followed. Re-run only these, with the rule
+restated at the start **and** the end of the prompt, as objects-only scenes:
+
+- Mom & Me / Dad & Me → two pairs of shoes, adult and child, at the mat edge.
+- Parents Night Out → pizza boxes, board games and bean bags, evening light.
+- Little Tigers, Kids, Family program cards → the small uniform and tiny paddle; belts on
+  hooks; two uniforms on hooks, one adult and one child.
+- Schedule update → the wall clock and a pinned timetable, text out of focus.
+
+For anything that genuinely needs people in it, the answer is the academy's own photographs.

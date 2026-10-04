@@ -8,15 +8,7 @@ import { minutesOfDay } from '@/domain/schedule'
  */
 
 export type FieldType =
-  | 'text'
-  | 'textarea'
-  | 'select'
-  | 'checkbox'
-  | 'number'
-  | 'datetime'
-  | 'date'
-  | 'time'
-  | 'url'
+  'text' | 'textarea' | 'select' | 'checkbox' | 'number' | 'datetime' | 'date' | 'time' | 'url'
 
 export type FormValues = Record<string, string | number | boolean | undefined>
 
@@ -40,6 +32,8 @@ export interface FieldDef {
 export type ValidationErrors = Record<string, string>
 
 const URL_PATTERN = /^https?:\/\/.+/i
+/** Images bundled with the app itself, e.g. `images/belts.jpg`. */
+const APP_IMAGE_PATTERN = /^images\/[a-z0-9/_-]+\.(?:jpe?g|png|webp|svg)$/i
 const TIME_PATTERN = /^([01]?\d|2[0-3]):[0-5]\d$/
 
 function isBlank(value: unknown): boolean {
@@ -67,7 +61,7 @@ export function validateValues(fields: FieldDef[], values: FormValues): Validati
         case 'url': {
           const text = String(value).trim()
           // Internal app links (used by announcement buttons) are allowed.
-          if (!URL_PATTERN.test(text) && !text.startsWith('#/')) {
+          if (!URL_PATTERN.test(text) && !text.startsWith('#/') && !APP_IMAGE_PATTERN.test(text)) {
             errors[field.name] = 'Enter a full web address starting with https://'
           }
           break
