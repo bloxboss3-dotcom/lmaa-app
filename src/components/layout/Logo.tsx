@@ -6,16 +6,19 @@ import { cx } from '@/lib/cx'
  * The academy's own artwork.
  *
  * `lmaa-logo.png` is the full lockup from leesmartialartsacademy.com — the
- * flying kick, the arched academy name and the LMAA letters. `lmaa-wordmark.png`
- * is the LMAA lettering cropped out of that same file, because the full lockup
- * turns to mush below about 80px and app chrome has nothing like that to spare.
+ * flying kick, the arched academy name and the LMAA letters. It is the school's
+ * logo everywhere the school shows itself, so the app header carries it too, at
+ * 44px: on a phone screen the kick and the letters still read and the arched
+ * name becomes texture, which is how the real sign reads from across the room.
+ * `lmaa-wordmark.png` is the LMAA lettering cropped out of that same file, for
+ * places too small even for that (the admin bar).
  *
  * Both are decorative wherever the academy name is already written next to
  * them, and both are ~4.5:1 and 1:1 respectively — always set width via the
  * `size`/height props so nothing squashes.
  */
 
-/** Full lockup. Use at 72px and above, where the arched text still reads. */
+/** Full lockup. 44px is the floor; from 72px the arched academy name reads too. */
 export function LogoMark({
   size = 96,
   className,
