@@ -35,6 +35,8 @@ export const PAGE_HERO_IMAGES: Record<string, string> = {
 
 /** Card image for a program, by slug. Programs without one render as text. */
 export const PROGRAM_IMAGES: Record<string, string> = {
+  // The Little Tigers stripe belts themselves (white with one coloured stripe),
+  // until a people shot exists that gets those belts right.
   'little-tigers': 'images/program-little-tigers.jpg',
   'kids-taekwondo': 'images/program-kids.jpg',
   'teen-adult': 'images/program-teen-adult.jpg',

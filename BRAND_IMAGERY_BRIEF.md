@@ -298,6 +298,7 @@ Run every candidate through this before saving it:
 - [ ] The room is right: blue mats with a red border, white walls, storefront windows with daylight, the kick-pad shelf. Not a gym, not a studio with black curtains.
 - [ ] White uniforms are white, not cream, grey or blue.
 - [ ] Nothing impossible: belts tied in ways that cannot exist, melted pads, six fingers, boards floating, shadows going two directions.
+- [ ] Every belt in frame is one of the academy's real belts (the belt rule in the Batch 1 section). A yellow belt with a white stripe fails the picture on its own.
 - [ ] The subject sits inside the middle band of the frame for headers; nothing important near the top or bottom edge.
 - [ ] It looks like a photo a local newspaper would run, not a product render: slight grain, honest light, a little mess.
 - [ ] Pick the calmest of the variations. The app is quiet; a busy image fights the text on top of it.
@@ -313,7 +314,7 @@ Run every candidate through this before saving it:
 
 ## Notes on specific shots
 
-- **The belt journey.** The academy's belt order is white, yellow, orange, green, blue, brown, red, black, with a senior stripe at the halfway point of each colour. The stripe's colour has not been confirmed, so the prompt leaves stripes out. Do not add them unless Master Lee confirms what they look like.
+- **The belt journey.** The academy's belt order is white, yellow, orange, green, blue, brown, red, black, with a senior stripe at the halfway point of each colour from orange onward. Confirmed since: a senior belt carries a stripe of the _next_ colour, Little Tigers wear a white belt with one coloured stripe, and a yellow belt with a white stripe does not exist. The full belt rule is in the Batch 1 section at the end.
 - **Testing reminder and the paddle shot** are the only two with any human body in frame. If the hands or foot look wrong in every variation, drop the shot; `update-general.jpg` works as a fallback header.
 - **Launch backgrounds.** Leave the top third genuinely empty. A real screenshot of the app and the headline in the app's own type go there afterwards, so the UI shown is always the real UI.
 
@@ -329,48 +330,81 @@ From the academy's own website, for the room only — never to be copied as imag
 
 ## Batch 1 — what came back, and what shipped
 
-Twenty-two images arrived on 4 October 2026. The academy then made a decision that changes
-the brief: **generated students are acceptable when seen from behind, with no face visible,
-provided the uniform and the logo are right and the picture looks natural.** Everything
-below follows that rule. The earlier "no people at all" line in this document is superseded.
+Twenty-two images arrived on 4 October 2026. The academy then made two decisions that change
+the brief:
+
+1. **Generated students are acceptable when seen from behind, with no face visible, provided
+   the uniform and the logo are right and the picture looks natural.** The earlier "no people at
+   all" line in this document is superseded.
+2. **Every belt must be a real LMAA belt.** Little Tigers wear a white belt with a single
+   coloured stripe — confirmed. A yellow belt with a white stripe down the middle **does not
+   exist**, and several of the generated students were wearing one. Those pictures came out of
+   the app the same day, and the belt rule below is now part of every people prompt.
+
+### The belt rule
+
+The academy's belts, and nothing else:
+
+- **Little Tigers:** a white belt with one coloured stripe running its full length — yellow,
+  green, blue, red or black.
+- **Everyone else:** white, yellow, orange, green, blue, brown, red, black. From orange onward
+  each colour also has a _senior_ belt, which carries a stripe of the **next** colour: orange
+  with green, green with blue, blue with brown, brown with red, red with black.
+- **There is no senior yellow.** A yellow belt with a white stripe, or with a green stripe, is
+  not a real belt and fails the picture on its own.
 
 ### Shipped (`public/images/`, `public/launch/`)
 
-| File                                                                                                                         | Used for                                                                                                                            |
-| ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `belts.jpg`                                                                                                                  | The belt journey page. Each senior belt carries a stripe of the _next_ colour, which matches the academy's own photographs.         |
-| `event-belt-testing.jpg`                                                                                                     | Belt testing template — students kneeling, one kicking, all from behind                                                             |
-| `event-parents-day.jpg`                                                                                                      | Mom & Me / Dad & Me template — a parent and child side by side, from behind                                                         |
-| `event-birthday-party.jpg`, `event-summer-camp.jpg`, `event-tournament.jpg`, `event-holiday-potluck.jpg`, `event-closed.jpg` | Their event templates; tournament, camp and potluck also serve as the default headers for _events_, _camps_ and _community_ updates |
-| `update-schedule.jpg`                                                                                                        | Default header for _schedule_ updates — a class mid-drill, from behind                                                              |
-| `update-testing.jpg`                                                                                                         | Default header for _testing_ updates — an instructor's hand tying a new belt, head out of frame                                     |
-| `program-little-tigers.jpg`, `program-kids.jpg`, `program-teen-adult.jpg`, `program-family.jpg`                              | The four program cards. `program-kids` was cropped to remove a stray arm entering from the right edge.                              |
-| `tenets.jpg`                                                                                                                 | The Tenets & Pledge page — a broken board and a black belt                                                                          |
-| `launch/social-story-bg.jpg`, `launch/social-post-bg.jpg`                                                                    | Launch backgrounds; the real app screenshot and headline are composited on afterwards                                               |
+| File                                                                                                                         | Used for                                                                                                                                                                                  |
+| ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `belts.jpg`                                                                                                                  | The belt journey page — the coloured belts in rank order, each senior belt striped with the next colour. The white belt sits just outside the left edge of the frame (see re-runs).       |
+| `program-little-tigers.jpg`                                                                                                  | Little Tigers card — the six Little Tigers belts on the mat: white, then white with a yellow, green, blue, red and black stripe. Confirmed correct by the academy.                        |
+| `program-kids.jpg`                                                                                                           | Kids Taekwondo card — a class mid-drill, from behind, a green belt in front. Cropped to leave out a student at the far right whose belt was yellow with a green stripe.                   |
+| `program-teen-adult.jpg`                                                                                                     | Teen & Adult card — a black belt kicking a paddle, from behind.                                                                                                                           |
+| `program-family.jpg`                                                                                                         | Family class card — an adult in a blue belt and a child in a green belt bowing, from behind. Cropped to leave out a smaller child at the right whose belt was yellow with a white stripe. |
+| `event-belt-testing.jpg`                                                                                                     | Belt testing template — students kneeling, one kicking, all from behind, in senior orange and green belts.                                                                                |
+| `event-parents-day.jpg`                                                                                                      | Mom & Me / Dad & Me template — a parent and child side by side, from behind. The child wears a Little Tigers white belt with a yellow stripe.                                             |
+| `event-birthday-party.jpg`, `event-summer-camp.jpg`, `event-tournament.jpg`, `event-holiday-potluck.jpg`, `event-closed.jpg` | Their event templates; tournament, camp and potluck also serve as the default headers for _events_, _camps_ and _community_ updates.                                                      |
+| `update-schedule.jpg`                                                                                                        | Default header for _schedule_ updates — a packed bag, a folded uniform and a water bottle. The class-mid-drill picture that used to sit here is now the Kids card.                        |
+| `update-testing.jpg`                                                                                                         | Default header for _testing_ updates — an instructor's hand tying a new green belt, head out of frame.                                                                                    |
+| `tenets.jpg`                                                                                                                 | The Tenets & Pledge page — a broken board and a black belt.                                                                                                                               |
+| `launch/social-story-bg.jpg`, `launch/social-post-bg.jpg`                                                                    | Launch backgrounds; the real app screenshot and headline are composited on afterwards.                                                                                                    |
 
 _Important_ updates deliberately have no default picture: an urgent notice should not arrive
 wearing a cheerful photograph.
 
-### Not shipped
+### Pulled or not shipped
 
-- **`event-buddy-bash`** — failed on two of the four points: the small gold line under the
-  logo reads `MASTEKGAD`, and a child's face is partly visible at the back left. Replaced by
-  the regeneration prompt below.
+- **The original `program-little-tigers`** (a child mid-jump) — the jumping child and the row
+  behind wore yellow belts with a white stripe. Pulled the day the academy ruled on it;
+  replaced by the belt picture above until a correct people shot exists (Shot D below).
+- **`program-children`** (the original Kids card) — the student in front wore a yellow belt
+  with a white stripe, and so did two behind. Pulled; replaced by the class-mid-drill picture.
+  Shot E re-runs it properly.
+- **`event-buddy-bash`** — a yellow belt with a white stripe on the kicking child, the gold line
+  under the logo reads `MASTEKGAD`, and a child's face is partly visible at the back left.
 - **`program-hapkido`** — passes, but the only slots it fits would imply the instructor is
   Master Lee. Kept as a spare.
-- **`belt-journey-little-tigers`** and the stripe belt worn in `program-little-tigers` — both
-  assume Little Tigers wear white belts with a coloured stripe. If they do not, say so and
-  both get replaced.
+- **`update-news`** — passes (clipboard, whistle, folded uniform) but has no slot. Kept as a
+  spare header.
 
-### One assumption to confirm
+### Two things to confirm
 
-Every student picture shows the full logo printed across the back of a white uniform. If the
-academy's actual uniforms do not carry that back print, the people shots should be re-run with
-plain backs.
+- Every student picture shows the full logo printed across the back of a white uniform. If the
+  academy's actual uniforms do not carry that back print, the people shots should be re-run
+  with plain backs.
+- The real logo carries a small gold line, **MASTER C.Y. LEE**, above the letters LMAA. The
+  generated prints either leave it out or garble it (`MASTEKGAD`, `MASTINA CI1`). At phone size
+  that line is a few pixels tall and unreadable, so those pictures stayed in; the prompt below
+  now spells it out so new runs can get it right, and the checklist says to read it at 100%.
 
 ### Regeneration prompt — run exactly as written
 
-Paste the universal style block from above first, then **this people block**, then the shot.
+Paste the universal style block from above first, then **these three blocks**, then the shot.
+Where the universal block says no children and no logos, these blocks override it. If the
+tool accepts reference images, also attach the academy's logo (`src/assets/brand/lmaa-logo.png`
+in the repository) with the instruction: _reproduce this exactly as the print on the back of
+every uniform_.
 
 ```text
 PEOPLE RULE, which overrides anything else: any person is seen only from directly behind,
@@ -380,9 +414,20 @@ fingers; no limb may enter the frame without the body it belongs to.
 
 UNIFORM AND LOGO, exactly and only this: plain white Taekwondo uniform. On the back, the
 words LEE'S MARTIAL ARTS ACADEMY in black capitals arched over a black flying-side-kick
-silhouette, and beneath the silhouette the letters LMAA, with LM in blue and AA in red.
-There is no other text anywhere on the uniform or the walls — no small gold line, no names,
-no website, no numbers. On the wall: the Korean flag, the same logo as a mural, the US flag.
+silhouette; beneath the silhouette the letters LMAA, with LM in blue and AA in red; and
+directly above the letters LMAA one small line of gold capitals reading exactly
+MASTER C.Y. LEE. If that small line cannot be rendered letter-perfect, leave it out
+entirely — never a scrambled word. There is no other text anywhere on the uniform or the
+walls — no names, no website, no numbers. On the wall: the Korean flag, the same logo as a
+mural, the US flag.
+
+BELT RULE: every belt is a plain single-colour cotton belt — white, yellow, orange, green,
+blue, brown, red or black — tied in a square knot with both ends hanging in front, EXCEPT
+these two kinds of striped belt and no others: (1) a small child's white belt with one
+narrow stripe of a single colour running its full length — yellow, green, blue, red or
+black; (2) a senior belt, which is orange with a green stripe, green with a blue stripe,
+blue with a brown stripe, brown with a red stripe, or red with a black stripe. A yellow belt
+never has a stripe of any colour. No coloured belt ever has a white stripe.
 ```
 
 **Shot A — `event-parents-night-out.jpg`, 16:9, 1600 × 900.** Evening in the dojang, the
@@ -396,14 +441,44 @@ cheerful, nobody turned toward us. 35mm from standing height behind the children
 **Shot B — `event-halloween.jpg`, 16:9, 1600 × 900.** Dusk. Three carved pumpkins among the
 red, blue and yellow kick pads on the white window shelf, a bowl of wrapped candy beside them,
 orange and black paper streamers taped along the white wall. In the middle distance, two
-children in white uniforms seen from behind, each with a small paper bat clipped to the back
-of their belt, walking away toward the far wall. Fun, not spooky.
+children in white uniforms seen from behind — one in a plain orange belt, one in a white belt
+with a yellow stripe — each with a small paper bat clipped to the back of their belt, walking
+away toward the far wall. Fun, not spooky.
 
 **Shot C — `update-general.jpg`, 16:9, 1600 × 900.** The whole class lined up in rows in the
-ready stance, every student seen from directly behind, uniforms white, the Korean flag and
-the LMAA mural soft on the far wall. The nearest student fills the left third of the frame
-and is in focus; the rows recede out of focus. Calm, orderly, morning window light. This is
-the all-purpose header, so keep it quiet.
+ready stance, every student seen from directly behind, uniforms white, belts a natural mix of
+plain yellow, orange, green and blue with one senior orange, the Korean flag and the LMAA mural
+soft on the far wall. The nearest student fills the left third of the frame and is in focus;
+the rows recede out of focus. Calm, orderly, morning window light. This is the all-purpose
+header, so keep it quiet.
 
-Pick with the same checklist as before, with one line added at the top: **zoom to 100% on
-every logo and read it letter by letter before saving.**
+**Shot D — `program-little-tigers.jpg`, 4:3, 1200 × 900.** Little Tigers class, ages four and
+five. Four or five very small children in white uniforms standing in a loose line on the blue
+mat, all seen from directly behind, arms out to the sides in a balance drill. Every child wears
+a WHITE belt with one narrow coloured stripe along its length — one yellow, one green, one
+blue, one red — tied in front with the ends hanging. An adult instructor's legs in white
+uniform trousers at the far right, cropped at the waist. The Korean flag and the LMAA mural
+soft on the far wall. Afternoon window light, 35mm from a kneeling adult's height so the
+children look small in the big room.
+
+**Shot E — `program-kids.jpg`, 4:3, 1200 × 900.** Kids class, ages six to twelve. Six children
+in white uniforms in two rows in the front stance, mid-punch, seen from directly behind. The
+nearest child, slightly left of centre and in focus, wears a plain ORANGE belt; behind them a
+plain yellow, a plain green, a senior orange (orange with a green stripe) and a plain blue — no
+other stripes anywhere. Mats, flags and mural as always. 35mm from standing height, the back
+rows softening out of focus.
+
+### Re-run when convenient (not blocking)
+
+- **`event-belt-testing.jpg`** — the gold line on the kicking student's back is scrambled when
+  viewed at 100%. Re-run the belt testing shot with the three blocks above; keep the senior
+  orange and green belts.
+- **`belts.jpg`** — the strip starts at yellow; the white belt is missing. Re-run the belt
+  journey shot asking for all thirteen, left to right: white, yellow, orange, senior orange,
+  green, senior green, blue, senior blue, brown, senior brown, red, senior red, black.
+- **`program-family.jpg`** — fine as cropped (an adult and one child). If a three-person version
+  is wanted, re-run with the smallest child in a Little Tigers white belt with a yellow stripe.
+
+Pick with the same checklist as before, with two lines added at the top: **zoom to 100% on
+every logo and read it letter by letter**, and **name every belt in the frame against the belt
+rule before saving.**
