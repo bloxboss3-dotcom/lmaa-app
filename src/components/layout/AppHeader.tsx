@@ -2,7 +2,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { cx } from '@/lib/cx'
 import { Icon } from '@/components/ui/Icon'
 import { PRIMARY_NAV } from './navItems'
-import { Wordmark } from './Logo'
+import { LogoMark } from './Logo'
 
 /**
  * App chrome.
@@ -32,8 +32,10 @@ export function AppHeader() {
           </button>
         ) : null}
 
-        <Link to="/" className="rounded-lg py-1" aria-label="Lee's Martial Arts Academy home">
-          <Wordmark />
+        {/* The academy's full logo — the flying kick, not just the letters — so the
+            app is unmistakably the school's from the first screen. */}
+        <Link to="/" className="rounded-lg py-0.5" aria-label="Lee's Martial Arts Academy home">
+          <LogoMark size={44} className="h-11 w-auto md:h-12" decorative />
         </Link>
 
         <nav aria-label="Sections" className="ml-auto hidden items-center gap-0.5 md:flex">
