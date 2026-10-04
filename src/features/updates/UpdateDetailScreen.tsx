@@ -4,6 +4,7 @@ import { useContent } from '@/app/context'
 import { Screen } from '@/components/layout/PageIntro'
 import { Badge, SampleBadge } from '@/components/ui/Badge'
 import { Button, ExternalButton, LinkButton } from '@/components/ui/Button'
+import { UPDATE_CATEGORY_IMAGES } from '@/content/images'
 import { useToast } from '@/components/ui/toastContext'
 import { getPlatform } from '@/native/platform'
 import { EmptyState, Skeleton } from '@/components/ui/Card'
@@ -54,6 +55,8 @@ export function UpdateDetailScreen() {
 
   // Only allow http(s) and in-app hash links from admin-entered action URLs.
   const actionUrl = announcement.actionUrl
+  // A post's own picture wins; otherwise the category's illustrative header.
+  const heroUrl = announcement.imageUrl || UPDATE_CATEGORY_IMAGES[announcement.category]
   const { notify } = useToast()
 
   // Updates get forwarded between parents constantly; make that one tap.
@@ -77,12 +80,8 @@ export function UpdateDetailScreen() {
 
   return (
     <article className="mx-auto max-w-2xl">
-      {announcement.imageUrl ? (
-        <img
-          src={announcement.imageUrl}
-          alt=""
-          className="h-52 w-full object-cover sm:h-64 sm:rounded-b-3xl"
-        />
+      {heroUrl ? (
+        <img src={heroUrl} alt="" className="h-52 w-full object-cover sm:h-64 sm:rounded-b-3xl" />
       ) : null}
       <Screen>
         <header>

@@ -29,11 +29,14 @@ export interface EventTemplate {
   startMinute: number
   allDay?: boolean
   featured?: boolean
+  /** App-relative header image, when one exists for this kind of event. */
+  imageUrl?: string
 }
 
 export const EVENT_TEMPLATES: EventTemplate[] = [
   {
     id: 'belt-testing',
+    imageUrl: 'images/event-belt-testing.jpg',
     label: 'Belt testing',
     icon: 'medal',
     note: 'Quarterly — March, June, September and December.',
@@ -51,6 +54,7 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
   },
   {
     id: 'summer-camp',
+    imageUrl: 'images/event-summer-camp.jpg',
     label: 'Summer camp',
     icon: 'sparkle',
     note: 'Week-long themed camps through the summer.',
@@ -69,6 +73,7 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
   },
   {
     id: 'tournament',
+    imageUrl: 'images/event-tournament.jpg',
     label: 'Tournament',
     icon: 'star',
     note: 'Area schools compete twice a year.',
@@ -86,6 +91,7 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
   },
   {
     id: 'birthday-party',
+    imageUrl: 'images/event-birthday-party.jpg',
     label: 'Birthday party',
     icon: 'sparkle',
     note: 'Bouncy house, obstacle course and board breaking.',
@@ -102,6 +108,7 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
   },
   {
     id: 'parents-day',
+    imageUrl: 'images/event-parents-day.jpg',
     label: 'Mom & Me / Dad & Me',
     icon: 'users',
     note: 'The Saturdays before Mother’s Day and Father’s Day.',
@@ -148,6 +155,7 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
   },
   {
     id: 'holiday-potluck',
+    imageUrl: 'images/event-holiday-potluck.jpg',
     label: 'Holiday potluck',
     icon: 'users',
     note: 'Year-end belt ceremony and feast.',
@@ -164,6 +172,7 @@ export const EVENT_TEMPLATES: EventTemplate[] = [
   },
   {
     id: 'closure',
+    imageUrl: 'images/event-closed.jpg',
     label: 'Academy closed',
     icon: 'info',
     note: 'A holiday or closure families need to plan around.',
@@ -208,6 +217,8 @@ export function applyTemplate(template: EventTemplate, now: Date = new Date()): 
     // Draft, always. A template is a starting point, not a publish button.
     published: false,
   }
+
+  if (template.imageUrl) values.imageUrl = template.imageUrl
 
   if (template.durationMinutes > 0 && !template.allDay) {
     const end = new Date(start.getTime() + template.durationMinutes * 60_000)

@@ -4,6 +4,7 @@ import { Badge, SampleBadge } from '@/components/ui/Badge'
 import { LinkButton } from '@/components/ui/Button'
 import { Card, EmptyState, Skeleton } from '@/components/ui/Card'
 import { RichText } from '@/components/ui/RichText'
+import { PROGRAM_IMAGES } from '@/content/images'
 import { formatTimeRange, sortScheduleEntries, weekdayLabel } from '@/domain/schedule'
 import { useDocumentTitle } from '@/lib/hooks'
 
@@ -32,9 +33,17 @@ export function ProgramsScreen() {
             const classes = sortScheduleEntries(
               bundle.schedule.filter((entry) => entry.programSlug === program.slug),
             )
+            const image = PROGRAM_IMAGES[program.slug]
             return (
               <li key={program.id}>
                 <Card>
+                  {image ? (
+                    <img
+                      src={image}
+                      alt=""
+                      className="-mx-4 -mt-4 mb-3 h-40 w-[calc(100%+2rem)] max-w-none rounded-t-[var(--radius-card)] object-cover"
+                    />
+                  ) : null}
                   <div className="mb-2 flex flex-wrap items-center gap-2">
                     {program.ageRange ? <Badge tone="red">{program.ageRange}</Badge> : null}
                     {program.isSample ? <SampleBadge /> : null}
@@ -49,9 +58,7 @@ export function ProgramsScreen() {
 
                   {classes.length ? (
                     <div className="mt-3.5 rounded-xl bg-ink-50 p-3">
-                      <p className="mb-1.5 eyebrow">
-                        Class times
-                      </p>
+                      <p className="mb-1.5 eyebrow">Class times</p>
                       <ul className="space-y-1 text-sm text-ink-700">
                         {classes.map((entry) => (
                           <li key={entry.id} className="flex justify-between gap-3">

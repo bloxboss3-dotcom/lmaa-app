@@ -5,6 +5,7 @@ import { SampleBadge } from '@/components/ui/Badge'
 import { LinkButton } from '@/components/ui/Button'
 import { EmptyState, Skeleton } from '@/components/ui/Card'
 import { RichText } from '@/components/ui/RichText'
+import { PAGE_HERO_IMAGES } from '@/content/images'
 import { formatDate } from '@/domain/format'
 import { useDocumentTitle } from '@/lib/hooks'
 
@@ -48,8 +49,17 @@ export function PageScreen({ slug: fixedSlug }: { slug?: string }) {
     )
   }
 
+  const hero = PAGE_HERO_IMAGES[slug]
+
   return (
     <Screen className="mx-auto max-w-2xl">
+      {hero ? (
+        <img
+          src={hero}
+          alt=""
+          className="-mx-4 -mt-5 h-44 w-[calc(100%+2rem)] max-w-none object-cover sm:h-56 md:-mx-6 md:w-[calc(100%+3rem)]"
+        />
+      ) : null}
       <PageIntro
         eyebrow="Academy"
         title={page.title}
