@@ -35,9 +35,9 @@ export const PAGE_HERO_IMAGES: Record<string, string> = {
 
 /** Card image for a program, by slug. Programs without one render as text. */
 export const PROGRAM_IMAGES: Record<string, string> = {
-  // The Little Tigers stripe belts themselves (white with one coloured stripe),
-  // until a people shot exists that gets those belts right.
-  'little-tigers': 'images/program-little-tigers.jpg',
+  // The academy's own photograph of a child-size LMAA uniform on its mats —
+  // a real picture, not a generated one.
+  'little-tigers': 'images/uniform-little-tigers.jpg',
   'kids-taekwondo': 'images/program-kids.jpg',
   'teen-adult': 'images/program-teen-adult.jpg',
   'family-class': 'images/program-family.jpg',
@@ -48,11 +48,12 @@ export const PROGRAM_IMAGES: Record<string, string> = {
  * published gallery photo exists, those take over and these are never shown.
  */
 export const HOME_PHOTOS: string[] = [
+  'images/uniform-little-tigers.jpg',
   'images/program-kids.jpg',
-  'images/belts.jpg',
+  'images/belts-little-tigers.jpg',
   'images/event-parents-day.jpg',
   'images/event-belt-testing.jpg',
-  'images/update-testing.jpg',
+  'images/belts.jpg',
 ]
 
 /** Every image path the app references, for the existence test. */

@@ -18,7 +18,7 @@ The things that must stay real stay real: the **front door and logo decal**, the
 - **Aspect ratio.** Set per shot (listed on each card). Do not crop afterwards; generate at the ratio.
 - **Resolution.** The highest the tier allows, at least 1600 px on the long side for headers and 1080 × 1920 for the story.
 - **Variations.** Three or four per shot. Pick with the checklist; do not pick the prettiest.
-- **Reference images.** If the tool accepts reference images, give it two or three of the academy's own room photos from leesmartialartsacademy.com (for example images/class-seated.jpg and images/prog-adults.jpg) with the instruction: match this room's mats, walls, windows and shelf exactly; do not copy the people. That is the single biggest lever for consistency.
+- **Reference images.** If the tool accepts reference images, give it two or three of the academy's own room photos from leesmartialartsacademy.com (for example images/class-seated.jpg and images/prog-adults.jpg) with the instruction: match this room's mats, walls, windows and shelf exactly; do not copy the people. For any shot with a student in it, also attach the three uniform photographs in `docs/brand-reference/` with the instruction: this is the exact uniform and back print. That is the single biggest lever for consistency.
 - **Prompt order.** Paste the universal style block first, a blank line, then the shot prompt. Every shot, every time.
 - **Files.** Save each pick with the exact filename on its card, full resolution, PNG or best-quality JPEG. Put them in one folder.
 
@@ -326,6 +326,11 @@ Send the folder, or add it to the repository under `public/images/`. I will comp
 
 From the academy's own website, for the room only — never to be copied as images: `https://www.leesmartialartsacademy.com/images/class-seated.jpg`, `https://www.leesmartialartsacademy.com/images/prog-adults.jpg`, `https://www.leesmartialartsacademy.com/images/storefront.jpg` (for how the glass and the daylight behave).
 
+From the academy itself, photographed on its own mats on 5 October 2026, in `docs/brand-reference/`:
+`uniform-back.jpg` (the full back print on a child-size jacket), `uniform-front.jpg` (plain white
+front, white V-neck collar, a small black maker's patch on the left chest) and `uniform-pants.jpg`
+(plain white, elastic waist with a drawstring). These are the truth for every people shot.
+
 ---
 
 ## Batch 1 — what came back, and what shipped
@@ -358,7 +363,8 @@ The academy's belts, and nothing else:
 | File                                                                                                                         | Used for                                                                                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `belts.jpg`                                                                                                                  | The belt journey page — the coloured belts in rank order, each senior belt striped with the next colour. The white belt sits just outside the left edge of the frame (see re-runs).       |
-| `program-little-tigers.jpg`                                                                                                  | Little Tigers card — the six Little Tigers belts on the mat: white, then white with a yellow, green, blue, red and black stripe. Confirmed correct by the academy.                        |
+| `uniform-little-tigers.jpg`                                                                                                  | Little Tigers card, and the first photo on the Home screen — the academy's own photograph of a child-size LMAA jacket on its mats, cropped. A real picture.                               |
+| `belts-little-tigers.jpg`                                                                                                    | Home photo strip — the six Little Tigers belts on the mat: white, then white with a yellow, green, blue, red and black stripe. Confirmed correct by the academy.                          |
 | `program-kids.jpg`                                                                                                           | Kids Taekwondo card — a class mid-drill, from behind, a green belt in front. Cropped to leave out a student at the far right whose belt was yellow with a green stripe.                   |
 | `program-teen-adult.jpg`                                                                                                     | Teen & Adult card — a black belt kicking a paddle, from behind.                                                                                                                           |
 | `program-family.jpg`                                                                                                         | Family class card — an adult in a blue belt and a child in a green belt bowing, from behind. Cropped to leave out a smaller child at the right whose belt was yellow with a white stripe. |
@@ -377,7 +383,8 @@ wearing a cheerful photograph.
 
 - **The original `program-little-tigers`** (a child mid-jump) — the jumping child and the row
   behind wore yellow belts with a white stripe. Pulled the day the academy ruled on it;
-  replaced by the belt picture above until a correct people shot exists (Shot D below).
+  replaced by the academy's own uniform photograph (Shot D below is still worth running for a
+  people shot).
 - **`program-children`** (the original Kids card) — the student in front wore a yellow belt
   with a white stripe, and so did two behind. Pulled; replaced by the class-mid-drill picture.
   Shot E re-runs it properly.
@@ -388,15 +395,20 @@ wearing a cheerful photograph.
 - **`update-news`** — passes (clipboard, whistle, folded uniform) but has no slot. Kept as a
   spare header.
 
-### Two things to confirm
+### The uniform, confirmed from the academy's own photographs
 
-- Every student picture shows the full logo printed across the back of a white uniform. If the
-  academy's actual uniforms do not carry that back print, the people shots should be re-run
-  with plain backs.
-- The real logo carries a small gold line, **MASTER C.Y. LEE**, above the letters LMAA. The
-  generated prints either leave it out or garble it (`MASTEKGAD`, `MASTINA CI1`). At phone size
-  that line is a few pixels tall and unreadable, so those pictures stayed in; the prompt below
-  now spells it out so new runs can get it right, and the checklist says to read it at 100%.
+- **The back print is real.** The academy photographed a child-size jacket on 5 October 2026:
+  the full logo is printed across the back exactly as the generated students wear it. One
+  correction: the small line above LMAA reads **MASTER C.Y. LEE in black**, not the gold of the
+  website logo. The generated prints either leave that line out or garble it (`MASTEKGAD`,
+  `MASTINA CI1`); at phone size it is a few pixels tall, so those pictures stayed in, and the
+  prompt below now spells it out.
+- **The front is plain white** with a white V-neck collar — no logo on the front — and a small
+  black maker's patch on the left chest. **The pants are plain white** with an elastic waist and
+  a drawstring. The belt is tied over the jacket.
+- The photographs are kept in `docs/brand-reference/` and should be attached as references to
+  every people shot. The cleanest one, cropped, is now the Little Tigers card and the first
+  photo on the Home screen.
 
 ### Regeneration prompt — run exactly as written
 
@@ -412,14 +424,15 @@ head turned fully away from the camera. No face, no profile, no partial face, no
 blurred in the background — background students also face away. Hands must have five
 fingers; no limb may enter the frame without the body it belongs to.
 
-UNIFORM AND LOGO, exactly and only this: plain white Taekwondo uniform. On the back, the
-words LEE'S MARTIAL ARTS ACADEMY in black capitals arched over a black flying-side-kick
-silhouette; beneath the silhouette the letters LMAA, with LM in blue and AA in red; and
-directly above the letters LMAA one small line of gold capitals reading exactly
-MASTER C.Y. LEE. If that small line cannot be rendered letter-perfect, leave it out
-entirely — never a scrambled word. There is no other text anywhere on the uniform or the
-walls — no names, no website, no numbers. On the wall: the Korean flag, the same logo as a
-mural, the US flag.
+UNIFORM AND LOGO, exactly and only this: plain white Taekwondo uniform — a white V-neck
+pullover jacket with a white collar, no print on the front, plain white pants with an
+elastic waist, the belt tied over the jacket. On the back, the words LEE'S MARTIAL ARTS
+ACADEMY in black capitals arched over a black flying-side-kick silhouette; beneath the
+silhouette the letters LMAA, with LM in blue and AA in red; and directly above the letters
+LMAA one small line of black capitals reading exactly MASTER C.Y. LEE. If that small line
+cannot be rendered letter-perfect, leave it out entirely — never a scrambled word. There is
+no other text anywhere on the uniform or the walls — no names, no website, no numbers. On
+the wall: the Korean flag, the same logo as a mural, the US flag.
 
 BELT RULE: every belt is a plain single-colour cotton belt — white, yellow, orange, green,
 blue, brown, red or black — tied in a square knot with both ends hanging in front, EXCEPT
@@ -478,6 +491,8 @@ rows softening out of focus.
   green, senior green, blue, senior blue, brown, senior brown, red, senior red, black.
 - **`program-family.jpg`** — fine as cropped (an adult and one child). If a three-person version
   is wanted, re-run with the smallest child in a Little Tigers white belt with a yellow stripe.
+- **Every people shot** — the generated students' collars and backs match the real uniform; the
+  small black MASTER C.Y. LEE line is the one detail none of them got right.
 
 Pick with the same checklist as before, with two lines added at the top: **zoom to 100% on
 every logo and read it letter by letter**, and **name every belt in the frame against the belt
