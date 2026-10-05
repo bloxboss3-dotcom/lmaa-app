@@ -252,6 +252,26 @@ Three rules are enforced by the database rather than by the app, and are checked
   academy, exists only as a Supabase Edge Function secret. It is never in the app
   bundle, never in a `VITE_` variable, and never in the repository.
 
+## Messages from families
+
+The Message screen is the one place a family types something that leaves their device.
+What it collects is exactly what a reply needs — a name, one way to reach them, which topic,
+and the message — and nothing else. No account, no child's details asked for, nothing
+kept on the phone.
+
+- **Without a backend** the app cannot send anything itself, so it opens the family's own
+  mail app with the message written out. The family presses Send. The app never claims
+  to have delivered it.
+- **With Supabase connected** the message is stored in `contact_messages`. Row Level
+  Security lets anyone insert a _new_ message and lets only academy staff read or update
+  one; the sender cannot read it back, and an administrator alone may delete. Sizes are
+  bounded by database constraints as well as by the app.
+- **Email forwarding** is optional and server-side only (`forward-message`), triggered by a
+  database webhook that must carry a shared secret header. The email provider's key exists
+  only as an Edge Function secret.
+- Staff should delete handled messages the academy no longer needs; the privacy policy says
+  the academy can delete them at any time.
+
 ## Staff access
 
 Roles are managed in-app by an administrator, with two limits enforced by Row Level

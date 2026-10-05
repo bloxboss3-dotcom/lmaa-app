@@ -205,6 +205,31 @@ export interface AcademySettings {
   updatedAt: IsoDateTime
 }
 
+/* ---------------------------------------------------------------- messages */
+
+export const MESSAGE_TOPICS = ['general', 'trial', 'schedule', 'events', 'other'] as const
+export type MessageTopic = (typeof MESSAGE_TOPICS)[number]
+
+export const MESSAGE_STATUSES = ['new', 'handled'] as const
+export type MessageStatus = (typeof MESSAGE_STATUSES)[number]
+
+/** What a family types in. Nothing else is asked for. */
+export interface ContactMessageDraft {
+  name: string
+  /** An email address or a phone number — one way to reply. */
+  contact: string
+  topic: MessageTopic
+  body: string
+}
+
+/** A message as staff see it in the inbox. Readable by staff only. */
+export interface ContactMessage extends ContactMessageDraft, Sampleable {
+  id: string
+  status: MessageStatus
+  createdAt: IsoDateTime
+  handledAt?: IsoDateTime
+}
+
 /* ------------------------------------------------------------ people/roles */
 
 export const STAFF_ROLES = ['admin', 'editor'] as const

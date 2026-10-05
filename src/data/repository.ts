@@ -2,7 +2,10 @@ import type {
   AcademyEvent,
   AcademySettings,
   Announcement,
+  ContactMessage,
+  ContactMessageDraft,
   Faq,
+  MessageStatus,
   GalleryItem,
   LearningResource,
   Page,
@@ -88,7 +91,22 @@ export interface ContentWriter {
   updateSettings(settings: AcademySettings): Promise<AcademySettings>
 }
 
-export type ContentRepository = ContentReader & ContentWriter
+/**
+ * Messages from families to the academy.
+ *
+ * Deliberately not part of the content bundle: a message is private
+ * correspondence, readable by staff only, and never cached on a family's
+ * device alongside the public schedule.
+ */
+export interface MessageInbox {
+  /** Family-facing. Anyone may send; nobody but staff can read. */
+  sendMessage(draft: ContactMessageDraft): Promise<void>
+  /** Staff only — the database refuses everyone else. Newest first. */
+  listMessages(): Promise<ContactMessage[]>
+  setMessageStatus(id: string, status: MessageStatus): Promise<ContactMessage>
+}
+
+export type ContentRepository = ContentReader & ContentWriter & MessageInbox
 
 /** Thrown by repositories so the UI can show a friendly message, not a stack. */
 export class ContentError extends Error {

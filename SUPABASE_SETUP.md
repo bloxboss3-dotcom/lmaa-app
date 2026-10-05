@@ -24,12 +24,14 @@ You can skip this entirely at first — the app is fully usable in demo mode.
 1. In Supabase, open **SQL Editor** → **New query**.
 2. Paste the contents of each file **in this order**, running each one before the next:
 
-   | Order | File | What it does |
-   | --- | --- | --- |
-   | 1 | `supabase/migrations/0001_schema.sql` | Tables, indexes, timestamp triggers |
-   | 2 | `supabase/migrations/0002_policies.sql` | Row Level Security — who can read and write |
-   | 3 | `supabase/migrations/0003_storage.sql` | Buckets for images and documents |
-   | 4 *(optional)* | `supabase/seed.sql` | The academy's real class schedule and programs |
+   | Order          | File                                            | What it does                                   |
+   | -------------- | ----------------------------------------------- | ---------------------------------------------- |
+   | 1              | `supabase/migrations/0001_schema.sql`           | Tables, indexes, timestamp triggers            |
+   | 2              | `supabase/migrations/0002_policies.sql`         | Row Level Security — who can read and write    |
+   | 3              | `supabase/migrations/0003_storage.sql`          | Buckets for images and documents               |
+   | 4              | `supabase/migrations/0004_push_and_staff.sql`   | Push notification devices, staff roles         |
+   | 5              | `supabase/migrations/0005_contact_messages.sql` | Messages families send from the app            |
+   | 6 _(optional)_ | `supabase/seed.sql`                             | The academy's real class schedule and programs |
 
 3. Each run should end with **Success**. If step 2 or 3 fails, re-run step 1 first — they
    depend on it.
@@ -39,20 +41,20 @@ You can skip this entirely at first — the app is fully usable in demo mode.
 
 ### What the tables are
 
-| Table | Holds |
-| --- | --- |
-| `announcements` | Updates families see, with publish and expiry times |
-| `events` | Events, registration and waiver links |
-| `schedule_entries` | Weekly classes, plus cancellation / time-change notices |
-| `programs` | Program list |
-| `learning_resources` | Curriculum videos, binder documents, student resources |
-| `faqs` | Questions and answers |
-| `pages` | About, privacy policy, support |
-| `gallery_items` | Photos, each with a permission note |
-| `app_settings` | Phone, email, address, map link, social links (one row) |
-| `staff_profiles` | Staff names and emails |
-| `user_roles` | Who is an admin, who is an editor |
-| `notification_subscriptions` | Device push registrations — no personal information |
+| Table                        | Holds                                                   |
+| ---------------------------- | ------------------------------------------------------- |
+| `announcements`              | Updates families see, with publish and expiry times     |
+| `events`                     | Events, registration and waiver links                   |
+| `schedule_entries`           | Weekly classes, plus cancellation / time-change notices |
+| `programs`                   | Program list                                            |
+| `learning_resources`         | Curriculum videos, binder documents, student resources  |
+| `faqs`                       | Questions and answers                                   |
+| `pages`                      | About, privacy policy, support                          |
+| `gallery_items`              | Photos, each with a permission note                     |
+| `app_settings`               | Phone, email, address, map link, social links (one row) |
+| `staff_profiles`             | Staff names and emails                                  |
+| `user_roles`                 | Who is an admin, who is an editor                       |
+| `notification_subscriptions` | Device push registrations — no personal information     |
 
 Every content table carries `id`, `created_at`, `updated_at`, `published`, and where it
 helps, a publish time, a sort order and `created_by` / `updated_by`.
@@ -63,9 +65,9 @@ helps, a publish time, a sort order and `created_by` / `updated_by`.
 
 **Project Settings → API** (or **API Keys**):
 
-| Copy this | Into this variable |
-| --- | --- |
-| **Project URL** | `VITE_SUPABASE_URL` |
+| Copy this                                             | Into this variable              |
+| ----------------------------------------------------- | ------------------------------- |
+| **Project URL**                                       | `VITE_SUPABASE_URL`             |
 | **Publishable key** (older projects: **anon public**) | `VITE_SUPABASE_PUBLISHABLE_KEY` |
 
 ### ⚠️ The one thing that must never happen
@@ -126,9 +128,9 @@ account.
 
 **Roles**
 
-| Role | Can do |
-| --- | --- |
-| `admin` | All content, plus academy information |
+| Role     | Can do                                                  |
+| -------- | ------------------------------------------------------- |
+| `admin`  | All content, plus academy information                   |
 | `editor` | All content; cannot change academy information or roles |
 
 An account with no row in `user_roles` can sign in to Supabase but is refused entry to the
@@ -146,10 +148,10 @@ be changed from the Supabase dashboard by someone with real access.
 
 `0003_storage.sql` creates two public buckets:
 
-| Bucket | For | Limit |
-| --- | --- | --- |
-| `academy-media` | Photos and images (JPEG, PNG, WebP, AVIF, SVG) | 10 MB |
-| `academy-documents` | PDFs (binder, handouts, waivers) | 25 MB |
+| Bucket              | For                                            | Limit |
+| ------------------- | ---------------------------------------------- | ----- |
+| `academy-media`     | Photos and images (JPEG, PNG, WebP, AVIF, SVG) | 10 MB |
+| `academy-documents` | PDFs (binder, handouts, waivers)               | 25 MB |
 
 Anyone can read them — they are published inside a public app. Only signed-in staff can
 upload, replace or delete.
@@ -216,6 +218,40 @@ data. See [SECURITY_AND_PRIVACY.md](SECURITY_AND_PRIVACY.md).
 
 ---
 
+## 7b. Messages from families → your email
+
+Once `0005_contact_messages.sql` has run, the Message screen in the app stores each message
+for staff. The database lets anyone _send_ one and lets **only staff read** them; the sender
+cannot read it back and neither can any other visitor. Staff read and answer them under
+_Admin → Messages from families_.
+
+To have every message **also arrive in the academy's email**:
+
+1. Create a free account at [resend.com](https://resend.com) and make an API key. Sending
+   from their test address works immediately; to send from your own domain, add the DNS
+   records they show you.
+2. Make up a long random webhook secret (for example `openssl rand -hex 32`).
+3. Deploy the function and store the secrets — on the server, never in this repository:
+   ```bash
+   supabase functions deploy forward-message --no-verify-jwt
+   supabase secrets set RESEND_API_KEY=re_... \
+     FORWARD_WEBHOOK_SECRET=<the random secret> \
+     MESSAGE_FORWARD_TO=lmaa.wilsonville@gmail.com \
+     MESSAGE_FROM="LMAA Family App <onboarding@resend.dev>"
+   ```
+4. In Supabase, open **Database → Webhooks → Create a new hook**: table
+   `contact_messages`, event **Insert**, type **HTTP request**, method **POST**, URL
+   `https://<project>.supabase.co/functions/v1/forward-message`, and add an HTTP header
+   `x-webhook-secret` with the same random secret.
+5. Send yourself a test message from the app. It appears in the inbox at once and in your
+   email within a few seconds. Replying to the email goes straight to the family when they
+   gave an email address.
+
+The function refuses any call without the secret header, so nobody who finds the URL can
+make your inbox send email. If forwarding ever fails, the message is still safe in the inbox.
+
+---
+
 ## 8. Checking it worked
 
 1. Open the site. The **More** screen footer should no longer say "Demo content".
@@ -229,11 +265,11 @@ data. See [SECURITY_AND_PRIVACY.md](SECURITY_AND_PRIVACY.md).
 
 ## 9. Troubleshooting
 
-| Symptom | Cause and fix |
-| --- | --- |
-| Still shows demo content | Variables missing/misspelled, or the deployment has not re-run. Both `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` must be set. |
-| Console error about a secret key | A privileged key was configured. Replace it with the publishable key **and rotate the leaked one in Supabase**. |
-| "This account is not set up for the LMAA admin area" | The user has no row in `user_roles`. Section 5. |
-| Saving fails with a permissions error | The signed-in account is an `editor` trying to change academy information — that is admin-only. |
-| Families see nothing but staff see everything | Working as intended: items are drafts, or their publish time is in the future. |
-| Everything is empty after connecting | The database is genuinely empty. Run `supabase/seed.sql`, or add content in the admin area. |
+| Symptom                                              | Cause and fix                                                                                                                             |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Still shows demo content                             | Variables missing/misspelled, or the deployment has not re-run. Both `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` must be set. |
+| Console error about a secret key                     | A privileged key was configured. Replace it with the publishable key **and rotate the leaked one in Supabase**.                           |
+| "This account is not set up for the LMAA admin area" | The user has no row in `user_roles`. Section 5.                                                                                           |
+| Saving fails with a permissions error                | The signed-in account is an `editor` trying to change academy information — that is admin-only.                                           |
+| Families see nothing but staff see everything        | Working as intended: items are drafts, or their publish time is in the future.                                                            |
+| Everything is empty after connecting                 | The database is genuinely empty. Run `supabase/seed.sql`, or add content in the admin area.                                               |

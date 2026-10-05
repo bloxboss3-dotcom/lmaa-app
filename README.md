@@ -16,16 +16,16 @@ Android app with Capacitor.
 
 ## What is in this release
 
-| Area              | What families get                                                                                                                                                                                           |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Home**          | Today's classes, the next event, the latest announcement, quick actions, install prompt                                                                                                                     |
-| **Updates**       | Announcement feed with categories, pinned and urgent posts, unread marks, detail pages                                                                                                                      |
-| **Schedule**      | A real responsive timetable — today and weekly views, program/level filters, cancellation and time-change notices                                                                                           |
-| **Events**        | Upcoming and past events, add-to-calendar (`.ics`), directions, registration and waiver links, sharing                                                                                                      |
-| **Learn**         | Curriculum videos, the LMAA binder and documents, programs, FAQs, student resources                                                                                                                         |
-| **More**          | About, contact and directions, gallery, notification preferences, install help, privacy policy, app version, discreet staff sign-in                                                                         |
-| **Admin**         | A protected content manager for updates, events, schedule, resources, programs, FAQs, pages, gallery and academy information; one-tap templates for the events LMAA runs every year; staff access and roles |
-| **Notifications** | Real Web Push. Families choose class changes, events or academy news; staff send from the admin area or alongside a post. Nothing is ever reported as sent unless it was                                    |
+| Area              | What families get                                                                                                                                                                                                                            |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Home**          | The academy's photos up top, today's classes, your starred class, the next event, the latest announcement, call / directions / message, install prompt                                                                                       |
+| **Updates**       | Announcement feed with categories, pinned and urgent posts, unread marks, detail pages                                                                                                                                                       |
+| **Schedule**      | A real responsive timetable — today and weekly views, program/level filters, cancellation and time-change notices                                                                                                                            |
+| **Events**        | Upcoming and past events, add-to-calendar (`.ics`), directions, registration and waiver links, sharing                                                                                                                                       |
+| **Learn**         | Curriculum videos, the LMAA binder and documents, programs, FAQs, student resources                                                                                                                                                          |
+| **More**          | About, contact and directions, **message the academy** (no account needed), gallery, notification preferences, install help, privacy policy, app version, discreet staff sign-in                                                             |
+| **Admin**         | A protected content manager for updates, events, schedule, resources, programs, FAQs, pages, gallery and academy information; an inbox for families' messages; one-tap templates for the events LMAA runs every year; staff access and roles |
+| **Notifications** | Real Web Push. Families choose class changes, events or academy news; staff send from the admin area or alongside a post. Nothing is ever reported as sent unless it was                                                                     |
 
 The app runs in one of two modes, decided automatically at build time:
 

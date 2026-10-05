@@ -2,7 +2,9 @@ import type {
   AcademyEvent,
   AcademySettings,
   Announcement,
+  ContactMessageDraft,
   Faq,
+  MessageStatus,
   GalleryItem,
   LearningResource,
   Page,
@@ -132,6 +134,15 @@ export class LazySupabaseRepository implements ContentRepository {
   }
   async updateSettings(settings: AcademySettings) {
     return (await this.repo()).updateSettings(settings)
+  }
+  async sendMessage(draft: ContactMessageDraft) {
+    return (await this.repo()).sendMessage(draft)
+  }
+  async listMessages() {
+    return (await this.repo()).listMessages()
+  }
+  async setMessageStatus(id: string, status: MessageStatus) {
+    return (await this.repo()).setMessageStatus(id, status)
   }
 }
 

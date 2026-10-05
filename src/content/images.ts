@@ -43,11 +43,24 @@ export const PROGRAM_IMAGES: Record<string, string> = {
   'family-class': 'images/program-family.jpg',
 }
 
+/**
+ * The Home photo strip until the academy adds its own gallery photos. Once a
+ * published gallery photo exists, those take over and these are never shown.
+ */
+export const HOME_PHOTOS: string[] = [
+  'images/program-kids.jpg',
+  'images/belts.jpg',
+  'images/event-parents-day.jpg',
+  'images/event-belt-testing.jpg',
+  'images/update-testing.jpg',
+]
+
 /** Every image path the app references, for the existence test. */
 export const ALL_APP_IMAGES: string[] = [
   ...new Set([
     ...Object.values(UPDATE_CATEGORY_IMAGES),
     ...Object.values(PAGE_HERO_IMAGES),
     ...Object.values(PROGRAM_IMAGES),
+    ...HOME_PHOTOS,
   ]),
 ] as string[]

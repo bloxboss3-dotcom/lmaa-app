@@ -22,7 +22,7 @@ right, then tick it off. Anything wrong can be fixed in **Admin** in under a min
       `leesmartialartsacademy.com/images/logo.png`. Used for the app icon, the staff
       sign-in screen and the home-screen icon. The "LMAA" lettering was cropped from the
       same file for the app header.
-      *If you have the original vector or a larger PNG, send it — see [§1](#1-brand-artwork-still-wanted).*
+      _If you have the original vector or a larger PNG, send it — see [§1](#1-brand-artwork-still-wanted)._
 - [ ] **Contact details** — (503) 682-2318 · lmaa.wilsonville@gmail.com ·
       8263 SW Wilsonville Rd, Ste A, Wilsonville, OR 97070 · Mon–Fri 1:00–8:40 PM ·
       Instagram @lmaa\_\_wilsonville
@@ -63,7 +63,7 @@ Two deliberate omissions you may want to revisit:
       mark inside the middle **80%** (the "safe zone") so Android's circular mask does not
       crop it. The current icons are generated from the website logo on the brand paper
       background; a purpose-made square version would read better at home-screen size.
-      *Regenerate with* `npm run icons`.
+      _Regenerate with_ `npm run icons`.
 - [ ] **A hero photo (optional)** — a wide academy photo, at least **1600 × 900 px**, that
       LMAA owns.
 
@@ -72,7 +72,7 @@ Two deliberate omissions you may want to revisit:
 
 ---
 
-## 2. Class schedule → *Admin → Class schedule*
+## 2. Class schedule → _Admin → Class schedule_
 
 The full published timetable is in the app. Still worth adding:
 
@@ -87,7 +87,7 @@ plain-language note, and families see a badge on that class.
 
 ---
 
-## 3. Events → *Admin → Events*
+## 3. Events → _Admin → Events_
 
 **The Events screen is empty on purpose.** The website describes camps, parties and
 tournaments but publishes no dates, and inventing a belt-test date is exactly the kind of
@@ -105,20 +105,24 @@ Every event gets an **Add to calendar** button and a **Directions** button autom
 
 ---
 
-## 4. Learning resources → *Admin → Learning resources*
+## 4. Learning resources → _Admin → Learning resources_
 
 The **Curriculum videos** and **Binder & documents** sections are empty. They will stay
 empty until LMAA supplies real material — no martial arts instruction has been written by
 the app.
 
-- [ ] **Curriculum videos** — YouTube or Vimeo links, one per form/technique, tagged with
-      the program and belt level. **LMAA must own the video or have permission to use it.**
+- [ ] **The LMAA Wilsonville YouTube channel link.** The app plays YouTube videos inside
+      the Learn tab, grouped by belt. Send the channel (or a list of video links) and, for
+      each form, which belt it belongs to — the videos are filed under _Admin → Learning
+      resources_ with the program and level, and the screen sorts them into belt order.
+      **LMAA must own the video or have permission to use it.** (The 2019 "Fun in the Park"
+      video on YouTube was uploaded by a private account, so it is not used.)
 - [ ] **The student binder** (PDF) and any terminology sheets or printable handouts
 - [ ] Any parent guides or at-home practice sheets
 
 ---
 
-## 5. Photo gallery → *Admin → Photo gallery*
+## 5. Photo gallery → _Admin → Photo gallery_
 
 **Empty on purpose.** Photographs of students are the one thing the app will never source
 for you.
@@ -126,16 +130,33 @@ for you.
 - [ ] Photos LMAA owns, with **written confirmation** that everyone shown (or their parent
       or guardian, for anyone under 18) has agreed to the photo being used in the app
 - [ ] A caption and photo credit for each
+- [ ] **The first eight published gallery photos rotate at the top of the Home screen.**
+      Until there are any, the Home strip shows the app's own pictures of the dojang. Wide
+      (landscape) photos work best there; order them with the sort field.
 
 ---
 
-## 6. Privacy policy → *Admin → Information pages → Privacy Policy*
+## 6. Privacy policy → _Admin → Information pages → Privacy Policy_
 
 - [ ] **The privacy policy is a draft and is marked as such in the app.** It must be read
       and approved by LMAA before launch. It currently states, accurately, that the app
       collects no student or child information, requires no account, and stores read marks
       only on the family's own device. If that changes — especially if push notifications
       are switched on — the policy must be updated **before** the feature goes live.
+
+---
+
+## 6b. Messages from families → _Admin → Messages from families_
+
+Families can message the academy from the app without an account (Home → Message, or
+More → Message the academy).
+
+- Until Supabase is connected, the app opens the family's own mail app with the message
+  written and addressed to **lmaa.wilsonville@gmail.com** — nothing to set up.
+- Once Supabase is connected, messages land in the staff inbox inside the app. To have each
+  one **also emailed to you**, follow "Messages from families" in `SUPABASE_SETUP.md`
+  (about fifteen minutes, needs a free Resend account).
+- [ ] Confirm **which email address** should receive messages
 
 ---
 

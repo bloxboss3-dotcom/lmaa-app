@@ -4,6 +4,8 @@ import type {
   Announcement,
   AnnouncementCategory,
   AnnouncementPriority,
+  ContactMessage,
+  ContactMessageDraft,
   Faq,
   GalleryItem,
   LearningResource,
@@ -433,6 +435,41 @@ export function fromGalleryItem(draft: Draft<GalleryItem>) {
     credit: nullable(draft.credit),
     sort_order: draft.sortOrder,
     published: draft.published,
+  }
+}
+
+/* ---------------------------------------------------------------- messages */
+
+export interface MessageRow {
+  id: string
+  name: string
+  contact: string
+  topic: ContactMessage['topic']
+  body: string
+  status: ContactMessage['status']
+  created_at: string
+  handled_at: string | null
+}
+
+export function toMessage(row: MessageRow): ContactMessage {
+  return {
+    id: row.id,
+    name: row.name,
+    contact: row.contact,
+    topic: row.topic,
+    body: row.body,
+    status: row.status,
+    createdAt: row.created_at,
+    handledAt: optional(row.handled_at),
+  }
+}
+
+export function fromMessageDraft(draft: ContactMessageDraft) {
+  return {
+    name: draft.name,
+    contact: draft.contact,
+    topic: draft.topic,
+    body: draft.body,
   }
 }
 

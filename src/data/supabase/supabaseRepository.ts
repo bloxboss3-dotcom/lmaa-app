@@ -3,7 +3,10 @@ import type {
   AcademyEvent,
   AcademySettings,
   Announcement,
+  ContactMessage,
+  ContactMessageDraft,
   Faq,
+  MessageStatus,
   GalleryItem,
   LearningResource,
   Page,
@@ -39,6 +42,7 @@ export const TABLES = {
   pages: 'pages',
   gallery: 'gallery_items',
   settings: 'app_settings',
+  messages: 'contact_messages',
 } as const
 
 export class SupabaseRepository implements ContentRepository {
@@ -213,12 +217,7 @@ export class SupabaseRepository implements ContentRepository {
   }
 
   saveScheduleEntry(draft: Draft<ScheduleEntry>): Promise<ScheduleEntry> {
-    return this.upsert(
-      TABLES.schedule,
-      map.fromScheduleEntry(draft),
-      map.toScheduleEntry,
-      'class',
-    )
+    return this.upsert(TABLES.schedule, map.fromScheduleEntry(draft), map.toScheduleEntry, 'class')
   }
   deleteScheduleEntry(id: string): Promise<void> {
     return this.removeRow(TABLES.schedule, id, 'class')
@@ -257,6 +256,36 @@ export class SupabaseRepository implements ContentRepository {
   }
   deleteGalleryItem(id: string): Promise<void> {
     return this.removeRow(TABLES.gallery, id, 'photo')
+  }
+
+  /* ------------------------------------------------------------ messages */
+
+  async sendMessage(draft: ContactMessageDraft): Promise<void> {
+    // No `.select()`: an anonymous visitor may insert a message but can never
+    // read one back, and asking for the row would turn a successful send into
+    // a permissions error.
+    const { error } = await this.client.from(TABLES.messages).insert(map.fromMessageDraft(draft))
+    if (error) throw new ContentError('Your message could not be sent. Please try again.', error)
+  }
+
+  async listMessages(): Promise<ContactMessage[]> {
+    const { data, error } = await this.client
+      .from(TABLES.messages)
+      .select('*')
+      .order('created_at', { ascending: false })
+    if (error) this.fail('messages from families', error)
+    return (data ?? []).map((row) => map.toMessage(row as map.MessageRow))
+  }
+
+  async setMessageStatus(id: string, status: MessageStatus): Promise<ContactMessage> {
+    const { data, error } = await this.client
+      .from(TABLES.messages)
+      .update({ status, handled_at: status === 'handled' ? new Date().toISOString() : null })
+      .eq('id', id)
+      .select()
+      .single()
+    if (error) throw new ContentError('Could not update this message.', error)
+    return map.toMessage(data as map.MessageRow)
   }
 
   async updateSettings(settings: AcademySettings): Promise<AcademySettings> {

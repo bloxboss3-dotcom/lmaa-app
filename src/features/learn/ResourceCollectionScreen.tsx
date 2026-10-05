@@ -11,6 +11,7 @@ import { RichText } from '@/components/ui/RichText'
 import type { LearningResource, ResourceCollection } from '@/domain/types'
 import { useDocumentTitle } from '@/lib/hooks'
 import { parseVideoUrl } from '@/lib/video'
+import { groupCurriculum } from '@/domain/curriculum'
 
 const COLLECTION_META: Record<
   ResourceCollection,
@@ -50,6 +51,8 @@ export function ResourceCollectionScreen() {
     .sort((a, b) => a.sortOrder - b.sortOrder)
 
   const embed = parseVideoUrl(videoResource?.videoUrl)
+  // Curriculum is read by belt: group it so a family lands on their own level.
+  const groups = key === 'curriculum' ? groupCurriculum(items) : null
 
   return (
     <Screen className="mx-auto max-w-3xl">
@@ -59,6 +62,27 @@ export function ResourceCollectionScreen() {
         <div className="space-y-3">
           <Skeleton className="h-24" />
           <Skeleton className="h-24" />
+        </div>
+      ) : groups && groups.length > 1 ? (
+        <div className="space-y-6">
+          {groups.map((group) => (
+            <section key={group.label} aria-labelledby={`level-${slugify(group.label)}`}>
+              <h2
+                id={`level-${slugify(group.label)}`}
+                className="mb-2 flex items-center gap-2 px-1 eyebrow"
+              >
+                {group.label}
+                <Badge tone="neutral">{group.items.length}</Badge>
+              </h2>
+              <ul className="space-y-2.5">
+                {group.items.map((item) => (
+                  <li key={item.id}>
+                    <ResourceCard resource={item} onPlay={() => setVideoResource(item)} />
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))}
         </div>
       ) : items.length ? (
         <ul className="space-y-2.5">
@@ -95,8 +119,8 @@ export function ResourceCollectionScreen() {
           </div>
         ) : (
           <p className="text-sm leading-relaxed text-ink-600">
-            This video is hosted somewhere the app cannot play directly. Use the button below to open
-            it.
+            This video is hosted somewhere the app cannot play directly. Use the button below to
+            open it.
           </p>
         )}
         <div className="mt-4 flex flex-wrap gap-2">
@@ -117,28 +141,55 @@ export function ResourceCollectionScreen() {
   )
 }
 
-function ResourceCard({
-  resource,
-  onPlay,
-}: {
-  resource: LearningResource
-  onPlay: () => void
-}) {
+function slugify(value: string): string {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+}
+
+function ResourceCard({ resource, onPlay }: { resource: LearningResource; onPlay: () => void }) {
   const link = resource.videoUrl ?? resource.documentUrl ?? resource.externalUrl
   const hasLink = Boolean(link)
+  // A still from the video itself when the academy did not upload one. The
+  // image comes from a cookieless CDN; nothing talks to YouTube until play.
+  const thumbnail = resource.thumbnailUrl ?? parseVideoUrl(resource.videoUrl)?.thumbnailUrl
 
   return (
     <Card className="flex gap-3.5">
-      {resource.thumbnailUrl ? (
+      {thumbnail && resource.type === 'video' && hasLink ? (
+        <button
+          type="button"
+          onClick={onPlay}
+          aria-label={`Watch ${resource.title}`}
+          className="group relative h-[4.5rem] w-32 shrink-0 overflow-hidden rounded-xl bg-ink-900"
+        >
+          <img
+            src={thumbnail}
+            alt=""
+            className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.04]"
+            loading="lazy"
+            referrerPolicy="no-referrer"
+          />
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-crimson-600 shadow">
+              <Icon name="play" size={16} />
+            </span>
+          </span>
+        </button>
+      ) : thumbnail ? (
         <img
-          src={resource.thumbnailUrl}
+          src={thumbnail}
           alt=""
           className="h-16 w-24 shrink-0 rounded-xl object-cover"
           loading="lazy"
+          referrerPolicy="no-referrer"
         />
       ) : (
         <span className="flex h-16 w-16 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-ink-400">
-          <Icon name={resource.type === 'video' ? 'play' : resource.type === 'document' ? 'file' : 'link'} size={22} />
+          <Icon
+            name={
+              resource.type === 'video' ? 'play' : resource.type === 'document' ? 'file' : 'link'
+            }
+            size={22}
+          />
         </span>
       )}
 

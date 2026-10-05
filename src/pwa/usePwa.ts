@@ -6,6 +6,9 @@ import { STORAGE_KEYS, readJson, writeJson } from '@/lib/storage'
  * Progressive Web App plumbing: update prompts and the install experience.
  */
 
+const UPDATE_CHECK_MIN_GAP_MS = 10 * 60 * 1000
+const UPDATE_CHECK_INTERVAL_MS = 60 * 60 * 1000
+
 export interface AppUpdateState {
   /** A new version is downloaded and waiting for the family to accept it. */
   updateReady: boolean
@@ -22,6 +25,25 @@ export function useAppUpdate(): AppUpdateState {
   } = useRegisterSW({
     onRegisterError(error) {
       console.warn('[LMAA] Service worker registration failed', error)
+    },
+    // An installed app is rarely reloaded, and the browser only looks for a
+    // new service worker on navigation — so a family could keep an old
+    // version for weeks. Look again whenever the app comes back to the
+    // foreground (at most every ten minutes) and once an hour while open.
+    onRegisteredSW(_url, registration) {
+      if (!registration) return
+      let lastCheck = Date.now()
+      const check = () => {
+        lastCheck = Date.now()
+        registration.update().catch(() => {
+          /* offline, or the server is unreachable — try again next time */
+        })
+      }
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState !== 'visible') return
+        if (Date.now() - lastCheck >= UPDATE_CHECK_MIN_GAP_MS) check()
+      })
+      window.setInterval(check, UPDATE_CHECK_INTERVAL_MS)
     },
   })
 

@@ -23,6 +23,8 @@ import type { ScheduleEntry } from '@/domain/types'
 import { useDocumentTitle, useNow } from '@/lib/hooks'
 import { useInstallPrompt } from '@/pwa/usePwa'
 import { Screen } from '@/components/layout/PageIntro'
+import { HOME_PHOTOS } from '@/content/images'
+import { PhotoStrip, type StripPhoto } from './PhotoStrip'
 
 /**
  * Home answers one question first: "when is class?"
@@ -75,8 +77,25 @@ export function HomeScreen() {
     return count
   })
 
+  // The academy's own photographs lead, the moment it publishes any; until
+  // then the strip shows the app's illustrative pictures of the dojang.
+  const galleryPhotos = [...bundle.gallery].sort((a, b) => a.sortOrder - b.sortOrder).slice(0, 8)
+  const photos: StripPhoto[] = galleryPhotos.length
+    ? galleryPhotos.map((item) => ({
+        src: item.imageUrl,
+        alt: item.title ?? '',
+        caption: item.caption,
+      }))
+    : HOME_PHOTOS.map((src) => ({ src, alt: '' }))
+
   return (
     <Screen className="mx-auto max-w-2xl">
+      {loading ? (
+        <Skeleton className="aspect-[16/9] rounded-[var(--radius-card)] sm:aspect-[2/1]" />
+      ) : (
+        <PhotoStrip photos={photos} to={galleryPhotos.length ? '/more/gallery' : undefined} />
+      )}
+
       <header>
         <p className="eyebrow eyebrow-accent">{formatDate(now)}</p>
         {/* The single loud moment on the screen — everything else stays quiet. */}
@@ -276,11 +295,11 @@ export function HomeScreen() {
             unavailable="No map link added yet"
           />
           <Link
-            to="/more/contact"
+            to="/more/message"
             className="flex min-h-[62px] flex-col items-center justify-center gap-1.5 rounded-[var(--radius-card)] border border-ink-100 bg-surface text-ink-700 transition-colors hover:bg-ink-50"
           >
             <Icon name="mail" size={18} />
-            <span className="text-xs font-medium">Contact</span>
+            <span className="text-xs font-medium">Message</span>
           </Link>
         </div>
       </section>

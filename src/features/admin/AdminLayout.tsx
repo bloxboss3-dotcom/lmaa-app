@@ -79,6 +79,7 @@ export function AdminLayout() {
       icon: collection.icon,
       end: false,
     })),
+    { to: '/admin/inbox', label: 'Messages from families', icon: 'mail' as const, end: false },
     { to: '/admin/notify', label: 'Send a notification', icon: 'bell' as const, end: false },
     { to: '/admin/settings', label: 'Academy info', icon: 'sliders' as const, end: false },
     // Access control is an administrator's job, so it is not shown to editors.

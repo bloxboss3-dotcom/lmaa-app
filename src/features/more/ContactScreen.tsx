@@ -1,6 +1,6 @@
 import { useContent } from '@/app/context'
 import { Screen, PageIntro } from '@/components/layout/PageIntro'
-import { ExternalButton } from '@/components/ui/Button'
+import { ExternalButton, LinkButton } from '@/components/ui/Button'
 import { Card, EmptyState } from '@/components/ui/Card'
 import { Icon, type IconName } from '@/components/ui/Icon'
 import { mailtoHref, telHref } from '@/domain/format'
@@ -47,10 +47,12 @@ export function ContactScreen() {
           </Card>
 
           <div className="flex flex-wrap gap-2">
+            <LinkButton to="/more/message" icon="mail" variant="primary">
+              Message the academy
+            </LinkButton>
             <ExternalButton
               href={telHref(settings.phone)}
               icon="phone"
-              variant="primary"
               disabledReason="The phone number has not been added yet"
             >
               Call the academy
@@ -80,9 +82,7 @@ export function ContactScreen() {
 
           {social.length ? (
             <section>
-              <h2 className="mb-2 eyebrow">
-                Follow the academy
-              </h2>
+              <h2 className="mb-2 eyebrow">Follow the academy</h2>
               <div className="flex flex-wrap gap-2">
                 {social.map(([name, url]) => (
                   <ExternalButton key={name} href={url} icon="external" size="sm">
@@ -103,15 +103,7 @@ export function ContactScreen() {
   )
 }
 
-function InfoRow({
-  icon,
-  label,
-  value,
-}: {
-  icon: IconName
-  label: string
-  value?: string
-}) {
+function InfoRow({ icon, label, value }: { icon: IconName; label: string; value?: string }) {
   return (
     <div className="flex gap-3.5">
       <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-ink-50 text-ink-600">

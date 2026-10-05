@@ -57,7 +57,7 @@ Do this once:
 2. Click **Settings** (top row of tabs).
 3. In the left menu, click **Pages**.
 4. Under **Build and deployment → Source**, choose **GitHub Actions**.
-   *Do not* choose "Deploy from a branch".
+   _Do not_ choose "Deploy from a branch".
 5. That is the whole setup. There is nothing to save on that screen.
 
 Now make anything happen on the `main` branch (push a change, or use the manual run in
@@ -95,14 +95,14 @@ You will get an email from GitHub, and the Actions tab shows a red ✗.
 
 What the steps mean:
 
-| Step | If it fails |
-| --- | --- |
-| **Install dependencies** | Usually a temporary network problem — re-run the workflow. |
-| **Lint** | A code-style rule was broken. |
-| **Check types** | Something does not match what the code expects. |
-| **Run tests** | A change broke behaviour that is protected by a test. Read the test name — it says what broke. |
-| **Build the app** | The app could not be assembled. |
-| **Deploy** | Almost always means GitHub Pages is not set to "GitHub Actions" (section 3). |
+| Step                     | If it fails                                                                                    |
+| ------------------------ | ---------------------------------------------------------------------------------------------- |
+| **Install dependencies** | Usually a temporary network problem — re-run the workflow.                                     |
+| **Lint**                 | A code-style rule was broken.                                                                  |
+| **Check types**          | Something does not match what the code expects.                                                |
+| **Run tests**            | A change broke behaviour that is protected by a test. Read the test name — it says what broke. |
+| **Build the app**        | The app could not be assembled.                                                                |
+| **Deploy**               | Almost always means GitHub Pages is not set to "GitHub Actions" (section 3).                   |
 
 **Important:** a failed deployment never takes the site down. Families keep seeing the
 last version that worked.
@@ -172,16 +172,16 @@ tap **Staff sign in**.
 
 Inside, you can manage:
 
-| Section | Use it for |
-| --- | --- |
-| **Updates** | Announcements. Schedule a post for later, pin it, set importance, add a button, or set a date it disappears. |
-| **Events** | Testing dates, tournaments, camps, celebrations. Add a registration or waiver link. |
-| **Class schedule** | Add or change class times. Mark a class **Cancelled** or **Time changed** and families see a notice on that class. |
-| **Learning resources** | Curriculum videos, binder documents, student resources. |
-| **Programs** | Program names, ages and descriptions. |
-| **Questions** | The FAQ list. |
-| **Information pages** | About, privacy policy, support. |
-| **Photo gallery** | Academy photos (see the permission note in CONTENT_NEEDED.md). |
+| Section                 | Use it for                                                                                                               |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Updates**             | Announcements. Schedule a post for later, pin it, set importance, add a button, or set a date it disappears.             |
+| **Events**              | Testing dates, tournaments, camps, celebrations. Add a registration or waiver link.                                      |
+| **Class schedule**      | Add or change class times. Mark a class **Cancelled** or **Time changed** and families see a notice on that class.       |
+| **Learning resources**  | Curriculum videos, binder documents, student resources.                                                                  |
+| **Programs**            | Program names, ages and descriptions.                                                                                    |
+| **Questions**           | The FAQ list.                                                                                                            |
+| **Information pages**   | About, privacy policy, support.                                                                                          |
+| **Photo gallery**       | Academy photos (see the permission note in CONTENT_NEEDED.md).                                                           |
 | **Academy information** | Phone, email, address, map link, website, social links. This is what makes the **Call** and **Directions** buttons work. |
 
 Useful habits:
@@ -199,17 +199,25 @@ see updates when they open the app.
 
 ---
 
+### Messages from families
+
+Families can write to you from the app (Home → **Message**). Until Supabase is connected,
+that opens their own mail app with the message addressed to the academy — nothing for you to
+do. Once Supabase is connected, messages arrive under **Admin → Messages from families**;
+reply with the email or phone number the family gave, then mark the message handled. If you
+also want each message in your email inbox, `SUPABASE_SETUP.md` has the steps.
+
 ## 9. Common problems
 
-| What you see | What to do |
-| --- | --- |
-| The site shows "404 — File not found" | GitHub Pages is not set to **GitHub Actions**. Redo section 3. |
-| The site loads but looks unstyled | The `VITE_BASE_PATH` variable is wrong. Delete the repository variable so the workflow works it out automatically. |
+| What you see                                            | What to do                                                                                                                       |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| The site shows "404 — File not found"                   | GitHub Pages is not set to **GitHub Actions**. Redo section 3.                                                                   |
+| The site loads but looks unstyled                       | The `VITE_BASE_PATH` variable is wrong. Delete the repository variable so the workflow works it out automatically.               |
 | A screen shows "Demo content" after connecting Supabase | The two Supabase variables are missing, misspelled, or the deployment has not re-run. Check section 6, then re-run the workflow. |
-| Sign-in says "not set up for the LMAA admin area" | The account exists but has no role. See SUPABASE_SETUP.md section 5. |
-| Families see an old version | They need to reload once. The app also shows an "A new version is ready" prompt automatically. |
-| Nothing appears after saving | Check the item is not still a **draft**, and that "Post at" is not in the future. |
-| The Call or Directions button is greyed out | The phone number or map link has not been added in **Academy information**. |
+| Sign-in says "not set up for the LMAA admin area"       | The account exists but has no role. See SUPABASE_SETUP.md section 5.                                                             |
+| Families see an old version                             | They need to reload once. The app also shows an "A new version is ready" prompt automatically.                                   |
+| Nothing appears after saving                            | Check the item is not still a **draft**, and that "Post at" is not in the future.                                                |
+| The Call or Directions button is greyed out             | The phone number or map link has not been added in **Academy information**.                                                      |
 
 ---
 
