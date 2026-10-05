@@ -2,9 +2,11 @@ import type {
   AcademyEvent,
   AcademySettings,
   Announcement,
+  ContactMessageDraft,
   Faq,
   GalleryItem,
   LearningResource,
+  MessageStatus,
   Page,
   Program,
   ScheduleEntry,
@@ -12,12 +14,7 @@ import type {
 import { env } from '@/config/env'
 import { DemoRepository } from './demo/demoRepository'
 import { LazySupabaseRepository } from './lazy'
-import type {
-  ContentBundle,
-  ContentQueryOptions,
-  ContentRepository,
-  Draft,
-} from './repository'
+import type { ContentBundle, ContentQueryOptions, ContentRepository, Draft } from './repository'
 
 export * from './repository'
 export { DemoRepository } from './demo/demoRepository'
@@ -143,6 +140,19 @@ export class ResilientRepository implements ContentRepository {
   }
   updateSettings(settings: AcademySettings) {
     return this.primary.updateSettings(settings)
+  }
+
+  // Never routed to the fallback: a family must not be told a message was
+  // sent when it only reached this device, and staff must see the real
+  // inbox or the real error.
+  sendMessage(draft: ContactMessageDraft) {
+    return this.primary.sendMessage(draft)
+  }
+  listMessages() {
+    return this.primary.listMessages()
+  }
+  setMessageStatus(id: string, status: MessageStatus) {
+    return this.primary.setMessageStatus(id, status)
   }
 }
 

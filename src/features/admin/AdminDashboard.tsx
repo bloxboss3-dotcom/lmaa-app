@@ -9,12 +9,14 @@ import { partitionEvents } from '@/domain/events'
 import { formatDateTime } from '@/domain/format'
 import { useAdminContent } from './adminContext'
 import { COLLECTIONS } from './collections'
+import { useInbox } from './useInbox'
 
 export function AdminDashboard() {
   const { bundle, loading } = useAdminContent()
   const { session } = useAuth()
   const { mode } = useRepository()
   const notifications = useNotifications()
+  const { unread } = useInbox()
   const now = new Date()
 
   const liveUpdates = bundle.announcements.filter((item) => isAnnouncementVisible(item, now))
@@ -35,9 +37,7 @@ export function AdminDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <p className="eyebrow">
-          {session?.role === 'admin' ? 'Administrator' : 'Editor'}
-        </p>
+        <p className="eyebrow">{session?.role === 'admin' ? 'Administrator' : 'Editor'}</p>
         <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">
           {session?.displayName ?? session?.email ?? 'Welcome'}
         </h1>
@@ -49,8 +49,8 @@ export function AdminDashboard() {
       <div className="grid grid-cols-2 gap-2.5 lg:grid-cols-4">
         <Stat label="Live updates" value={liveUpdates.length} icon="megaphone" />
         <Stat label="Upcoming events" value={upcoming.length} icon="star" />
+        <Stat label="New messages" value={unread} icon="mail" />
         <Stat label="Classes in the week" value={bundle.schedule.length} icon="calendar" />
-        <Stat label="Learning resources" value={bundle.resources.length} icon="book" />
       </div>
 
       {(scheduledUpdates.length > 0 || draftUpdates.length > 0 || cancelledClasses.length > 0) && (
@@ -67,7 +67,8 @@ export function AdminDashboard() {
           ) : null}
           {cancelledClasses.length ? (
             <Badge tone="red" icon="alert">
-              {cancelledClasses.length} class notice{cancelledClasses.length === 1 ? '' : 's'} active
+              {cancelledClasses.length} class notice{cancelledClasses.length === 1 ? '' : 's'}{' '}
+              active
             </Badge>
           ) : null}
         </div>
@@ -121,6 +122,21 @@ export function AdminDashboard() {
 
       <section>
         <SectionHeading title="Manage content" />
+        <Link
+          to="/admin/inbox"
+          className="mb-2 flex items-center gap-3 rounded-[var(--radius-card)] border border-ink-100 bg-surface p-3.5 transition-colors hover:bg-ink-50"
+        >
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-crimson-50 text-crimson-700">
+            <Icon name="mail" size={17} />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-semibold text-ink-900">Messages from families</span>
+            <span className="block text-xs text-ink-500">
+              Sent from the app&rsquo;s Message screen. Reply and mark handled.
+            </span>
+          </span>
+          <Badge tone={unread ? 'red' : 'neutral'}>{unread} new</Badge>
+        </Link>
         <ul className="grid gap-2 sm:grid-cols-2">
           {COLLECTIONS.map((collection) => (
             <li key={collection.key}>

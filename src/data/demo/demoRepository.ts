@@ -2,7 +2,10 @@ import type {
   AcademyEvent,
   AcademySettings,
   Announcement,
+  ContactMessage,
+  ContactMessageDraft,
   Faq,
+  MessageStatus,
   GalleryItem,
   Page,
   Program,
@@ -12,6 +15,7 @@ import type {
 } from '@/domain/types'
 import { STORAGE_KEYS, readJson, removeKey, writeJson } from '@/lib/storage'
 import {
+  ContentError,
   type ContentBundle,
   type ContentQueryOptions,
   type ContentRepository,
@@ -19,7 +23,7 @@ import {
   newId,
   nowIso,
 } from '../repository'
-import { createSeedBundle } from './seed'
+import { createSeedBundle, seedMessages } from './seed'
 
 /**
  * Demo repository: the app fully works before any backend exists.
@@ -65,7 +69,11 @@ export class DemoRepository implements ContentRepository {
     if (stored?.bundle) {
       const seed = createSeedBundle(this.clock())
       // Merge so newly-added seed fields don't break an older saved bundle.
-      this.cache = { ...seed, ...stored.bundle, settings: { ...seed.settings, ...stored.bundle.settings } }
+      this.cache = {
+        ...seed,
+        ...stored.bundle,
+        settings: { ...seed.settings, ...stored.bundle.settings },
+      }
     } else {
       this.cache = createSeedBundle(this.clock())
     }
@@ -252,5 +260,46 @@ export class DemoRepository implements ContentRepository {
     bundle.settings = { ...settings, updatedAt: nowIso() }
     this.persist()
     return clone(bundle.settings)
+  }
+
+  /* ------------------------------------------------------------ messages */
+
+  // Kept apart from the content bundle: messages are private, and the family
+  // screens never load them. In demo mode the family form opens the mail app
+  // instead of calling sendMessage, so what lands here is only ever the
+  // sample message and anything a developer sends on purpose.
+  private loadMessages(): ContactMessage[] {
+    const stored = readJson<ContactMessage[] | null>(STORAGE_KEYS.demoMessages, null)
+    return stored ?? seedMessages(this.clock())
+  }
+
+  private persistMessages(messages: ContactMessage[]): void {
+    writeJson(STORAGE_KEYS.demoMessages, messages)
+  }
+
+  async sendMessage(draft: ContactMessageDraft): Promise<void> {
+    const messages = this.loadMessages()
+    messages.unshift({ ...draft, id: newId(), status: 'new', createdAt: nowIso() })
+    this.persistMessages(messages)
+  }
+
+  async listMessages(): Promise<ContactMessage[]> {
+    return clone(
+      [...this.loadMessages()].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt)),
+    )
+  }
+
+  async setMessageStatus(id: string, status: MessageStatus): Promise<ContactMessage> {
+    const messages = this.loadMessages()
+    const index = messages.findIndex((message) => message.id === id)
+    if (index < 0) throw new ContentError('That message no longer exists.')
+    const updated: ContactMessage = {
+      ...messages[index],
+      status,
+      handledAt: status === 'handled' ? nowIso() : undefined,
+    }
+    messages[index] = updated
+    this.persistMessages(messages)
+    return clone(updated)
   }
 }

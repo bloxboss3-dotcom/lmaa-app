@@ -10,6 +10,12 @@
 export interface VideoEmbed {
   provider: 'youtube' | 'vimeo'
   embedUrl: string
+  /**
+   * A still from the video, when the provider serves one without cookies.
+   * YouTube's image CDN (i.ytimg.com) sets none, so a thumbnail can show in a
+   * list without the page talking to youtube.com until someone presses play.
+   */
+  thumbnailUrl?: string
 }
 
 export function parseVideoUrl(rawUrl: string | undefined): VideoEmbed | null {
@@ -24,26 +30,32 @@ export function parseVideoUrl(rawUrl: string | undefined): VideoEmbed | null {
 
   if (host === 'youtu.be') {
     const id = url.pathname.slice(1)
-    return id ? { provider: 'youtube', embedUrl: youtube(id) } : null
+    return id ? youtubeEmbed(id) : null
   }
   if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'youtube-nocookie.com') {
     if (url.pathname === '/watch') {
       const id = url.searchParams.get('v')
-      return id ? { provider: 'youtube', embedUrl: youtube(id) } : null
+      return id ? youtubeEmbed(id) : null
     }
     const embedMatch = /^\/(embed|shorts|live)\/([\w-]+)/.exec(url.pathname)
-    if (embedMatch) return { provider: 'youtube', embedUrl: youtube(embedMatch[2]) }
+    if (embedMatch) return youtubeEmbed(embedMatch[2])
     return null
   }
   if (host === 'vimeo.com' || host === 'player.vimeo.com') {
     const id = /(\d{6,})/.exec(url.pathname)?.[1]
-    return id
-      ? { provider: 'vimeo', embedUrl: `https://player.vimeo.com/video/${id}?dnt=1` }
-      : null
+    return id ? { provider: 'vimeo', embedUrl: `https://player.vimeo.com/video/${id}?dnt=1` } : null
   }
   return null
 }
 
 function youtube(id: string): string {
   return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?rel=0&modestbranding=1`
+}
+
+function youtubeEmbed(id: string): VideoEmbed {
+  return {
+    provider: 'youtube',
+    embedUrl: youtube(id),
+    thumbnailUrl: `https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg`,
+  }
 }

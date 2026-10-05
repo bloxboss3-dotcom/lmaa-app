@@ -129,3 +129,51 @@ rollback;
 begin; select 'anon registers a device      -> ' || pg_temp.call_as('anon', null, 'select public.register_push_device(''https://push.example/security-check-endpoint'',''k'',''a'',''{}'',''web'')'); rollback;
 begin; select 'anon writes the table direct -> ' || pg_temp.write_as(:'parent_id', 'insert into public.notification_subscriptions (platform, provider_id) values (''web'',''https://push.example/direct-write-attempt'')'); rollback;
 \echo ''
+
+-- ===========================================================================
+-- Messages from families (0005)
+-- ===========================================================================
+
+/** Like write_as, but for any role — anonymous visitors send messages too. */
+create or replace function pg_temp.write_as_role(p_role text, p_user uuid, p_sql text) returns text
+language plpgsql as $$
+declare n integer;
+begin
+  execute format('set local role %I', p_role);
+  if p_user is not null then
+    execute format('set local "request.jwt.claim.sub" = %L', p_user::text);
+  end if;
+  execute p_sql;
+  get diagnostics n = row_count;
+  reset role;
+  return case when n > 0 then 'ALLOWED (' || n || ' row(s))' else 'BLOCKED (0 rows)' end;
+exception when others then
+  reset role;
+  return 'BLOCKED (' || split_part(SQLERRM, E'\n', 1) || ')';
+end $$;
+
+begin;
+select 'EXPECT ALLOWED — a visitor can send a message: ' || pg_temp.write_as_role('anon', null,
+  $q$insert into public.contact_messages (name, contact, topic, body)
+     values ('A parent', 'parent@example.com', 'trial', 'Can my son try a class on Saturday?')$q$);
+select 'EXPECT BLOCKED — a visitor cannot send a pre-handled message: ' || pg_temp.write_as_role('anon', null,
+  $q$insert into public.contact_messages (name, contact, topic, body, status)
+     values ('A parent', 'parent@example.com', 'trial', 'Can my son try a class on Saturday?', 'handled')$q$);
+select 'EXPECT BLOCKED — a visitor cannot send an oversized message: ' || pg_temp.write_as_role('anon', null,
+  $q$insert into public.contact_messages (name, contact, topic, body)
+     values ('A parent', 'parent@example.com', 'trial', repeat('x', 2001))$q$);
+select 'EXPECT HIDDEN/BLOCKED — a visitor cannot read messages: ' ||
+  pg_temp.rows_visible_as('anon', null, 'select 1 from public.contact_messages');
+select 'EXPECT HIDDEN — a signed-in non-staff account cannot read messages: ' ||
+  pg_temp.rows_visible_as('authenticated', :'parent_id', 'select 1 from public.contact_messages');
+select 'EXPECT VISIBLE — an editor can read messages: ' ||
+  pg_temp.rows_visible_as('authenticated', :'editor_id', 'select 1 from public.contact_messages');
+select 'EXPECT ALLOWED — an editor can mark a message handled: ' || pg_temp.write_as(:'editor_id',
+  $q$update public.contact_messages set status = 'handled' where name = 'A parent'$q$);
+select 'EXPECT handled_by = editor — the server records who handled it: ' ||
+  coalesce((select handled_by::text from public.contact_messages where name = 'A parent' limit 1), 'null');
+select 'EXPECT BLOCKED — an editor cannot delete a message: ' || pg_temp.write_as(:'editor_id',
+  $q$delete from public.contact_messages where name = 'A parent'$q$);
+select 'EXPECT ALLOWED — an administrator can delete a message: ' || pg_temp.write_as(:'admin_id',
+  $q$delete from public.contact_messages where name = 'A parent'$q$);
+rollback;

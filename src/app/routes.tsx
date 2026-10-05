@@ -12,6 +12,7 @@ import { ProgramsScreen } from '@/features/learn/ProgramsScreen'
 import { FaqScreen } from '@/features/learn/FaqScreen'
 import { MoreScreen } from '@/features/more/MoreScreen'
 import { ContactScreen } from '@/features/more/ContactScreen'
+import { MessageScreen } from '@/features/more/MessageScreen'
 import { GalleryScreen } from '@/features/more/GalleryScreen'
 import { InstallScreen } from '@/features/more/InstallScreen'
 import { NotificationsScreen } from '@/features/more/NotificationsScreen'
@@ -50,6 +51,7 @@ export const routes: RouteObject[] = [
 
       { path: 'more', element: <MoreScreen /> },
       { path: 'more/contact', element: <ContactScreen /> },
+      { path: 'more/message', element: <MessageScreen /> },
       { path: 'more/programs', element: <ProgramsScreen /> },
       { path: 'more/faq', element: <FaqScreen /> },
       { path: 'more/gallery', element: <GalleryScreen /> },
@@ -87,6 +89,13 @@ export const routes: RouteObject[] = [
       },
       // Declared before `:collection` so these names are not swallowed by the
       // catch-all content route.
+      {
+        path: 'inbox',
+        lazy: async () => {
+          const { AdminInboxScreen } = await import('@/features/admin/AdminInboxScreen')
+          return { Component: AdminInboxScreen }
+        },
+      },
       {
         path: 'notify',
         lazy: async () => {

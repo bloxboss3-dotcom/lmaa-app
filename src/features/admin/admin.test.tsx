@@ -106,8 +106,38 @@ describe('admin area', () => {
     await user.click(await screen.findByRole('button', { name: /explore as editor/i }))
     await user.click((await screen.findAllByRole('link', { name: /academy info/i }))[0])
 
-    expect(await screen.findByText(/editors can manage content but not academy information/i))
-      .toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /save academy information/i })).not.toBeInTheDocument()
+    expect(
+      await screen.findByText(/editors can manage content but not academy information/i),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /save academy information/i }),
+    ).not.toBeInTheDocument()
+  })
+})
+
+describe('messages from families', () => {
+  it('shows the inbox with the sample message and lets staff mark it handled', async () => {
+    const user = userEvent.setup()
+    renderApp('/admin')
+    await user.click(await screen.findByRole('button', { name: /explore as administrator/i }))
+    await user.click((await screen.findAllByRole('link', { name: /messages from families/i }))[0])
+
+    expect(
+      await screen.findByRole('heading', { name: /messages from families/i }),
+    ).toBeInTheDocument()
+    expect(await screen.findByText(/sample parent/i)).toBeInTheDocument()
+    // Demo mode says plainly that real messages do not arrive here.
+    expect(
+      screen.getByText(/open their own mail app instead of arriving here/i),
+    ).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /mark as handled/i }))
+    // The "New" filter is on, so the handled message leaves the list.
+    await waitFor(() => {
+      expect(screen.queryByText(/sample parent/i)).not.toBeInTheDocument()
+    })
+    await user.click(screen.getByRole('button', { name: /^all/i }))
+    expect(await screen.findByText(/sample parent/i)).toBeInTheDocument()
+    expect(screen.getByText(/^handled$/i)).toBeInTheDocument()
   })
 })

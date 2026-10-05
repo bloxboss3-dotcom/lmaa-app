@@ -91,4 +91,5 @@ export const STORAGE_KEYS = {
   scheduleFilters: 'lmaa.schedule-filters.v1',
   myClasses: 'lmaa.my-classes.v1',
   visitCount: 'lmaa.visit-count.v1',
+  demoMessages: 'lmaa.demo-messages.v1',
 } as const

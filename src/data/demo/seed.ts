@@ -2,6 +2,7 @@ import type {
   AcademyEvent,
   AcademySettings,
   Announcement,
+  ContactMessage,
   Faq,
   GalleryItem,
   LearningResource,
@@ -62,7 +63,9 @@ export function seedSettings(): AcademySettings {
     // family has installed rather than pinning them to one provider.
     mapUrl:
       'https://www.google.com/maps/search/?api=1&query=' +
-      encodeURIComponent("Lee's Martial Arts Academy, 8263 SW Wilsonville Rd, Wilsonville, OR 97070"),
+      encodeURIComponent(
+        "Lee's Martial Arts Academy, 8263 SW Wilsonville Rd, Wilsonville, OR 97070",
+      ),
     websiteUrl: 'https://www.leesmartialartsacademy.com',
     supportEmail: 'lmaa.wilsonville@gmail.com',
     officeHours: 'Monday – Friday, 1:00 – 8:40 PM · Closed Saturday & Sunday',
@@ -145,48 +148,213 @@ const FAMILY = 'family-class'
  */
 const SEED_SLOTS: SeedSlot[] = [
   // ---------------------------------------------------------------- Monday
-  { day: 1, start: '15:40', end: '16:20', className: 'White Belt Only', programSlug: KIDS, level: WHITE },
-  { day: 1, start: '16:25', end: '16:55', className: 'Little Tigers', programSlug: TIGERS, ageRange: 'Ages 4–5', level: ALL },
+  {
+    day: 1,
+    start: '15:40',
+    end: '16:20',
+    className: 'White Belt Only',
+    programSlug: KIDS,
+    level: WHITE,
+  },
+  {
+    day: 1,
+    start: '16:25',
+    end: '16:55',
+    className: 'Little Tigers',
+    programSlug: TIGERS,
+    ageRange: 'Ages 4–5',
+    level: ALL,
+  },
   { day: 1, start: '17:00', end: '17:40', className: 'Level I', programSlug: KIDS, level: COLOUR },
   { day: 1, start: '17:45', end: '18:25', className: 'Level II', programSlug: KIDS, level: COLOUR },
-  { day: 1, start: '18:30', end: '19:10', className: 'Level III & IV', programSlug: KIDS, level: COLOUR },
+  {
+    day: 1,
+    start: '18:30',
+    end: '19:10',
+    className: 'Level III & IV',
+    programSlug: KIDS,
+    level: COLOUR,
+  },
   { day: 1, start: '19:15', end: '19:55', className: 'All Black Belt', level: BLACK },
-  { day: 1, start: '20:00', end: '20:40', className: 'Teen, Adults & All Black Belts', programSlug: TEEN_ADULT, ageRange: 'Ages 13+', level: ALL },
+  {
+    day: 1,
+    start: '20:00',
+    end: '20:40',
+    className: 'Teen, Adults & All Black Belts',
+    programSlug: TEEN_ADULT,
+    ageRange: 'Ages 13+',
+    level: ALL,
+  },
 
   // --------------------------------------------------------------- Tuesday
-  { day: 2, start: '15:40', end: '16:10', className: 'Little Tigers', programSlug: TIGERS, ageRange: 'Ages 4–5', level: ALL },
-  { day: 2, start: '16:15', end: '16:55', className: 'Level II, III & IV', programSlug: KIDS, level: COLOUR },
-  { day: 2, start: '17:00', end: '17:40', className: 'White Belt Only', programSlug: KIDS, level: WHITE },
+  {
+    day: 2,
+    start: '15:40',
+    end: '16:10',
+    className: 'Little Tigers',
+    programSlug: TIGERS,
+    ageRange: 'Ages 4–5',
+    level: ALL,
+  },
+  {
+    day: 2,
+    start: '16:15',
+    end: '16:55',
+    className: 'Level II, III & IV',
+    programSlug: KIDS,
+    level: COLOUR,
+  },
+  {
+    day: 2,
+    start: '17:00',
+    end: '17:40',
+    className: 'White Belt Only',
+    programSlug: KIDS,
+    level: WHITE,
+  },
   { day: 2, start: '17:45', end: '18:25', className: 'Level I', programSlug: KIDS, level: COLOUR },
-  { day: 2, start: '18:30', end: '19:10', className: 'Foam Sword', programSlug: KIDS, level: COLOUR },
+  {
+    day: 2,
+    start: '18:30',
+    end: '19:10',
+    className: 'Foam Sword',
+    programSlug: KIDS,
+    level: COLOUR,
+  },
   { day: 2, start: '19:15', end: '19:55', className: 'All Black Belt', level: BLACK },
-  { day: 2, start: '20:00', end: '20:40', className: 'Teen, Adults & All Black Belts', programSlug: TEEN_ADULT, ageRange: 'Ages 13+', level: ALL },
+  {
+    day: 2,
+    start: '20:00',
+    end: '20:40',
+    className: 'Teen, Adults & All Black Belts',
+    programSlug: TEEN_ADULT,
+    ageRange: 'Ages 13+',
+    level: ALL,
+  },
 
   // ------------------------------------------------------------- Wednesday
-  { day: 3, start: '15:40', end: '16:20', className: 'White Belt Only', programSlug: KIDS, level: WHITE },
-  { day: 3, start: '16:25', end: '16:55', className: 'Little Tigers', programSlug: TIGERS, ageRange: 'Ages 4–5', level: ALL },
+  {
+    day: 3,
+    start: '15:40',
+    end: '16:20',
+    className: 'White Belt Only',
+    programSlug: KIDS,
+    level: WHITE,
+  },
+  {
+    day: 3,
+    start: '16:25',
+    end: '16:55',
+    className: 'Little Tigers',
+    programSlug: TIGERS,
+    ageRange: 'Ages 4–5',
+    level: ALL,
+  },
   { day: 3, start: '17:00', end: '17:40', className: 'Level I', programSlug: KIDS, level: COLOUR },
-  { day: 3, start: '17:45', end: '18:25', className: 'Level III & IV', programSlug: KIDS, level: COLOUR },
+  {
+    day: 3,
+    start: '17:45',
+    end: '18:25',
+    className: 'Level III & IV',
+    programSlug: KIDS,
+    level: COLOUR,
+  },
   { day: 3, start: '18:30', end: '19:10', className: 'All Black Belt', level: BLACK },
-  { day: 3, start: '19:15', end: '19:55', className: 'Family & All Level', programSlug: FAMILY, ageRange: 'All ages', level: ALL },
-  { day: 3, start: '20:00', end: '20:40', className: 'Teen, Adults & All Black Belts', programSlug: TEEN_ADULT, ageRange: 'Ages 13+', level: ALL },
+  {
+    day: 3,
+    start: '19:15',
+    end: '19:55',
+    className: 'Family & All Level',
+    programSlug: FAMILY,
+    ageRange: 'All ages',
+    level: ALL,
+  },
+  {
+    day: 3,
+    start: '20:00',
+    end: '20:40',
+    className: 'Teen, Adults & All Black Belts',
+    programSlug: TEEN_ADULT,
+    ageRange: 'Ages 13+',
+    level: ALL,
+  },
 
   // -------------------------------------------------------------- Thursday
-  { day: 4, start: '15:40', end: '16:10', className: 'Little Tigers', programSlug: TIGERS, ageRange: 'Ages 4–5', level: ALL },
+  {
+    day: 4,
+    start: '15:40',
+    end: '16:10',
+    className: 'Little Tigers',
+    programSlug: TIGERS,
+    ageRange: 'Ages 4–5',
+    level: ALL,
+  },
   { day: 4, start: '16:15', end: '16:55', className: 'Level I', programSlug: KIDS, level: COLOUR },
-  { day: 4, start: '17:00', end: '17:40', className: 'White Belt Only', programSlug: KIDS, level: WHITE },
+  {
+    day: 4,
+    start: '17:00',
+    end: '17:40',
+    className: 'White Belt Only',
+    programSlug: KIDS,
+    level: WHITE,
+  },
   { day: 4, start: '17:45', end: '18:25', className: 'Level II', programSlug: KIDS, level: COLOUR },
   { day: 4, start: '18:30', end: '19:10', className: 'Black Belt Club', level: BLACK },
   { day: 4, start: '19:15', end: '19:55', className: 'All Black Belt', level: BLACK },
-  { day: 4, start: '20:00', end: '20:40', className: 'Teen, Adults & All Black Belts', programSlug: TEEN_ADULT, ageRange: 'Ages 13+', level: ALL },
+  {
+    day: 4,
+    start: '20:00',
+    end: '20:40',
+    className: 'Teen, Adults & All Black Belts',
+    programSlug: TEEN_ADULT,
+    ageRange: 'Ages 13+',
+    level: ALL,
+  },
 
   // ---------------------------------------------------------------- Friday
-  { day: 5, start: '15:40', end: '16:20', className: 'Level I & II', programSlug: KIDS, level: COLOUR },
-  { day: 5, start: '16:25', end: '17:05', className: 'Level III & IV', programSlug: KIDS, level: COLOUR },
+  {
+    day: 5,
+    start: '15:40',
+    end: '16:20',
+    className: 'Level I & II',
+    programSlug: KIDS,
+    level: COLOUR,
+  },
+  {
+    day: 5,
+    start: '16:25',
+    end: '17:05',
+    className: 'Level III & IV',
+    programSlug: KIDS,
+    level: COLOUR,
+  },
   { day: 5, start: '17:10', end: '17:50', className: 'All Black Belts', level: BLACK },
-  { day: 5, start: '17:55', end: '18:35', className: 'Kids Sparring', programSlug: KIDS, level: COLOUR },
-  { day: 5, start: '18:40', end: '19:20', className: 'Family & All Level', programSlug: FAMILY, ageRange: 'All ages', level: ALL },
-  { day: 5, start: '19:25', end: '20:05', className: 'Teen/Adult Sparring & All Black Belts', programSlug: TEEN_ADULT, ageRange: 'Ages 13+', level: ALL },
+  {
+    day: 5,
+    start: '17:55',
+    end: '18:35',
+    className: 'Kids Sparring',
+    programSlug: KIDS,
+    level: COLOUR,
+  },
+  {
+    day: 5,
+    start: '18:40',
+    end: '19:20',
+    className: 'Family & All Level',
+    programSlug: FAMILY,
+    ageRange: 'All ages',
+    level: ALL,
+  },
+  {
+    day: 5,
+    start: '19:25',
+    end: '20:05',
+    className: 'Teen/Adult Sparring & All Black Belts',
+    programSlug: TEEN_ADULT,
+    ageRange: 'Ages 13+',
+    level: ALL,
+  },
 ]
 
 export function seedSchedule(): ScheduleEntry[] {
@@ -560,7 +728,10 @@ export function seedPages(): Page[] {
         '- No information about students or children is collected.\n' +
         '- No advertising or behavioural tracking is used.\n' +
         '- Your read/unread marks and app preferences are stored only on your own device.\n' +
-        '- Administrator sign-in is limited to academy staff.\n\n' +
+        '- Administrator sign-in is limited to academy staff.\n' +
+        '- If you send the academy a message from the app, the name, contact details and ' +
+        'message you type are stored so that staff can read and reply, and the academy can ' +
+        'delete them at any time. Nothing from the message is kept on your device.\n\n' +
         'If push notifications or family accounts are added later, this policy must be updated ' +
         'before those features are switched on. Questions can be sent to the academy using the ' +
         'contact details on the Contact screen.',
@@ -579,6 +750,31 @@ export function seedPages(): Page[] {
  */
 export function seedGallery(): GalleryItem[] {
   return []
+}
+
+/* ----------------------------------------------------------------- messages */
+
+/**
+ * One clearly-labelled sample so the admin inbox can be seen before the
+ * backend exists. Families' own messages never land here in demo mode — the
+ * app hands them to the family's mail app instead of pretending to send.
+ */
+export function seedMessages(now: Date = new Date()): ContactMessage[] {
+  const twoDaysAgo = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString()
+  return [
+    {
+      id: 'msg-sample',
+      isSample: true,
+      name: 'Sample parent',
+      contact: 'parent@example.com',
+      topic: 'trial',
+      body:
+        'Hi — my daughter is six and would like to try a class. Which days are best for a ' +
+        'complete beginner, and does she need a uniform for the trial?',
+      status: 'new',
+      createdAt: twoDaysAgo,
+    },
+  ]
 }
 
 /* ------------------------------------------------------------------- bundle */

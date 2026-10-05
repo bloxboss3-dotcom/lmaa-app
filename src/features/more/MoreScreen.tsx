@@ -21,6 +21,7 @@ const GROUPS: { title: string; rows: Row[] }[] = [
     rows: [
       { to: '/more/about', label: 'About the academy', icon: 'shield' },
       { to: '/more/contact', label: 'Contact & directions', icon: 'phone' },
+      { to: '/more/message', label: 'Message the academy', icon: 'mail' },
       { to: '/more/page/beyond-class', label: 'Camps, parties & events', icon: 'sparkle' },
       { to: '/more/programs', label: 'Programs', icon: 'medal' },
       { to: '/more/faq', label: 'Frequently asked questions', icon: 'info' },

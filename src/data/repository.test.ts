@@ -156,7 +156,11 @@ describe('ResilientRepository', () => {
 
   it('falls back to built-in content when the backend fails', async () => {
     const onDegraded = vi.fn()
-    const repository = new ResilientRepository(failingRepository(), new DemoRepository(), onDegraded)
+    const repository = new ResilientRepository(
+      failingRepository(),
+      new DemoRepository(),
+      onDegraded,
+    )
 
     const bundle = await repository.getBundle()
     expect(bundle.schedule.length).toBeGreaterThan(0)
@@ -185,10 +189,9 @@ describe('ResilientRepository', () => {
         if (property === 'kind') return 'supabase'
         return (...args: unknown[]) => {
           if (!healthy) return Promise.reject(new ContentError('down'))
-          return (primary[property as keyof ContentRepository] as (...a: unknown[]) => unknown).apply(
-            primary,
-            args,
-          )
+          return (
+            primary[property as keyof ContentRepository] as (...a: unknown[]) => unknown
+          ).apply(primary, args)
         }
       },
     })
@@ -201,5 +204,50 @@ describe('ResilientRepository', () => {
     healthy = true
     await repository.getBundle()
     expect(onDegraded).toHaveBeenLastCalledWith(false)
+  })
+})
+
+describe('messages from families', () => {
+  beforeEach(() => {
+    window.localStorage.clear()
+  })
+
+  it('keeps messages out of the public content bundle', async () => {
+    const repository = new DemoRepository()
+    const bundle = await repository.getBundle()
+    expect(Object.keys(bundle)).not.toContain('messages')
+  })
+
+  it('stores a sent message newest first and lets staff mark it handled', async () => {
+    const repository = new DemoRepository()
+    await repository.sendMessage({
+      name: 'Jordan Rivera',
+      contact: 'jordan@example.com',
+      topic: 'trial',
+      body: 'Which day suits a complete beginner?',
+    })
+    const inbox = await repository.listMessages()
+    expect(inbox[0]).toMatchObject({ name: 'Jordan Rivera', status: 'new' })
+    expect(inbox[0].handledAt).toBeUndefined()
+
+    const handled = await repository.setMessageStatus(inbox[0].id, 'handled')
+    expect(handled.status).toBe('handled')
+    expect(handled.handledAt).toBeTruthy()
+
+    const reopened = await repository.setMessageStatus(inbox[0].id, 'new')
+    expect(reopened.handledAt).toBeUndefined()
+  })
+
+  it('never pretends a message was delivered by falling back to the demo store', async () => {
+    const repository = new ResilientRepository(failingRepository(), new DemoRepository())
+    await expect(
+      repository.sendMessage({
+        name: 'A',
+        contact: 'a@b.co',
+        topic: 'general',
+        body: 'hello there',
+      }),
+    ).rejects.toBeInstanceOf(ContentError)
+    await expect(repository.listMessages()).rejects.toBeInstanceOf(ContentError)
   })
 })
