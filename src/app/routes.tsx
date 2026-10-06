@@ -90,6 +90,13 @@ export const routes: RouteObject[] = [
       // Declared before `:collection` so these names are not swallowed by the
       // catch-all content route.
       {
+        path: 'resources/import',
+        lazy: async () => {
+          const { AdminVideoImportScreen } = await import('@/features/admin/AdminVideoImportScreen')
+          return { Component: AdminVideoImportScreen }
+        },
+      },
+      {
         path: 'inbox',
         lazy: async () => {
           const { AdminInboxScreen } = await import('@/features/admin/AdminInboxScreen')

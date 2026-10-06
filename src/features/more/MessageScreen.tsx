@@ -1,4 +1,5 @@
 import { useState, type FormEvent, type MouseEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useContent, useRepository } from '@/app/context'
 import { Screen, PageIntro } from '@/components/layout/PageIntro'
 import { Button, ExternalButton, LinkButton } from '@/components/ui/Button'
@@ -44,7 +45,15 @@ export function MessageScreen() {
   const canDeliver = mode === 'supabase'
   const academyEmail = settings.email
 
-  const [values, setValues] = useState<ContactMessageDraft>(EMPTY)
+  // A link can land here with the topic chosen, e.g. the free-trial card.
+  const [searchParams] = useSearchParams()
+  const requestedTopic = searchParams.get('topic')
+  const [values, setValues] = useState<ContactMessageDraft>(() => ({
+    ...EMPTY,
+    topic: (MESSAGE_TOPICS as readonly string[]).includes(requestedTopic ?? '')
+      ? (requestedTopic as MessageTopic)
+      : EMPTY.topic,
+  }))
   const [errors, setErrors] = useState<MessageErrors>({})
   const [busy, setBusy] = useState(false)
   const [sent, setSent] = useState<ContactMessageDraft | null>(null)

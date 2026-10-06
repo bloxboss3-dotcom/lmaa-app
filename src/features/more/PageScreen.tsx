@@ -66,7 +66,9 @@ export function PageScreen({ slug: fixedSlug }: { slug?: string }) {
         action={page.isSample ? <SampleBadge /> : undefined}
       />
       <RichText text={page.body} />
-      <p className="text-xs text-ink-400">Last updated {formatDate(page.updatedAt)}</p>
+      {page.updatedAt !== page.createdAt ? (
+        <p className="text-xs text-ink-400">Last updated {formatDate(page.updatedAt)}</p>
+      ) : null}
       <LinkButton to="/more" variant="ghost" icon="arrowLeft" size="sm">
         Back to More
       </LinkButton>

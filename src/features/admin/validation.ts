@@ -27,6 +27,8 @@ export interface FieldDef {
   validate?: (values: FormValues) => string | undefined
   /** Full-width in the two column layout. */
   wide?: boolean
+  /** Type-ahead suggestions for a text field. Anything else is still allowed. */
+  suggestions?: string[]
 }
 
 export type ValidationErrors = Record<string, string>

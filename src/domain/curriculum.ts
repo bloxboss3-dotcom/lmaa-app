@@ -26,6 +26,16 @@ const BELT_ORDER = [
   'black',
 ] as const
 
+/** What staff are offered when filing a video, in belt order. Free text is still allowed. */
+export const LEVEL_SUGGESTIONS: string[] = [
+  'All levels',
+  ...BELT_ORDER.map((name) =>
+    name.startsWith('senior')
+      ? name.replace(/\b\w/g, (c) => c.toUpperCase())
+      : `${name[0].toUpperCase()}${name.slice(1)} belt`,
+  ),
+]
+
 /** Longest names first, so "senior orange" is not mistaken for "orange". */
 const BELT_LOOKUP = [...BELT_ORDER]
   .map((name, rank) => ({ name, rank }))

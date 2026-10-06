@@ -113,8 +113,7 @@ the app.
 
 - [ ] **The LMAA Wilsonville YouTube channel link.** The app plays YouTube videos inside
       the Learn tab, grouped by belt. Send the channel (or a list of video links) and, for
-      each form, which belt it belongs to — the videos are filed under _Admin → Learning
-      resources_ with the program and level, and the screen sorts them into belt order.
+      each form, which belt it belongs to — the videos are filed under _Admin → Learning resources_ (paste a link and the title fills in; _Add several videos_ takes a whole list at once) with the program and level, and the screen sorts them into belt order.
       **LMAA must own the video or have permission to use it.** (The 2019 "Fun in the Park"
       video on YouTube was uploaded by a private account, so it is not used.)
 - [ ] **The student binder** (PDF) and any terminology sheets or printable handouts

@@ -1,4 +1,5 @@
 import type { ContentBundle, ContentRepository, Draft } from '@/data'
+import { LEVEL_SUGGESTIONS } from '@/domain/curriculum'
 import type { IconName } from '@/components/ui/Icon'
 import {
   ANNOUNCEMENT_CATEGORIES,
@@ -448,7 +449,7 @@ const schedule = define<ScheduleEntry>({
 
 /* --------------------------------------------------------------- resources */
 
-const RESOURCE_COLLECTION_LABELS: Record<string, string> = {
+export const RESOURCE_COLLECTION_LABELS: Record<string, string> = {
   curriculum: 'Curriculum videos',
   binder: 'Binder & documents',
   resources: 'Student resources',
@@ -460,7 +461,7 @@ const resources = define<LearningResource>({
   singular: 'resource',
   icon: 'book',
   description: 'Curriculum videos, binder documents and student resources.',
-  fields: () => [
+  fields: (context) => [
     { name: 'title', label: 'Title', type: 'text', required: true, wide: true },
     { name: 'description', label: 'Description', type: 'textarea', rows: 4 },
     {
@@ -483,14 +484,25 @@ const resources = define<LearningResource>({
         label: value === 'video' ? 'Video' : value === 'document' ? 'Document' : 'Web link',
       })),
     },
-    { name: 'program', label: 'Program', type: 'text' },
-    { name: 'level', label: 'Level', type: 'text' },
+    {
+      name: 'program',
+      label: 'Program',
+      type: 'text',
+      suggestions: context.programs.map((program) => program.name),
+    },
+    {
+      name: 'level',
+      label: 'Level',
+      type: 'text',
+      suggestions: LEVEL_SUGGESTIONS,
+      hint: 'Families see curriculum videos grouped by this, in belt order.',
+    },
     {
       name: 'videoUrl',
       label: 'Video link',
       type: 'url',
       visibleWhen: (values) => values.type === 'video',
-      hint: 'YouTube and Vimeo links play inside the app.',
+      hint: 'Paste a YouTube or Vimeo link and the title fills in by itself.',
     },
     {
       name: 'documentUrl',
