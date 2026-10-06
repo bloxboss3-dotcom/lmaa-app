@@ -130,14 +130,7 @@ interface SelectFieldProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>,
   options: { value: string; label: string }[]
 }
 
-export function SelectField({
-  label,
-  hint,
-  error,
-  className,
-  options,
-  ...rest
-}: SelectFieldProps) {
+export function SelectField({ label, hint, error, className, options, ...rest }: SelectFieldProps) {
   const id = useId()
   const controlId = rest.id ?? id
   return (

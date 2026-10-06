@@ -122,14 +122,14 @@ Worth checking after the first deployment:
 
 ## 6. If it goes wrong
 
-| Symptom | Fix |
-| --- | --- |
-| "404 — There isn't a GitHub Pages site here" | Source is not set to **GitHub Actions** (section 1), or no successful deployment has run yet. |
-| Page loads but is unstyled, console shows 404s for `/assets/...` | The base path is wrong. Delete the `VITE_BASE_PATH` variable so the workflow computes it, and re-run. |
-| Deploy step fails with a permissions error | The workflow's `permissions` block was edited. It needs `pages: write` and `id-token: write`. |
-| Deployment succeeds but the site looks old | The service worker is holding the previous version. Reload once; the app also shows an "A new version is ready" prompt. |
-| Custom domain shows a certificate warning | DNS has not finished propagating. Wait, then tick **Enforce HTTPS**. |
-| Workflow never starts | It only runs on `main`. Check which branch you pushed to. |
+| Symptom                                                          | Fix                                                                                                                     |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| "404 — There isn't a GitHub Pages site here"                     | Source is not set to **GitHub Actions** (section 1), or no successful deployment has run yet.                           |
+| Page loads but is unstyled, console shows 404s for `/assets/...` | The base path is wrong. Delete the `VITE_BASE_PATH` variable so the workflow computes it, and re-run.                   |
+| Deploy step fails with a permissions error                       | The workflow's `permissions` block was edited. It needs `pages: write` and `id-token: write`.                           |
+| Deployment succeeds but the site looks old                       | The service worker is holding the previous version. Reload once; the app also shows an "A new version is ready" prompt. |
+| Custom domain shows a certificate warning                        | DNS has not finished propagating. Wait, then tick **Enforce HTTPS**.                                                    |
+| Workflow never starts                                            | It only runs on `main`. Check which branch you pushed to.                                                               |
 
 ---
 

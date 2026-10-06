@@ -126,7 +126,9 @@ Deno.serve(async (request: Request) => {
   }
   if (title.length > MAX_TITLE || message.length > MAX_MESSAGE) {
     return json(
-      { error: `Keep the title under ${MAX_TITLE} and the message under ${MAX_MESSAGE} characters.` },
+      {
+        error: `Keep the title under ${MAX_TITLE} and the message under ${MAX_MESSAGE} characters.`,
+      },
       400,
     )
   }

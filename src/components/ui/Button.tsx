@@ -35,8 +35,7 @@ interface CommonProps {
 }
 
 export interface ButtonProps
-  extends CommonProps,
-    Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'className'> {}
+  extends CommonProps, Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'className'> {}
 
 export function Button({
   variant = 'primary',

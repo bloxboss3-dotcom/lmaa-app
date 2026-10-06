@@ -43,7 +43,7 @@ function lit(value) {
   const parts = String(value)
     .split('\n')
     .map((line) => `'${line.replace(/'/g, "''")}'`)
-  return parts.length === 1 ? parts[0] : parts.join(" || chr(10) || ")
+  return parts.length === 1 ? parts[0] : parts.join(' || chr(10) || ')
 }
 
 function bool(value) {
@@ -149,7 +149,13 @@ insert into public.faqs (question, answer, category, sort_order, published)
 values
 ${faqs
   .map((faq) =>
-    row([lit(faq.question), lit(faq.answer), lit(faq.category), faq.sortOrder, bool(faq.published)]),
+    row([
+      lit(faq.question),
+      lit(faq.answer),
+      lit(faq.category),
+      faq.sortOrder,
+      bool(faq.published),
+    ]),
   )
   .join(',\n')};
 

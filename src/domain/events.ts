@@ -29,10 +29,7 @@ export interface PartitionedEvents {
  * Split published events into "what's coming" (soonest first) and "what
  * happened" (most recent first).
  */
-export function partitionEvents(
-  events: AcademyEvent[],
-  now: Date = new Date(),
-): PartitionedEvents {
+export function partitionEvents(events: AcademyEvent[], now: Date = new Date()): PartitionedEvents {
   const visible = events.filter((event) => isEventVisible(event, now))
   const upcoming = visible
     .filter((event) => isUpcoming(event, now))
@@ -44,7 +41,10 @@ export function partitionEvents(
 }
 
 /** The event to surface on the home screen: featured wins, otherwise soonest. */
-export function nextEvent(events: AcademyEvent[], now: Date = new Date()): AcademyEvent | undefined {
+export function nextEvent(
+  events: AcademyEvent[],
+  now: Date = new Date(),
+): AcademyEvent | undefined {
   const { upcoming } = partitionEvents(events, now)
   return upcoming.find((event) => event.featured) ?? upcoming[0]
 }

@@ -19,7 +19,10 @@ export function EventsScreen() {
   const [tab, setTab] = useState<Tab>('upcoming')
   useDocumentTitle('Events')
 
-  const { upcoming, past } = useMemo(() => partitionEvents(bundle.events, now), [bundle.events, now])
+  const { upcoming, past } = useMemo(
+    () => partitionEvents(bundle.events, now),
+    [bundle.events, now],
+  )
   const shown = tab === 'upcoming' ? upcoming : past
   // The academy runs camps, parties and tournaments year-round but does not
   // always publish dates. When the calendar is bare, send families to what the
@@ -46,7 +49,9 @@ export function EventsScreen() {
               onClick={() => setTab(value)}
               className={cx(
                 'min-h-8 rounded-md px-3 text-[0.8125rem] capitalize transition-colors',
-                active ? 'bg-surface font-medium text-ink-900 shadow-[var(--shadow-soft)]' : 'text-ink-500',
+                active
+                  ? 'bg-surface font-medium text-ink-900 shadow-[var(--shadow-soft)]'
+                  : 'text-ink-500',
               )}
             >
               {value}

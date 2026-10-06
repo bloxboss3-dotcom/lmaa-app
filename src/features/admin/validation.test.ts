@@ -150,9 +150,9 @@ describe('collection definitions', () => {
       expect(collection.singular).toBeTruthy()
       expect(collection.fields({ programs: [] }).length).toBeGreaterThan(0)
       // Every collection must expose a publish toggle so drafts are possible.
-      expect(
-        collection.fields({ programs: [] }).some((field) => field.name === 'published'),
-      ).toBe(true)
+      expect(collection.fields({ programs: [] }).some((field) => field.name === 'published')).toBe(
+        true,
+      )
     }
   })
 })

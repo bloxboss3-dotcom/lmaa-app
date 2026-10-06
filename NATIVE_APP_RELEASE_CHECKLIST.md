@@ -185,6 +185,7 @@ Repeat `npm run cap:sync` after **every** web change.
 ### 16. Configure signing, identifiers, capabilities and versions
 
 **iOS (Xcode)**
+
 - Signing & Capabilities → select the academy's team, enable automatic signing.
 - Confirm the bundle identifier matches `capacitor.config.ts`.
 - Add the **Push Notifications** capability (and Background Modes → Remote notifications)
@@ -193,6 +194,7 @@ Repeat `npm run cap:sync` after **every** web change.
 - Set the deployment target to the minimum iOS your families realistically use.
 
 **Android (Android Studio)**
+
 - `applicationId` in `android/app/build.gradle` must match the bundle identifier.
 - Create an **upload keystore** and store it, plus its passwords, in a password manager.
   **Losing it means you can never update the app again.**
@@ -269,7 +271,7 @@ For both stores:
   plus a 1024 × 500 feature graphic
 - App icon (1024 × 1024, no transparency, no rounded corners — the stores add those)
 - **Support URL** — a real page that will still exist in a year
-- **Privacy policy URL** — must be publicly reachable *outside* the app; the app's own
+- **Privacy policy URL** — must be publicly reachable _outside_ the app; the app's own
   privacy screen is not sufficient
 - Category (Education, or Health & Fitness)
 - Age rating questionnaire

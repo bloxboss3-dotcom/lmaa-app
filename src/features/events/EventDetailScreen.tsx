@@ -96,7 +96,9 @@ export function EventDetailScreen() {
             )}
             {event.isSample ? <SampleBadge /> : null}
           </div>
-          <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">{event.title}</h1>
+          <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">
+            {event.title}
+          </h1>
         </header>
 
         <Card className="space-y-3">

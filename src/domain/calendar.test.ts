@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { buildEventIcs, escapeIcsText, foldLine, icsFileName, toIcsDate, toIcsUtc } from './calendar'
+import {
+  buildEventIcs,
+  escapeIcsText,
+  foldLine,
+  icsFileName,
+  toIcsDate,
+  toIcsUtc,
+} from './calendar'
 import type { AcademyEvent } from './types'
 
 const NOW = new Date('2026-08-01T12:00:00.000Z')

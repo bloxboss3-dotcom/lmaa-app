@@ -11,12 +11,22 @@ import { hasErrors, validateValues, type FieldDef, type FormValues } from './val
 
 const FIELDS: FieldDef[] = [
   { name: 'academyName', label: 'Academy name', type: 'text', required: true },
-  { name: 'tagline', label: 'Tagline', type: 'text', hint: 'One short line shown on the home screen.' },
+  {
+    name: 'tagline',
+    label: 'Tagline',
+    type: 'text',
+    hint: 'One short line shown on the home screen.',
+  },
   { name: 'phone', label: 'Phone number', type: 'text', hint: 'Families tap this to call.' },
   { name: 'email', label: 'Email address', type: 'text' },
   { name: 'mapUrl', label: 'Map link', type: 'url', hint: 'A Google Maps or Apple Maps link.' },
   { name: 'websiteUrl', label: 'Website', type: 'url' },
-  { name: 'supportEmail', label: 'Support email', type: 'text', hint: 'Where app problems should be reported.' },
+  {
+    name: 'supportEmail',
+    label: 'Support email',
+    type: 'text',
+    hint: 'Where app problems should be reported.',
+  },
   { name: 'officeHours', label: 'Office hours', type: 'text' },
   { name: 'facebook', label: 'Facebook link', type: 'url' },
   { name: 'instagram', label: 'Instagram link', type: 'url' },
@@ -62,7 +72,8 @@ export function AdminSettingsScreen() {
 
   const readOnly = session?.role !== 'admin'
 
-  const update = (name: string, value: string) => setValues((current) => ({ ...current, [name]: value }))
+  const update = (name: string, value: string) =>
+    setValues((current) => ({ ...current, [name]: value }))
 
   const save = async (event: FormEvent) => {
     event.preventDefault()
@@ -110,7 +121,9 @@ export function AdminSettingsScreen() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">Academy information</h1>
+        <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">
+          Academy information
+        </h1>
         <p className="mt-1 text-sm text-ink-500">
           These details power the Contact screen, the Call and Directions buttons, and the app
           footer.

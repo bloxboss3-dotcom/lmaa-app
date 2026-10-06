@@ -9,16 +9,16 @@ system on **leesmartialartsacademy.com**. Nothing was designed from scratch or g
 
 ## Who the academy is
 
-| | |
-| --- | --- |
-| **Name** | Lee's Martial Arts Academy — "LMAA" |
-| **Founded** | 2005, Wilsonville, Oregon |
-| **Founder** | Master C.Y. Lee, 6th Dan Taekwondo, 6th Dan HapKiDo |
-| **Arts** | Traditional Taekwondo enhanced by HapKiDo, plus practical self-defence |
-| **Affiliations** | Kukkiwon (World Taekwondo HQ, Seoul) and World Taekwondo |
-| **Ages served** | 4 to 50+ |
-| **Location** | 8263 SW Wilsonville Rd, Ste A — Wilsonville Town Center |
-| **Motto** | "Peace on Earth begins with peace within yourself." |
+|                  |                                                                        |
+| ---------------- | ---------------------------------------------------------------------- |
+| **Name**         | Lee's Martial Arts Academy — "LMAA"                                    |
+| **Founded**      | 2005, Wilsonville, Oregon                                              |
+| **Founder**      | Master C.Y. Lee, 6th Dan Taekwondo, 6th Dan HapKiDo                    |
+| **Arts**         | Traditional Taekwondo enhanced by HapKiDo, plus practical self-defence |
+| **Affiliations** | Kukkiwon (World Taekwondo HQ, Seoul) and World Taekwondo               |
+| **Ages served**  | 4 to 50+                                                               |
+| **Location**     | 8263 SW Wilsonville Rd, Ste A — Wilsonville Town Center                |
+| **Motto**        | "Peace on Earth begins with peace within yourself."                    |
 
 The five tenets — Courtesy (예의), Integrity (염치), Perseverance (인내), Self-Control (극기)
 and Indomitable Spirit (백절불굴) — and the five-line LMAA Pledge are recited every class.
@@ -35,10 +35,10 @@ the door").
 
 The full lockup turns to mush below about 80 px, so the app uses two crops:
 
-| Asset | What it is | Used for |
-| --- | --- | --- |
-| `lmaa-logo.png` | Full lockup, 512 × 506 | App icons, staff sign-in, install screen |
-| `lmaa-wordmark.png` | "LMAA" lettering only, 440 × 98 | App header, admin header |
+| Asset               | What it is                      | Used for                                 |
+| ------------------- | ------------------------------- | ---------------------------------------- |
+| `lmaa-logo.png`     | Full lockup, 512 × 506          | App icons, staff sign-in, install screen |
+| `lmaa-wordmark.png` | "LMAA" lettering only, 440 × 98 | App header, admin header                 |
 
 App icons are generated from the full lockup on the paper background — run `npm run icons`
 after replacing the source file.
@@ -51,19 +51,19 @@ These are the exact custom properties the academy's website ships. They are repr
 `src/index.css`, and the contrast ratio against the paper background is noted for each,
 because a brand colour that fails WCAG AA is a brand colour families cannot read.
 
-| Token | Hex | On paper | Role |
-| --- | --- | --- | --- |
-| `canvas` | `#f7f4ee` | — | Page background — warm paper, not white |
-| `surface` | `#ffffff` | — | Cards, rows, inputs |
-| `ink-900` | `#0c1322` | 16.9:1 | Headings |
-| `ink-800` | `#28303f` | 12.1:1 | Body text |
-| `ink-500` | `#5d6675` | 5.3:1 | Secondary text, eyebrow labels |
-| `ink-100` | `#e6e0d4` | — | Hairlines |
-| `crimson-600` | `#c8102e` | 5.4:1 | **Primary** — actions, live/next, active nav |
-| `crimson-700` | `#a00d25` | 7.4:1 | Hover, and red text on tinted fills |
-| `royal-600` | `#1e4f9e` | 7.2:1 | Secondary — information, never alarm |
-| `gold-500` | `#e3a82b` | 1.9:1 | **Fill only** — rules, belt marks, never small text |
-| `gold-700` | `#8a6410` | 4.9:1 | Readable gold text |
+| Token         | Hex       | On paper | Role                                                |
+| ------------- | --------- | -------- | --------------------------------------------------- |
+| `canvas`      | `#f7f4ee` | —        | Page background — warm paper, not white             |
+| `surface`     | `#ffffff` | —        | Cards, rows, inputs                                 |
+| `ink-900`     | `#0c1322` | 16.9:1   | Headings                                            |
+| `ink-800`     | `#28303f` | 12.1:1   | Body text                                           |
+| `ink-500`     | `#5d6675` | 5.3:1    | Secondary text, eyebrow labels                      |
+| `ink-100`     | `#e6e0d4` | —        | Hairlines                                           |
+| `crimson-600` | `#c8102e` | 5.4:1    | **Primary** — actions, live/next, active nav        |
+| `crimson-700` | `#a00d25` | 7.4:1    | Hover, and red text on tinted fills                 |
+| `royal-600`   | `#1e4f9e` | 7.2:1    | Secondary — information, never alarm                |
+| `gold-500`    | `#e3a82b` | 1.9:1    | **Fill only** — rules, belt marks, never small text |
+| `gold-700`    | `#8a6410` | 4.9:1    | Readable gold text                                  |
 
 Two rules that matter:
 
@@ -80,10 +80,10 @@ it is ever illustrated rather than listed.
 
 ## Type
 
-| | Font | Weights | Used for |
-| --- | --- | --- | --- |
+|         | Font       | Weights | Used for                                              |
+| ------- | ---------- | ------- | ----------------------------------------------------- |
 | Display | **Oswald** | 500–700 | Headings, the one big line per screen, eyebrow labels |
-| Body | **Inter** | 400–700 | Everything else |
+| Body    | **Inter**  | 400–700 | Everything else                                       |
 
 Both are the website's fonts, self-hosted as variable latin subsets in `src/assets/fonts/`
 (69 kB total) rather than loaded from Google Fonts — so the app still renders correctly
