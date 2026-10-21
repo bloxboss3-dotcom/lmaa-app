@@ -31,16 +31,16 @@ down, and connectable to the future Dojang OS without rewriting a single screen.
 
 ## Layers
 
-| Layer | Folder | Responsibility | Depends on |
-| --- | --- | --- | --- |
-| Domain | `src/domain` | Types and pure logic: schedule ordering, announcement visibility, event partitioning, `.ics` generation, formatting | nothing |
-| Data | `src/data` | Repository interface, demo implementation, Supabase implementation, resilience wrapper, staff auth | domain |
-| Config | `src/config` | Environment reading, feature flags | nothing |
-| Notifications | `src/notifications` | Provider interface + honest "not configured" provider | domain |
-| Native | `src/native` | The web / iOS / Android boundary (share, open, save file) | nothing |
-| Components | `src/components` | Presentation only — no data fetching | domain (formatting) |
-| Features | `src/features` | Screens, one folder per area | everything above |
-| App | `src/app` | Providers, context, route table | everything |
+| Layer         | Folder              | Responsibility                                                                                                      | Depends on          |
+| ------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| Domain        | `src/domain`        | Types and pure logic: schedule ordering, announcement visibility, event partitioning, `.ics` generation, formatting | nothing             |
+| Data          | `src/data`          | Repository interface, demo implementation, Supabase implementation, resilience wrapper, staff auth                  | domain              |
+| Config        | `src/config`        | Environment reading, feature flags                                                                                  | nothing             |
+| Notifications | `src/notifications` | Provider interface + honest "not configured" provider                                                               | domain              |
+| Native        | `src/native`        | The web / iOS / Android boundary (share, open, save file)                                                           | nothing             |
+| Components    | `src/components`    | Presentation only — no data fetching                                                                                | domain (formatting) |
+| Features      | `src/features`      | Screens, one folder per area                                                                                        | everything above    |
+| App           | `src/app`           | Providers, context, route table                                                                                     | everything          |
 
 Dependencies point **downwards only**. A domain function never imports a component; a
 component never imports Supabase.
@@ -57,7 +57,7 @@ All pure, all unit-tested (`src/domain/*.test.ts`):
 - **`schedule.ts`** — ISO weekdays (Monday = 1), `HH:MM` times compared as minutes,
   ordering by day then start time, and `effectiveTimes()` which returns the replacement
   times when a class has been temporarily moved.
-- **`events.ts`** — an event is "upcoming" until it *ends*, not until it starts, so an
+- **`events.ts`** — an event is "upcoming" until it _ends_, not until it starts, so an
   event running right now stays at the top of the list. All-day events run to the end of
   their day.
 - **`calendar.ts`** — RFC 5545 `.ics` generation with correct CRLF endings, 75-octet line
@@ -209,16 +209,16 @@ changes. See [NATIVE_APP_RELEASE_CHECKLIST.md](NATIVE_APP_RELEASE_CHECKLIST.md).
 
 ## Testing
 
-| File | Covers |
-| --- | --- |
-| `src/domain/schedule.test.ts` | Filtering, sorting, weekday handling, temporary changes |
-| `src/domain/announcements.test.ts` | Publication, scheduling, expiry, ordering, unread counts |
-| `src/domain/events.test.ts` | Upcoming/past logic, featured selection, relative labels |
-| `src/domain/calendar.test.ts` | `.ics` structure, escaping, folding, all-day events |
-| `src/data/repository.test.ts` | Demo persistence, draft visibility, fallback behaviour, "writes never fall back" |
-| `src/features/admin/validation.test.ts` | Form rules and every collection definition |
-| `src/features/admin/admin.test.tsx` | Sign-in, validation, publish-to-family flow, delete confirmation, editor permissions |
-| `src/app/navigation.test.tsx` | Primary navigation, deep links, empty states, not-found |
+| File                                    | Covers                                                                               |
+| --------------------------------------- | ------------------------------------------------------------------------------------ |
+| `src/domain/schedule.test.ts`           | Filtering, sorting, weekday handling, temporary changes                              |
+| `src/domain/announcements.test.ts`      | Publication, scheduling, expiry, ordering, unread counts                             |
+| `src/domain/events.test.ts`             | Upcoming/past logic, featured selection, relative labels                             |
+| `src/domain/calendar.test.ts`           | `.ics` structure, escaping, folding, all-day events                                  |
+| `src/data/repository.test.ts`           | Demo persistence, draft visibility, fallback behaviour, "writes never fall back"     |
+| `src/features/admin/validation.test.ts` | Form rules and every collection definition                                           |
+| `src/features/admin/admin.test.tsx`     | Sign-in, validation, publish-to-family flow, delete confirmation, editor permissions |
+| `src/app/navigation.test.tsx`           | Primary navigation, deep links, empty states, not-found                              |
 
 Run everything with `npm run verify`.
 
@@ -226,13 +226,13 @@ Run everything with `npm run verify`.
 
 ## Deliberate choices
 
-| Choice | Why |
-| --- | --- |
-| HashRouter | Static hosting cannot rewrite unknown paths; hash routes always survive a refresh |
-| No UI component library | Eight small components, full control of the LMAA look, nothing to keep upgrading |
-| Hand-drawn icon set | Same reason, and it keeps the bundle small |
-| No web fonts | Faster first paint and no third-party request from a family's device |
-| Single content bundle | One fetch, no per-screen loading spinners, trivial to cache |
-| Definition-driven admin | Eight content types, three screens |
-| Sample content is labelled | A parent must never mistake demo data for real academy information |
-| Push is disabled, not faked | A missed cancellation notice is worse than no notifications |
+| Choice                      | Why                                                                               |
+| --------------------------- | --------------------------------------------------------------------------------- |
+| HashRouter                  | Static hosting cannot rewrite unknown paths; hash routes always survive a refresh |
+| No UI component library     | Eight small components, full control of the LMAA look, nothing to keep upgrading  |
+| Hand-drawn icon set         | Same reason, and it keeps the bundle small                                        |
+| No web fonts                | Faster first paint and no third-party request from a family's device              |
+| Single content bundle       | One fetch, no per-screen loading spinners, trivial to cache                       |
+| Definition-driven admin     | Eight content types, three screens                                                |
+| Sample content is labelled  | A parent must never mistake demo data for real academy information                |
+| Push is disabled, not faked | A missed cancellation notice is worse than no notifications                       |

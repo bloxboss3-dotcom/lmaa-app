@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { RouterProvider, createMemoryRouter } from 'react-router-dom'
@@ -139,5 +139,81 @@ describe('messages from families', () => {
     await user.click(screen.getByRole('button', { name: /^all/i }))
     expect(await screen.findByText(/sample parent/i)).toBeInTheDocument()
     expect(screen.getByText(/^handled$/i)).toBeInTheDocument()
+  })
+})
+
+describe('adding videos', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('fills the title in from a pasted YouTube link and says it will play in the app', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(
+        async () =>
+          new Response(
+            JSON.stringify({ title: 'Taegeuk 1 Jang', author_name: 'LMAA Wilsonville' }),
+            { status: 200 },
+          ),
+      ),
+    )
+    const user = userEvent.setup()
+    renderApp('/admin')
+    await user.click(await screen.findByRole('button', { name: /explore as administrator/i }))
+    await user.click((await screen.findAllByRole('link', { name: /learning resources/i }))[0])
+    await user.click(await screen.findByRole('link', { name: /new resource/i }))
+
+    await user.type(await screen.findByLabelText(/video link/i), 'https://youtu.be/dQw4w9WgXcQ')
+
+    expect(await screen.findByText(/plays inside the app/i)).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByLabelText(/^title/i)).toHaveValue('Taegeuk 1 Jang')
+    })
+  })
+
+  it('warns when a link is not one the app can play', async () => {
+    const user = userEvent.setup()
+    renderApp('/admin')
+    await user.click(await screen.findByRole('button', { name: /explore as administrator/i }))
+    await user.click((await screen.findAllByRole('link', { name: /learning resources/i }))[0])
+    await user.click(await screen.findByRole('link', { name: /new resource/i }))
+
+    await user.type(await screen.findByLabelText(/video link/i), 'https://example.com/forms.mp4')
+    expect(await screen.findByText(/will open outside the app/i)).toBeInTheDocument()
+  })
+
+  it('adds a whole batch of videos from pasted links', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => {
+        const id = decodeURIComponent(String(url)).includes('AAAAAAAAAAA')
+          ? 'Taegeuk 1 Jang'
+          : 'Taegeuk 2 Jang'
+        return new Response(JSON.stringify({ title: id }), { status: 200 })
+      }),
+    )
+    const user = userEvent.setup()
+    renderApp('/admin')
+    await user.click(await screen.findByRole('button', { name: /explore as administrator/i }))
+    await user.click((await screen.findAllByRole('link', { name: /learning resources/i }))[0])
+    await user.click(await screen.findByRole('link', { name: /add several videos/i }))
+
+    await user.type(await screen.findByLabelText(/^level/i), 'Yellow belt')
+    await user.type(
+      screen.getByLabelText(/^links/i),
+      'https://youtu.be/AAAAAAAAAAA\nhttps://www.youtube.com/watch?v=BBBBBBBBBBB\nhttps://example.com/nope',
+    )
+    await user.click(screen.getByRole('button', { name: /check links/i }))
+
+    expect(await screen.findByDisplayValue('Taegeuk 1 Jang')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('Taegeuk 2 Jang')).toBeInTheDocument()
+    expect(screen.getByText(/not a youtube or vimeo link/i)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: /add 2 videos/i }))
+
+    // Back on the list, both videos are there and filed under the level.
+    expect(await screen.findByText('Taegeuk 1 Jang')).toBeInTheDocument()
+    expect(screen.getByText('Taegeuk 2 Jang')).toBeInTheDocument()
   })
 })

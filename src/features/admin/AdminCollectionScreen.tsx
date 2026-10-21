@@ -75,12 +75,21 @@ export function AdminCollectionScreen() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">{collection.title}</h1>
+          <h1 className="text-[1.375rem] font-semibold tracking-tight text-ink-900">
+            {collection.title}
+          </h1>
           <p className="mt-1 text-sm text-ink-500">{collection.description}</p>
         </div>
-        <LinkButton to={`/admin/${collection.key}/new`} icon="plus">
-          New {collection.singular}
-        </LinkButton>
+        <div className="flex flex-wrap gap-2">
+          {collection.key === 'resources' ? (
+            <LinkButton to="/admin/resources/import" icon="play" variant="secondary">
+              Add several videos
+            </LinkButton>
+          ) : null}
+          <LinkButton to={`/admin/${collection.key}/new`} icon="plus">
+            New {collection.singular}
+          </LinkButton>
+        </div>
       </div>
 
       {collection.list(bundle).length > 6 ? (
@@ -182,13 +191,7 @@ export function AdminCollectionScreen() {
   )
 }
 
-function StatusBadges({
-  record,
-  collectionKey,
-}: {
-  record: AdminRecord
-  collectionKey: string
-}) {
+function StatusBadges({ record, collectionKey }: { record: AdminRecord; collectionKey: string }) {
   const now = new Date()
   const badges = []
 

@@ -36,3 +36,15 @@ describe('home photo strip', () => {
     expect(heading.textContent).toMatch(/left today|classes are done|closed today|no classes/i)
   })
 })
+
+describe('free trial', () => {
+  it('offers new families the trial from Home and lands them on the message form with the topic set', async () => {
+    renderApp('/')
+    const link = await screen.findByRole('link', { name: /ask about a free trial/i })
+    expect(link).toHaveAttribute('href', expect.stringContaining('/more/message?topic=trial'))
+
+    renderApp('/more/message?topic=trial')
+    const topics = await screen.findAllByLabelText(/what is it about/i)
+    expect(topics[topics.length - 1]).toHaveValue('trial')
+  })
+})

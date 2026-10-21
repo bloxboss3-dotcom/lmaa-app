@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import { Checkbox, SelectField, TextArea, TextField } from '@/components/ui/Field'
 import { cx } from '@/lib/cx'
 import type { FieldDef, FormValues, ValidationErrors } from './validation'
@@ -119,17 +120,28 @@ export function FormFields({ fields, values, errors, onChange, className }: Form
                 onChange={(event) => onChange(field.name, event.target.value)}
               />
             )
-          default:
+          default: {
+            const listId = field.suggestions ? `${field.name}-suggestions` : undefined
             return (
-              <TextField
-                key={field.name}
-                {...common}
-                type="text"
-                placeholder={field.placeholder}
-                value={String(value ?? '')}
-                onChange={(event) => onChange(field.name, event.target.value)}
-              />
+              <Fragment key={field.name}>
+                <TextField
+                  {...common}
+                  type="text"
+                  placeholder={field.placeholder}
+                  list={listId}
+                  value={String(value ?? '')}
+                  onChange={(event) => onChange(field.name, event.target.value)}
+                />
+                {field.suggestions ? (
+                  <datalist id={listId}>
+                    {field.suggestions.map((option) => (
+                      <option key={option} value={option} />
+                    ))}
+                  </datalist>
+                ) : null}
+              </Fragment>
             )
+          }
         }
       })}
     </div>

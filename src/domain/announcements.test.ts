@@ -75,7 +75,10 @@ describe('isScheduled / isExpired', () => {
     )
     expect(isScheduled(announcement({ id: 'a' }), NOW)).toBe(false)
     expect(
-      isScheduled(announcement({ id: 'a', published: false, publishedAt: '2026-09-01T00:00:00Z' }), NOW),
+      isScheduled(
+        announcement({ id: 'a', published: false, publishedAt: '2026-09-01T00:00:00Z' }),
+        NOW,
+      ),
     ).toBe(false)
   })
 

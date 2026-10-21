@@ -13,6 +13,7 @@ import { useAdminContent } from './adminContext'
 import { findCollection, type AdminRecord } from './collections'
 import { EVENT_TEMPLATES, applyTemplate } from './eventTemplates'
 import { FormFields } from './FormFields'
+import { VideoLinkAssist } from './VideoLinkAssist'
 import { hasErrors, validateValues, type FormValues, type ValidationErrors } from './validation'
 
 /**
@@ -191,6 +192,11 @@ export function AdminEditorScreen() {
       <form onSubmit={(event) => void save(event)} className="space-y-5" noValidate>
         <Card>
           <FormFields fields={fields} values={values} errors={errors} onChange={update} />
+          {collection.key === 'resources' ? (
+            <div className="mt-4">
+              <VideoLinkAssist values={values} onChange={update} />
+            </div>
+          ) : null}
         </Card>
 
         {collection.supportsPush ? (

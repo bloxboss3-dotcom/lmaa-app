@@ -102,7 +102,11 @@ export function LearnScreen() {
               <span className="min-w-0 flex-1">
                 <span className="flex items-center gap-2">
                   <span className="font-semibold text-ink-900">{item.title}</span>
-                  {item.count !== undefined ? <Badge tone="neutral">{item.count}</Badge> : null}
+                  {item.count === undefined ? null : item.count > 0 ? (
+                    <Badge tone="neutral">{item.count}</Badge>
+                  ) : (
+                    <Badge tone="muted">Coming soon</Badge>
+                  )}
                 </span>
                 <span className="mt-0.5 block text-sm text-ink-500">{item.description}</span>
               </span>

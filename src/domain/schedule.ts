@@ -169,10 +169,7 @@ export function nextClassDay(
 }
 
 /** Classes still to come today, based on the current wall-clock time. */
-export function upcomingToday(
-  entries: ScheduleEntry[],
-  now: Date = new Date(),
-): ScheduleEntry[] {
+export function upcomingToday(entries: ScheduleEntry[], now: Date = new Date()): ScheduleEntry[] {
   const nowMinutes = now.getHours() * 60 + now.getMinutes()
   return entriesForDay(entries, isoWeekday(now)).filter((entry) => {
     const { end } = effectiveTimes(entry)

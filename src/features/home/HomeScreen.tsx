@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useContent } from '@/app/context'
 import { Badge, SampleBadge } from '@/components/ui/Badge'
-import { Button, TextLink } from '@/components/ui/Button'
+import { Button, LinkButton, TextLink } from '@/components/ui/Button'
 import { EmptyState, Rows, SectionHeading, Skeleton } from '@/components/ui/Card'
 import { Icon, type IconName } from '@/components/ui/Icon'
 import { headlineAnnouncement } from '@/domain/announcements'
@@ -303,6 +303,23 @@ export function HomeScreen() {
           </Link>
         </div>
       </section>
+
+      {/* The academy's own first offer to a new family, one tap from the
+          first screen. Hidden once a family has starred a class: they are
+          already here. */}
+      {mine.length === 0 ? (
+        <section className="rounded-[var(--radius-card)] border border-crimson-100 bg-crimson-50 p-4">
+          <p className="eyebrow eyebrow-accent">New to LMAA?</p>
+          <h2 className="mt-1 text-lg font-semibold text-ink-900">Try two weeks free</h2>
+          <p className="mt-1 text-sm text-ink-600">
+            Ages 4 to adult, no experience needed. Tell us a little about who would like to train
+            and we will find the right class.
+          </p>
+          <LinkButton to="/more/message?topic=trial" icon="mail" size="sm" className="mt-3">
+            Ask about a free trial
+          </LinkButton>
+        </section>
+      ) : null}
 
       {mine.length === 0 && bundle.schedule.length > 0 ? (
         <Link

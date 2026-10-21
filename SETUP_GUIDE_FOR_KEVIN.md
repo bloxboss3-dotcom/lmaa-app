@@ -199,6 +199,21 @@ see updates when they open the app.
 
 ---
 
+### Adding curriculum videos
+
+Videos live under **Admin → Learning resources**. Two ways in:
+
+- **One at a time:** New resource → paste the YouTube (or Vimeo) link into _Video link_. The
+  title fills itself in, a thumbnail appears, and the app confirms the video will play inside
+  it. Set the _Level_ (for example "Yellow belt" or "Senior Orange") and save.
+- **A whole batch:** **Add several videos** → paste one link per line, set the Level once,
+  press _Check links_, fix any title you want, press _Add_. Thirty videos take about two
+  minutes.
+
+Families see curriculum videos grouped by level in belt order, with a thumbnail and a play
+button. Until Supabase is connected, anything you add is saved in your own browser only; send
+the links to whoever maintains the app and they can put them in for everyone.
+
 ### Messages from families
 
 Families can write to you from the app (Home → **Message**). Until Supabase is connected,

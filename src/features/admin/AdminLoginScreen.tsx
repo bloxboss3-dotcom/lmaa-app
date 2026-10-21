@@ -42,7 +42,9 @@ export function AdminLoginScreen() {
         <div className="mb-6 flex flex-col items-center text-center">
           <LogoMark size={116} />
           <h1 className="mt-3 text-xl">Staff content manager</h1>
-          <p className="mt-1 text-sm text-ink-500">Lee&rsquo;s Martial Arts Academy · Wilsonville</p>
+          <p className="mt-1 text-sm text-ink-500">
+            Lee&rsquo;s Martial Arts Academy · Wilsonville
+          </p>
         </div>
 
         {mode === 'demo' ? (

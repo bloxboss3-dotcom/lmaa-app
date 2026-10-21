@@ -33,9 +33,7 @@ export function FaqScreen() {
         <div className="space-y-6">
           {categories.map((category) => (
             <section key={category}>
-              <h2 className="mb-2 eyebrow">
-                {category}
-              </h2>
+              <h2 className="mb-2 eyebrow">{category}</h2>
               <ul className="space-y-2">
                 {faqs
                   .filter((faq) => (faq.category ?? 'General') === category)

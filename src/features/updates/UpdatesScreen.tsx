@@ -110,7 +110,9 @@ export function UpdatesScreen() {
                     {formatRelative(item.publishedAt, now)}
                   </span>
                 </div>
-                <h2 className={cx('mt-1', unread ? 'font-semibold' : 'font-medium', 'text-ink-900')}>
+                <h2
+                  className={cx('mt-1', unread ? 'font-semibold' : 'font-medium', 'text-ink-900')}
+                >
                   {item.title}
                 </h2>
                 <p className="clamp-2 mt-0.5 text-sm text-ink-500">{item.body}</p>
