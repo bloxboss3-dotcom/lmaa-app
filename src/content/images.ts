@@ -35,9 +35,8 @@ export const PAGE_HERO_IMAGES: Record<string, string> = {
 
 /** Card image for a program, by slug. Programs without one render as text. */
 export const PROGRAM_IMAGES: Record<string, string> = {
-  // The academy's own photograph of a child-size LMAA uniform on its mats —
-  // a real picture, not a generated one.
-  'little-tigers': 'images/uniform-little-tigers.jpg',
+  // The Little Tigers belts until the academy's own class photos arrive.
+  'little-tigers': 'images/belts-little-tigers.jpg',
   'kids-taekwondo': 'images/program-kids.jpg',
   'teen-adult': 'images/program-teen-adult.jpg',
   'family-class': 'images/program-family.jpg',
@@ -48,7 +47,6 @@ export const PROGRAM_IMAGES: Record<string, string> = {
  * published gallery photo exists, those take over and these are never shown.
  */
 export const HOME_PHOTOS: string[] = [
-  'images/uniform-little-tigers.jpg',
   'images/program-kids.jpg',
   'images/belts-little-tigers.jpg',
   'images/event-parents-day.jpg',
