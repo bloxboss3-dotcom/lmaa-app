@@ -677,6 +677,88 @@ export function seedPages(): Page[] {
         'Every black belt started at white.',
     },
     {
+      id: 'page-new-families',
+      slug: 'new-families',
+      title: 'New to LMAA? Start here',
+      published: true,
+      // Written only from what the academy has told us. Anything it has not
+      // settled yet (test frequency, what to bring, the Black Belt Club price)
+      // is left out rather than guessed.
+      body:
+        'Welcome to Lee’s Martial Arts Academy. These are the things new families most often ' +
+        'wonder about in their first few weeks.\n\n' +
+        '## How a class runs\n\n' +
+        '- Students bow in.\n' +
+        '- They line up.\n' +
+        '- They listen the first time.\n\n' +
+        '## The belts\n\n' +
+        'Kids, teen and adult students work up this ladder: White, Yellow, Orange, Senior ' +
+        'Orange, Green, Senior Green, Blue, Senior Blue, Brown, Senior Brown, Red, Senior Red, ' +
+        'then Black.\n\n' +
+        'Little Tigers have their own belts: a white belt, then a white belt with a yellow, ' +
+        'green, blue, red and finally a black stripe.\n\n' +
+        '## Stripes and stripe forms\n\n' +
+        'Before a student can test for their next belt, they need two things:\n\n' +
+        '- All 3 stripes on their belt.\n' +
+        '- All 3 stripe forms completed: blue, brown and red.\n\n' +
+        'The stripe forms are paper sheets, and they are always by the front door. Little ' +
+        'Tigers have their own stripe forms, different from the Kids ones.\n\n' +
+        'What happens on test day is explained in “Getting ready for a belt test”, in the ' +
+        'Learn tab.\n\n' +
+        '## Memberships\n\n' +
+        'The 1-year plan goes up to green belt.\n\n' +
+        'Black Belt Club runs all the way to black belt. It is open to everyone, and it is the ' +
+        'natural next step for orange, senior orange and green belts nearing the end of their ' +
+        '1-year plan. Members get:\n\n' +
+        '- A blue uniform.\n' +
+        '- Black Belt Club class and foam sword class.\n' +
+        '- Sparring (sparring gear is bought separately).\n' +
+        '- Their photo on the wall.\n\n' +
+        'Black Belt Club costs a little more than the 1-year plan. Ask at the front desk for ' +
+        'the price.\n\n' +
+        '## Questions\n\n' +
+        'Ask at the front desk, call (503) 682-2318, or send the academy a message from the More ' +
+        'tab.',
+    },
+    {
+      id: 'page-testing',
+      slug: 'testing',
+      title: 'Getting ready for a belt test',
+      published: true,
+      body:
+        'A belt test is a big day. A little preparation at home makes it a good one.\n\n' +
+        '## Before the test\n\n' +
+        'Every student needs:\n\n' +
+        '- All 3 stripes on their belt.\n' +
+        '- All 3 stripe forms completed: blue, brown and red.\n\n' +
+        'The stripe forms are paper sheets, always by the front door. Little Tigers have their ' +
+        'own stripe forms, different from the Kids ones.\n\n' +
+        '## The white belt test (Kids classes)\n\n' +
+        'Parents watch the test. Your child shows:\n\n' +
+        '- The 9 basic movements.\n' +
+        '- Basic Form #1.\n' +
+        '- Front kick and axe kick.\n' +
+        '- A parent’s phone number and your home address, from memory.\n' +
+        '- A board break.\n\n' +
+        '## The board break\n\n' +
+        'A parent holds the board. The goal written on the board is your family’s goal: you ' +
+        'write it together at home, and it is a new goal every test.\n\n' +
+        '## Little Tigers tests\n\n' +
+        'A Little Tigers test works like the Kids test, with two differences. The questions ' +
+        'are different, and the form grows by 5 steps with each belt:\n\n' +
+        '- White belt: no form steps yet.\n' +
+        '- Yellow stripe: 5 steps.\n' +
+        '- Green stripe: 10 steps.\n' +
+        '- Blue stripe: 15 steps.\n' +
+        '- Red stripe: 20 steps.\n\n' +
+        '## Test-week checklist\n\n' +
+        '- 3 stripes on the belt.\n' +
+        '- Blue, brown and red stripe forms done.\n' +
+        '- Phone number and home address memorised.\n' +
+        '- Your family’s goal written on the board.\n\n' +
+        'Test dates are announced in Updates and Events. Questions? Ask at the front desk.',
+    },
+    {
       id: 'page-beyond-class',
       slug: 'beyond-class',
       title: 'Beyond class',

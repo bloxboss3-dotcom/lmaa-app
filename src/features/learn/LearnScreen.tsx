@@ -24,6 +24,26 @@ export function LearnScreen() {
   const hasPage = (slug: string) => bundle.pages.some((page) => page.slug === slug)
 
   const items: HubItem[] = [
+    ...(hasPage('new-families')
+      ? [
+          {
+            to: '/more/page/new-families',
+            title: 'New to LMAA? Start here',
+            description: 'How class runs, belts, stripes and memberships, for new families.',
+            icon: 'users' as const,
+          },
+        ]
+      : []),
+    ...(hasPage('testing')
+      ? [
+          {
+            to: '/more/page/testing',
+            title: 'Getting ready for a belt test',
+            description: 'What your child needs before the test, and what happens on the day.',
+            icon: 'check' as const,
+          },
+        ]
+      : []),
     {
       to: '/learn/programs',
       title: 'Programs',

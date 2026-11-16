@@ -3,7 +3,8 @@ import { cx } from '@/lib/cx'
 /**
  * Renders admin-written plain text safely.
  *
- * Blank lines separate paragraphs and lines starting with "- " become bullets.
+ * Blank lines separate paragraphs, lines starting with "- " become bullets, and
+ * a one-line paragraph starting with "## " becomes a section heading.
  * Nothing is parsed as HTML, so an administrator can never accidentally (or
  * deliberately) inject markup into a family's screen.
  */
@@ -20,6 +21,13 @@ export function RichText({ text, className }: { text: string; className?: string
     <div className={cx('space-y-3 text-[0.95rem] leading-relaxed text-ink-700', className)}>
       {blocks.map((block, index) => {
         const lines = block.split('\n')
+        if (lines.length === 1 && block.startsWith('## ')) {
+          return (
+            <h2 key={index} className="pt-3 text-lg">
+              {block.slice(3).trim()}
+            </h2>
+          )
+        }
         const isList = lines.every((line) => /^[-•*]\s+/.test(line.trim()))
         if (isList) {
           return (

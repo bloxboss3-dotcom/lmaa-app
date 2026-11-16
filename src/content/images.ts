@@ -31,6 +31,8 @@ export const UPDATE_CATEGORY_IMAGES: Partial<Record<AnnouncementCategory, string
 export const PAGE_HERO_IMAGES: Record<string, string> = {
   about: 'images/photo-black-belt-test-group.jpg',
   belts: 'images/belts.jpg',
+  'new-families': 'images/photo-lmaa-back.jpg',
+  testing: 'images/photo-instructor-form.jpg',
   tenets: 'images/tenets.jpg',
 }
 
