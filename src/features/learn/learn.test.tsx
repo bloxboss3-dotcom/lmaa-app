@@ -29,4 +29,28 @@ describe('learn hub and information pages', () => {
     await screen.findByRole('heading', { name: /the belt journey/i })
     expect(screen.queryByText(/last updated/i)).not.toBeInTheDocument()
   })
+
+  it('leads the hub with the new-family guide and the testing page', async () => {
+    renderApp('/learn')
+    await screen.findByRole('link', { name: /new to lmaa\? start here/i })
+    const links = screen.getAllByRole('link')
+    const titles = links.map((link) => link.textContent ?? '')
+    const guide = titles.findIndex((text) => /new to lmaa\? start here/i.test(text))
+    const testing = titles.findIndex((text) => /getting ready for a belt test/i.test(text))
+    const programs = titles.findIndex((text) => /^programs/i.test(text))
+    expect(guide).toBeGreaterThan(-1)
+    expect(testing).toBeGreaterThan(guide)
+    expect(programs).toBeGreaterThan(testing)
+  })
+
+  it('shows the testing page with its sections as headings', async () => {
+    renderApp('/more/page/testing')
+    await screen.findByRole('heading', { level: 1, name: /getting ready for a belt test/i })
+    expect(screen.getByRole('heading', { level: 2, name: /before the test/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: /little tigers tests/i }),
+    ).toBeInTheDocument()
+    expect(screen.getByText(/basic form #1/i)).toBeInTheDocument()
+    expect(screen.queryByText(/^## /)).not.toBeInTheDocument()
+  })
 })
