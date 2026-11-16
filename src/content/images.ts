@@ -3,11 +3,11 @@ import type { AnnouncementCategory } from '@/domain/types'
 /**
  * Where the app's own illustrative images live, and which screens use them.
  *
- * They are illustration, not record. Some show students, always from behind
- * and never with a face: the academy decided that was acceptable provided the
- * uniform and logo are right and the picture looks natural. The real
- * photographs of the academy still belong in the gallery, with permission, and
- * nothing here is presented as a particular person.
+ * Two kinds live here. `photo-*.jpg` are the academy's own photographs, sent
+ * by the academy for use in the app; people in them are shown with the
+ * academy's permission. The rest are generated illustration: any students in
+ * them are seen from behind with no face, and nothing in them is presented as
+ * a particular person.
  *
  * Paths are app-relative (`images/…`), not absolute URLs, so they keep working
  * if the app moves from the GitHub Pages sub-path to a custom domain. The hash
@@ -29,6 +29,7 @@ export const UPDATE_CATEGORY_IMAGES: Partial<Record<AnnouncementCategory, string
 
 /** Hero image for an information page, by slug. */
 export const PAGE_HERO_IMAGES: Record<string, string> = {
+  about: 'images/photo-black-belt-test-group.jpg',
   belts: 'images/belts.jpg',
   tenets: 'images/tenets.jpg',
 }
@@ -37,8 +38,9 @@ export const PAGE_HERO_IMAGES: Record<string, string> = {
 export const PROGRAM_IMAGES: Record<string, string> = {
   // The Little Tigers belts until the academy's own class photos arrive.
   'little-tigers': 'images/belts-little-tigers.jpg',
-  'kids-taekwondo': 'images/program-kids.jpg',
-  'teen-adult': 'images/program-teen-adult.jpg',
+  // The academy's own photographs from its November 2026 black belt test.
+  'kids-taekwondo': 'images/photo-partner-drill.jpg',
+  'teen-adult': 'images/photo-class-punch.jpg',
   'family-class': 'images/program-family.jpg',
 }
 
@@ -47,11 +49,13 @@ export const PROGRAM_IMAGES: Record<string, string> = {
  * published gallery photo exists, those take over and these are never shown.
  */
 export const HOME_PHOTOS: string[] = [
-  'images/program-kids.jpg',
+  'images/photo-black-belt-test-group.jpg',
+  'images/photo-class-punch.jpg',
+  'images/photo-lmaa-back.jpg',
+  'images/photo-partner-drill.jpg',
+  'images/photo-demo-team.jpg',
+  'images/photo-instructor-form.jpg',
   'images/belts-little-tigers.jpg',
-  'images/event-parents-day.jpg',
-  'images/event-belt-testing.jpg',
-  'images/belts.jpg',
 ]
 
 /** Every image path the app references, for the existence test. */
