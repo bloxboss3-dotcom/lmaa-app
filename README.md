@@ -37,7 +37,9 @@ The app runs in one of two modes, decided automatically at build time:
 - **Connected mode** (Supabase configured) — content comes from the database, staff sign
   in with real accounts, and edits are published to every family.
 
-Nothing about students or children is collected in either mode. See
+Nothing about students or children is collected in either mode as deployed. Family
+accounts (a parent signs in and sees their own child's belt, stripes and class count) are
+built and switched off; see [FAMILY_ACCOUNTS_SETUP.md](FAMILY_ACCOUNTS_SETUP.md) and
 [SECURITY_AND_PRIVACY.md](SECURITY_AND_PRIVACY.md).
 
 ---
@@ -76,6 +78,7 @@ The app runs in demo mode out of the box — no database or keys required.
 | [SETUP_GUIDE_FOR_KEVIN.md](SETUP_GUIDE_FOR_KEVIN.md)               | Non-technical guide: run it, deploy it, fix it, edit content                               |
 | [LAUNCH_KIT.md](LAUNCH_KIT.md)                                     | Getting it onto families' phones: phased checklist, door poster, announcement copy         |
 | [PUSH_NOTIFICATIONS_SETUP.md](PUSH_NOTIFICATIONS_SETUP.md)         | Turning on notifications: VAPID keys, the sender, and what is stored                       |
+| [FAMILY_ACCOUNTS_SETUP.md](FAMILY_ACCOUNTS_SETUP.md)               | Family accounts: what is stored, switching it on, and connecting Dojang OS                 |
 | [BRAND.md](BRAND.md)                                               | The academy's brand identity: logo, colour, type, voice, and where each came from          |
 | [BRAND_IMAGERY_BRIEF.md](BRAND_IMAGERY_BRIEF.md)                   | Shot list and prompts for generated header and launch imagery, anchored in the real dojang |
 | [CONTENT_NEEDED.md](CONTENT_NEEDED.md)                             | Checklist of everything LMAA still has to supply                                           |

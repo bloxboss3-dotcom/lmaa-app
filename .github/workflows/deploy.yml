@@ -61,6 +61,7 @@ jobs:
           VITE_VAPID_PUBLIC_KEY: ${{ vars.VITE_VAPID_PUBLIC_KEY }}
           VITE_PUSH_FUNCTION_URL: ${{ vars.VITE_PUSH_FUNCTION_URL }}
           VITE_FEATURE_LEADERSHIP: ${{ vars.VITE_FEATURE_LEADERSHIP }}
+          VITE_FEATURE_FAMILY_ACCOUNTS: ${{ vars.VITE_FEATURE_FAMILY_ACCOUNTS }}
           VITE_APP_VERSION: ${{ github.sha }}
         run: npm run build
 

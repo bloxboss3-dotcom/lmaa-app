@@ -17,8 +17,15 @@ export interface FeatureFlags {
    * When enabled, the app only shows a "Coming later" placeholder.
    */
   leadership: boolean
+  /**
+   * Family accounts: a parent signs in with an emailed code and sees their own
+   * child's belt, stripes and class count. Off until the academy has connected
+   * its database, approved the updated privacy policy, and asked for it.
+   */
+  familyAccounts: boolean
 }
 
 export const features: FeatureFlags = {
   leadership: flag(import.meta.env.VITE_FEATURE_LEADERSHIP, false),
+  familyAccounts: flag(import.meta.env.VITE_FEATURE_FAMILY_ACCOUNTS, false),
 }

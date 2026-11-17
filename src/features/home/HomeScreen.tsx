@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useContent } from '@/app/context'
+import { features } from '@/config/features'
 import { Badge, SampleBadge } from '@/components/ui/Badge'
 import { Button, LinkButton, TextLink } from '@/components/ui/Button'
 import { EmptyState, Rows, SectionHeading, Skeleton } from '@/components/ui/Card'
@@ -303,6 +304,24 @@ export function HomeScreen() {
           </Link>
         </div>
       </section>
+
+      {features.familyAccounts ? (
+        <Link
+          to="/family"
+          className="flex items-center gap-3.5 rounded-[var(--radius-card)] border border-ink-100 bg-surface p-4 transition-colors hover:bg-ink-50"
+        >
+          <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-crimson-50 text-crimson-700">
+            <Icon name="users" size={21} />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-semibold text-ink-900">My family</span>
+            <span className="block text-sm text-ink-500">
+              Your child&rsquo;s belt, stripes and classes.
+            </span>
+          </span>
+          <Icon name="chevronRight" size={20} className="shrink-0 text-ink-300" />
+        </Link>
+      ) : null}
 
       {/* The academy's own first offer to a new family, one tap from the
           first screen. Hidden once a family has starred a class: they are

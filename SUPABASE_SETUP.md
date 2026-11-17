@@ -24,14 +24,15 @@ You can skip this entirely at first — the app is fully usable in demo mode.
 1. In Supabase, open **SQL Editor** → **New query**.
 2. Paste the contents of each file **in this order**, running each one before the next:
 
-   | Order          | File                                            | What it does                                   |
-   | -------------- | ----------------------------------------------- | ---------------------------------------------- |
-   | 1              | `supabase/migrations/0001_schema.sql`           | Tables, indexes, timestamp triggers            |
-   | 2              | `supabase/migrations/0002_policies.sql`         | Row Level Security — who can read and write    |
-   | 3              | `supabase/migrations/0003_storage.sql`          | Buckets for images and documents               |
-   | 4              | `supabase/migrations/0004_push_and_staff.sql`   | Push notification devices, staff roles         |
-   | 5              | `supabase/migrations/0005_contact_messages.sql` | Messages families send from the app            |
-   | 6 _(optional)_ | `supabase/seed.sql`                             | The academy's real class schedule and programs |
+   | Order                        | File                                            | What it does                                              |
+   | ---------------------------- | ----------------------------------------------- | --------------------------------------------------------- |
+   | 1                            | `supabase/migrations/0001_schema.sql`           | Tables, indexes, timestamp triggers                       |
+   | 2                            | `supabase/migrations/0002_policies.sql`         | Row Level Security — who can read and write               |
+   | 3                            | `supabase/migrations/0003_storage.sql`          | Buckets for images and documents                          |
+   | 4                            | `supabase/migrations/0004_push_and_staff.sql`   | Push notification devices, staff roles                    |
+   | 5                            | `supabase/migrations/0005_contact_messages.sql` | Messages families send from the app                       |
+   | _(only for family accounts)_ | `supabase/migrations/0006_family_accounts.sql`  | Students and parent sign-in. See FAMILY_ACCOUNTS_SETUP.md |
+   | 6 _(optional)_               | `supabase/seed.sql`                             | The academy's real class schedule and programs            |
 
 3. Each run should end with **Success**. If step 2 or 3 fails, re-run step 1 first — they
    depend on it.

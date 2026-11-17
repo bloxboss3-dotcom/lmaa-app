@@ -10,6 +10,7 @@ import { LearnScreen } from '@/features/learn/LearnScreen'
 import { ResourceCollectionScreen } from '@/features/learn/ResourceCollectionScreen'
 import { ProgramsScreen } from '@/features/learn/ProgramsScreen'
 import { FaqScreen } from '@/features/learn/FaqScreen'
+import { FamilyScreen } from '@/features/family/FamilyScreen'
 import { MoreScreen } from '@/features/more/MoreScreen'
 import { ContactScreen } from '@/features/more/ContactScreen'
 import { MessageScreen } from '@/features/more/MessageScreen'
@@ -48,6 +49,8 @@ export const routes: RouteObject[] = [
       { path: 'learn/programs', element: <ProgramsScreen /> },
       { path: 'learn/faq', element: <FaqScreen /> },
       { path: 'learn/:collection', element: <ResourceCollectionScreen /> },
+
+      { path: 'family', element: <FamilyScreen /> },
 
       { path: 'more', element: <MoreScreen /> },
       { path: 'more/contact', element: <ContactScreen /> },
@@ -108,6 +111,13 @@ export const routes: RouteObject[] = [
         lazy: async () => {
           const { AdminNotifyScreen } = await import('@/features/admin/AdminNotifyScreen')
           return { Component: AdminNotifyScreen }
+        },
+      },
+      {
+        path: 'students',
+        lazy: async () => {
+          const { AdminStudentsScreen } = await import('@/features/admin/AdminStudentsScreen')
+          return { Component: AdminStudentsScreen }
         },
       },
       {
