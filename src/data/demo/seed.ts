@@ -682,8 +682,7 @@ export function seedPages(): Page[] {
       title: 'New to LMAA? Start here',
       published: true,
       // Written only from what the academy has told us. Anything it has not
-      // settled yet (test frequency, what to bring, the Black Belt Club price)
-      // is left out rather than guessed.
+      // settled yet is left out rather than guessed.
       body:
         'Welcome to Lee’s Martial Arts Academy. These are the things new families most often ' +
         'wonder about in their first few weeks.\n\n' +
@@ -714,8 +713,8 @@ export function seedPages(): Page[] {
         '- Black Belt Club class and foam sword class.\n' +
         '- Sparring (sparring gear is bought separately).\n' +
         '- Their photo on the wall.\n\n' +
-        'Black Belt Club costs a little more than the 1-year plan. Ask at the front desk for ' +
-        'the price.\n\n' +
+        'Black Belt Club is a longer-term commitment: $220 a month until your child’s expected ' +
+        'black belt test.\n\n' +
         '## Questions\n\n' +
         'Ask at the front desk, call (503) 682-2318, or send the academy a message from the More ' +
         'tab.',
@@ -726,13 +725,18 @@ export function seedPages(): Page[] {
       title: 'Getting ready for a belt test',
       published: true,
       body:
-        'A belt test is a big day. A little preparation at home makes it a good one.\n\n' +
+        'A belt test is a big day. A little preparation at home makes it a good one. Tests run ' +
+        'four times a year: March, June, September and December.\n\n' +
         '## Before the test\n\n' +
         'Every student needs:\n\n' +
         '- All 3 stripes on their belt.\n' +
         '- All 3 stripe forms completed: blue, brown and red.\n\n' +
         'The stripe forms are paper sheets, always by the front door. Little Tigers have their ' +
         'own stripe forms, different from the Kids ones.\n\n' +
+        '## What to bring on test day\n\n' +
+        '- The full uniform. A student who is not in full uniform will be sent back.\n' +
+        '- All 3 completed stripe forms.\n' +
+        '- The board, with your family’s goal written on it at home.\n\n' +
         '## The white belt test (Kids classes)\n\n' +
         'Parents watch the test. Your child shows:\n\n' +
         '- The 9 basic movements.\n' +
@@ -754,8 +758,9 @@ export function seedPages(): Page[] {
         '## Test-week checklist\n\n' +
         '- 3 stripes on the belt.\n' +
         '- Blue, brown and red stripe forms done.\n' +
+        '- Full uniform clean and ready.\n' +
         '- Phone number and home address memorised.\n' +
-        '- Your family’s goal written on the board.\n\n' +
+        '- Your family’s goal written on the board at home.\n\n' +
         'Test dates are announced in Updates and Events. Questions? Ask at the front desk.',
     },
     {
