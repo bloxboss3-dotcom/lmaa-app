@@ -7,11 +7,16 @@ data you never collect.
 
 ## What this app collects: nothing about your family
 
-In this release:
+As deployed today, with family accounts switched off:
 
 - **No account is required.** Families use the whole app without signing in.
 - **No information about students or children** is collected, stored or transmitted —
   no names, ages, belt ranks, attendance, photos, medical or billing information.
+
+Family accounts are built and **off by default**. If the academy switches them on, the
+second point changes; exactly what is then stored, and who can see it, is set out under
+[Family accounts](#family-accounts) below.
+
 - **No advertising and no behavioural tracking.** There are no analytics scripts, no
   advertising SDKs, no tracking pixels and no third-party cookies.
 - **No web fonts or external scripts.** Everything the app needs is served from its own
@@ -251,6 +256,43 @@ Three rules are enforced by the database rather than by the app, and are checked
 - The **VAPID private key**, which is what authorises a message as coming from the
   academy, exists only as a Supabase Edge Function secret. It is never in the app
   bundle, never in a `VITE_` variable, and never in the repository.
+
+## Family accounts
+
+Off unless the academy sets `VITE_FEATURE_FAMILY_ACCOUNTS=true` (see
+[FAMILY_ACCOUNTS_SETUP.md](FAMILY_ACCOUNTS_SETUP.md)). When on, a parent signs in with a
+one-time code sent to their email and sees their own child's belt, stripes and class count.
+This is the only part of the app that holds anything about a child, so it holds as little
+as it can and the database, not the interface, decides who sees it.
+
+- **What is stored per student:** a first name, one letter of the last name, the belt, the
+  stripes on it (0 to 3), an optional class count, an optional membership plan, and the
+  parent emails that may view the student. The table's constraints refuse a surname, a
+  fourth stripe or a belt the academy does not use. There is no birthday, address, photo,
+  medical or billing field to fill in.
+- **Parents hold the account, not children.** Sign-in is a six-digit code by email; there is
+  no password to leak or reuse.
+- **An account alone opens nothing.** Row Level Security shows a signed-in parent only the
+  students whose link carries their email, and only once that email is confirmed. The email
+  is read from the auth system's own record, not from anything the browser can edit.
+- **Parents cannot write.** Only staff can add or change a student or link a parent email,
+  so nobody can link themselves to a child. Only an administrator can delete a student.
+- **Nothing is cached on the phone.** Student records are fetched for the signed-in parent
+  and are never part of the public content the app keeps for offline use.
+- **Dojang OS, if connected, pushes one way** to the `sync-students` Edge Function, which
+  refuses any call without a shared secret and drops every field it was not asked for. The
+  secret and the service role exist only as Edge Function secrets.
+- **Without a database** the screen says sign-in is not switched on and offers only a
+  clearly-labelled sample family of invented students.
+
+`supabase/tests/security.sql` checks all of the above against a real Postgres: a visitor
+reads nothing; a parent sees their own active child and no one else's; an unlinked account
+and an unconfirmed account with the same email see nothing; a parent can neither change a
+belt nor link themselves; staff can.
+
+Before switching this on, the academy must update and approve the privacy policy, and
+should take advice: this is information about children, and COPPA (and its equivalents)
+applies. See "Family or student accounts" above.
 
 ## Messages from families
 

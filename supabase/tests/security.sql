@@ -177,3 +177,80 @@ select 'EXPECT BLOCKED — an editor cannot delete a message: ' || pg_temp.write
 select 'EXPECT ALLOWED — an administrator can delete a message: ' || pg_temp.write_as(:'admin_id',
   $q$delete from public.contact_messages where name = 'A parent'$q$);
 rollback;
+
+-- ===========================================================================
+-- Family accounts (0006)
+--
+-- Assumes the three users above each have a confirmed email in auth.users:
+-- admin@, editor@ and parent@lmaa.test. A fourth account, stranger_id, is a
+-- signed-in parent nobody has linked, and unverified_id has the SAME email as
+-- the parent but has never confirmed it.
+-- ===========================================================================
+
+\set stranger_id   '44444444-4444-4444-4444-444444444444'
+\set unverified_id '55555555-5555-5555-5555-555555555555'
+
+begin;
+insert into public.students (id, first_name, last_initial, rank, stripes)
+  values ('aaaaaaaa-0000-0000-0000-000000000001', 'Zz Linked', 'A', 'white', 2),
+         ('aaaaaaaa-0000-0000-0000-000000000002', 'Zz Other', 'B', 'tiger_yellow', 0),
+         ('aaaaaaaa-0000-0000-0000-000000000003', 'Zz Left', 'C', 'green', 1);
+update public.students set active = false where id = 'aaaaaaaa-0000-0000-0000-000000000003';
+insert into public.student_guardians (student_id, email)
+  values ('aaaaaaaa-0000-0000-0000-000000000001', 'parent@lmaa.test'),
+         ('aaaaaaaa-0000-0000-0000-000000000003', 'parent@lmaa.test'),
+         ('aaaaaaaa-0000-0000-0000-000000000002', 'someone.else@lmaa.test');
+
+select 'EXPECT HIDDEN/BLOCKED — a visitor cannot read students: ' ||
+  pg_temp.rows_visible_as('anon', null, 'select 1 from public.students');
+select 'EXPECT HIDDEN/BLOCKED — a visitor cannot read parent emails: ' ||
+  pg_temp.rows_visible_as('anon', null, 'select 1 from public.student_guardians');
+select 'EXPECT VISIBLE (1 row) — a parent sees only their own active child: ' ||
+  pg_temp.rows_visible_as('authenticated', :'parent_id', 'select 1 from public.students');
+select 'EXPECT HIDDEN — a parent cannot see another family''s child: ' ||
+  pg_temp.rows_visible_as('authenticated', :'parent_id',
+    $q$select 1 from public.students where first_name = 'Zz Other'$q$);
+select 'EXPECT HIDDEN — a parent cannot see a child who has left: ' ||
+  pg_temp.rows_visible_as('authenticated', :'parent_id',
+    $q$select 1 from public.students where first_name = 'Zz Left'$q$);
+select 'EXPECT VISIBLE (2 rows) — a parent sees only their own link rows: ' ||
+  pg_temp.rows_visible_as('authenticated', :'parent_id', 'select 1 from public.student_guardians');
+select 'EXPECT HIDDEN — a parent cannot see another family''s email: ' ||
+  pg_temp.rows_visible_as('authenticated', :'parent_id',
+    $q$select 1 from public.student_guardians where email = 'someone.else@lmaa.test'$q$);
+select 'EXPECT HIDDEN — a signed-in account nobody linked sees no students: ' ||
+  pg_temp.rows_visible_as('authenticated', :'stranger_id', 'select 1 from public.students');
+select 'EXPECT HIDDEN — an unconfirmed account with the parent''s email sees no students: ' ||
+  pg_temp.rows_visible_as('authenticated', :'unverified_id', 'select 1 from public.students');
+select 'EXPECT BLOCKED — a parent cannot change their child''s belt: ' || pg_temp.write_as(:'parent_id',
+  $q$update public.students set rank = 'black' where first_name = 'Zz Linked'$q$);
+select 'EXPECT BLOCKED — a parent cannot add a student: ' || pg_temp.write_as(:'parent_id',
+  $q$insert into public.students (first_name, last_initial, rank) values ('Zz Mine', 'D', 'white')$q$);
+select 'EXPECT BLOCKED — a stranger cannot link themselves to a child: ' || pg_temp.write_as(:'stranger_id',
+  $q$insert into public.student_guardians (student_id, email)
+     values ('aaaaaaaa-0000-0000-0000-000000000001', 'stranger@lmaa.test')$q$);
+select 'EXPECT BLOCKED — a parent cannot remove another parent''s link: ' || pg_temp.write_as(:'parent_id',
+  $q$delete from public.student_guardians where email = 'someone.else@lmaa.test'$q$);
+select 'EXPECT BLOCKED — a visitor cannot add a student: ' || pg_temp.write_as_role('anon', null,
+  $q$insert into public.students (first_name, last_initial, rank) values ('Zz Anon', 'E', 'white')$q$);
+select 'EXPECT VISIBLE (3 rows) — an editor sees every student: ' ||
+  pg_temp.rows_visible_as('authenticated', :'editor_id', 'select 1 from public.students');
+select 'EXPECT ALLOWED — an editor can add a stripe: ' || pg_temp.write_as(:'editor_id',
+  $q$update public.students set stripes = 3 where first_name = 'Zz Linked'$q$);
+select 'EXPECT BLOCKED — a fourth stripe is refused: ' || pg_temp.write_as(:'editor_id',
+  $q$update public.students set stripes = 4 where first_name = 'Zz Linked'$q$);
+select 'EXPECT BLOCKED — a belt the academy does not use is refused: ' || pg_temp.write_as(:'editor_id',
+  $q$update public.students set rank = 'senior_yellow' where first_name = 'Zz Linked'$q$);
+select 'EXPECT BLOCKED — a full surname is refused: ' || pg_temp.write_as(:'editor_id',
+  $q$update public.students set last_initial = 'Smith' where first_name = 'Zz Linked'$q$);
+select 'EXPECT ALLOWED — an editor can link a parent: ' || pg_temp.write_as(:'editor_id',
+  $q$insert into public.student_guardians (student_id, email)
+     values ('aaaaaaaa-0000-0000-0000-000000000002', 'parent@lmaa.test')$q$);
+select 'EXPECT BLOCKED — a mixed-case email is refused (it would never match): ' || pg_temp.write_as(:'editor_id',
+  $q$insert into public.student_guardians (student_id, email)
+     values ('aaaaaaaa-0000-0000-0000-000000000002', 'Parent2@LMAA.test')$q$);
+select 'EXPECT BLOCKED — an editor cannot delete a student: ' || pg_temp.write_as(:'editor_id',
+  $q$delete from public.students where first_name = 'Zz Other'$q$);
+select 'EXPECT ALLOWED — an administrator can delete a student: ' || pg_temp.write_as(:'admin_id',
+  $q$delete from public.students where first_name = 'Zz Other'$q$);
+rollback;

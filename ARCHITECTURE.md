@@ -174,8 +174,11 @@ When it arrives, connect it by writing one new class that implements `ContentRep
 family app can simply read the Dojang OS tables through RLS-protected views that expose
 only public fields.
 
-**Do not** let student records, attendance or billing leak into this app's tables. This
-app is public-facing and stores nothing about children by design.
+**Do not** let student records, attendance or billing leak into this app's tables. The
+one deliberate exception is family accounts (`src/data/family.ts`, migration 0006, off by
+default): a first name, a last initial, the belt, the stripes, a class count and the plan,
+readable only by that student's linked parents and by staff. Dojang OS feeds it one way
+through the `sync-students` Edge Function. Nothing else about a child belongs here.
 
 ### 2. Leadership Academy
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth, useContent, useRepository } from '@/app/context'
+import { features } from '@/config/features'
 import { EMPTY_BUNDLE } from '@/app/context'
 import type { ContentBundle } from '@/data'
 import { Badge } from '@/components/ui/Badge'
@@ -79,6 +80,16 @@ export function AdminLayout() {
       icon: collection.icon,
       end: false,
     })),
+    ...(features.familyAccounts
+      ? [
+          {
+            to: '/admin/students',
+            label: 'Students & families',
+            icon: 'medal' as const,
+            end: false,
+          },
+        ]
+      : []),
     { to: '/admin/inbox', label: 'Messages from families', icon: 'mail' as const, end: false },
     { to: '/admin/notify', label: 'Send a notification', icon: 'bell' as const, end: false },
     { to: '/admin/settings', label: 'Academy info', icon: 'sliders' as const, end: false },

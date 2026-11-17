@@ -92,4 +92,6 @@ export const STORAGE_KEYS = {
   myClasses: 'lmaa.my-classes.v1',
   visitCount: 'lmaa.visit-count.v1',
   demoMessages: 'lmaa.demo-messages.v1',
+  demoFamilySession: 'lmaa.demo-family-session.v1',
+  demoStudents: 'lmaa.demo-students.v1',
 } as const

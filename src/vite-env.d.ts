@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_BASE_PATH?: string
   readonly VITE_APP_VERSION?: string
   readonly VITE_FEATURE_LEADERSHIP?: string
+  readonly VITE_FEATURE_FAMILY_ACCOUNTS?: string
   readonly VITE_VAPID_PUBLIC_KEY?: string
   readonly VITE_PUSH_FUNCTION_URL?: string
 }

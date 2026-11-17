@@ -141,7 +141,8 @@ for you.
       and approved by LMAA before launch. It currently states, accurately, that the app
       collects no student or child information, requires no account, and stores read marks
       only on the family's own device. If that changes — especially if push notifications
-      are switched on — the policy must be updated **before** the feature goes live.
+      or family accounts are switched on — the policy must be updated **before** the feature
+      goes live. FAMILY_ACCOUNTS_SETUP.md has wording to start from for family accounts.
 
 ---
 

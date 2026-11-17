@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useContent, useRepository } from '@/app/context'
 import { env } from '@/config/env'
+import { features } from '@/config/features'
 import { Screen, PageIntro } from '@/components/layout/PageIntro'
 import { Button } from '@/components/ui/Button'
 import { Icon, type IconName } from '@/components/ui/Icon'
@@ -19,6 +20,10 @@ const GROUPS: { title: string; rows: Row[] }[] = [
   {
     title: 'The academy',
     rows: [
+      // Only once the academy has switched family sign-in on.
+      ...(features.familyAccounts
+        ? [{ to: '/family', label: 'My family', icon: 'users' as const }]
+        : []),
       { to: '/more/about', label: 'About the academy', icon: 'shield' },
       { to: '/more/contact', label: 'Contact & directions', icon: 'phone' },
       { to: '/more/message', label: 'Message the academy', icon: 'mail' },
