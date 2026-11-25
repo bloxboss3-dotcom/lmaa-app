@@ -254,3 +254,47 @@ select 'EXPECT BLOCKED — an editor cannot delete a student: ' || pg_temp.write
 select 'EXPECT ALLOWED — an administrator can delete a student: ' || pg_temp.write_as(:'admin_id',
   $q$delete from public.students where first_name = 'Zz Other'$q$);
 rollback;
+
+-- ===========================================================================
+-- Every role can still do its job (0007)
+--
+-- On a project created with "auto-grant API access" off, nothing reaches the
+-- API roles unless a migration grants it by name. These check that the app
+-- still works there: run them on a database where PUBLIC has no default
+-- EXECUTE on new functions.
+-- ===========================================================================
+
+begin;
+select 'EXPECT VISIBLE — a visitor reads the academy information: ' ||
+  pg_temp.rows_visible_as('anon', null, 'select 1 from public.app_settings');
+select 'EXPECT VISIBLE — a visitor reads the class schedule: ' ||
+  pg_temp.rows_visible_as('anon', null, 'select 1 from public.schedule_entries');
+select 'EXPECT VISIBLE — a visitor reads the published pages: ' ||
+  pg_temp.rows_visible_as('anon', null, 'select 1 from public.pages');
+select 'EXPECT VISIBLE — a signed-in parent reads the class schedule: ' ||
+  pg_temp.rows_visible_as('authenticated', :'parent_id', 'select 1 from public.schedule_entries');
+select 'EXPECT ALLOWED — a visitor can register a device: ' ||
+  pg_temp.call_as('anon', null, $q$select public.register_push_device('https://push.example/grants-check','k','a','{}','web')$q$);
+select 'EXPECT ALLOWED (false) — a visitor asking "am I staff?" is told no, not refused: ' ||
+  pg_temp.call_as('anon', null, 'select public.is_staff()');
+select 'EXPECT ALLOWED — an editor can post an update (the triggers run): ' || pg_temp.write_as(:'editor_id',
+  $q$insert into public.announcements (title, body, published, published_at)
+     values ('Grants check', 'x', true, now())$q$);
+select 'EXPECT ALLOWED — an editor can change it: ' || pg_temp.write_as(:'editor_id',
+  $q$update public.announcements set body = 'y' where title = 'Grants check'$q$);
+select 'EXPECT ALLOWED — an administrator can change the academy information: ' || pg_temp.write_as(:'admin_id',
+  $q$update public.app_settings set tagline = tagline where id = 'default'$q$);
+select 'EXPECT ALLOWED — staff can count the notification audience: ' ||
+  pg_temp.call_as('authenticated', :'editor_id', 'select public.push_audience_count(null)');
+select 'EXPECT VISIBLE — the server-side sender can read the device list: ' ||
+  pg_temp.rows_visible_as('service_role', null, 'select * from public.push_audience(null)');
+select 'EXPECT ALLOWED — the server-side sync can save a student: ' || pg_temp.write_as_role('service_role', null,
+  $q$insert into public.students (external_id, first_name, last_initial, rank) values ('zz-grants', 'Zz Synced', 'A', 'white')$q$);
+select 'EXPECT ALLOWED — the server-side sync can link a parent: ' || pg_temp.write_as_role('service_role', null,
+  $q$insert into public.student_guardians (student_id, email)
+     select id, 'synced@lmaa.test' from public.students where external_id = 'zz-grants'$q$);
+select 'EXPECT BLOCKED — a visitor still cannot read the device list: ' ||
+  pg_temp.rows_visible_as('anon', null, 'select * from public.push_audience(null)');
+select 'EXPECT BLOCKED — a visitor still cannot read students: ' ||
+  pg_temp.rows_visible_as('anon', null, 'select 1 from public.students');
+rollback;

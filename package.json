@@ -17,6 +17,7 @@
     "format:check": "prettier --check .",
     "icons": "node scripts/generate-icons.mjs",
     "seed:sql": "node scripts/generate-supabase-seed.mjs",
+    "setup:sql": "node scripts/generate-supabase-seed.mjs && node scripts/generate-supabase-setup.mjs",
     "verify": "npm run lint && npm run typecheck && npm run test && npm run build",
     "cap:sync": "npm run build && cap sync",
     "cap:add:ios": "cap add ios",

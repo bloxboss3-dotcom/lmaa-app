@@ -63,8 +63,10 @@ Do these in order. Steps 1 to 4 are in the Supabase dashboard.
 
 ### 1. Run the migration
 
+If you set the database up with `supabase/setup.sql`, this is already done. Otherwise:
 **SQL Editor → New query**, paste the contents of
-`supabase/migrations/0006_family_accounts.sql`, and run it. It ends with **Success**.
+`supabase/migrations/0006_family_accounts.sql`, then `0007_explicit_grants.sql`, and run
+them. Each ends with **Success**.
 
 ### 2. Put the code in the sign-in email
 
