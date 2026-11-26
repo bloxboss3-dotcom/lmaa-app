@@ -5,6 +5,9 @@
 -- regenerates this from src/data/demo/seed.ts so the demo app and a fresh
 -- Supabase project always show the same thing.
 --
+-- Safe to run more than once: nothing is loaded twice, and nothing the academy
+-- has since edited from Admin is overwritten.
+--
 -- Optional. Run this after the migrations to load the academy's own published
 -- information — contact details, the weekly class schedule, the programs, the
 -- FAQ answers and the academy pages — so the app is useful from day one.
@@ -29,7 +32,9 @@ update public.app_settings set
   support_email = 'lmaa.wilsonville@gmail.com',
   office_hours  = 'Monday – Friday, 1:00 – 8:40 PM · Closed Saturday & Sunday',
   social        = '{"instagram":"https://www.instagram.com/lmaa__wilsonville"}'::jsonb
-where id = 'default';
+-- Only while the contact details are still blank, so a second run never
+-- overwrites what the academy has since changed in Admin.
+where id = 'default' and phone is null and email is null;
 
 -- -------------------------------------------------------------- programs --
 
@@ -45,6 +50,9 @@ on conflict (slug) do nothing;
 -- The academy's published weekly timetable.
 -- Weekday numbers are ISO: 1 = Monday … 7 = Sunday.
 
+do $seed$
+begin
+if not exists (select 1 from public.schedule_entries) then
 insert into public.schedule_entries
   (class_name, program_slug, day_of_week, start_time, end_time, age_range, level, sort_order, published)
 values
@@ -82,9 +90,15 @@ values
   ('Kids Sparring', 'kids-taekwondo', 5, '17:55', '18:35', null, 'Colour belt', 32, true),
   ('Family & All Level', 'family-class', 5, '18:40', '19:20', 'All ages', 'All levels', 33, true),
   ('Teen/Adult Sparring & All Black Belts', 'teen-adult', 5, '19:25', '20:05', 'Ages 13+', 'All levels', 34, true);
+end if;
+end
+$seed$;
 
 -- ------------------------------------------------------------------ FAQs --
 
+do $seed$
+begin
+if not exists (select 1 from public.faqs) then
 insert into public.faqs (question, answer, category, sort_order, published)
 values
   ('How young can my child start?', 'Little Tigers starts at age 4 and the children’s class at 6. Call (503) 682-2318 and we will work out the right fit together.', 'Getting started', 1, true),
@@ -101,14 +115,23 @@ values
   ('Are the belts legitimate?', 'LMAA is affiliated with Kukkiwon (World Taekwondo Headquarters in Seoul) and World Taekwondo. Black belts earned here are registered and recognised worldwide, not just inside our school.', 'Belts & testing', 12, true),
   ('Do you offer family discounts?', 'Yes — there is a Family Program discount when more than one family member enrols together. Ask at the front desk or call for details.', 'Membership', 13, true),
   ('What does it cost?', 'A simple monthly membership, with the Family Program discount when more than one family member trains. Call (503) 682-2318 for current rates. Before you enrol we walk you through every cost up front, including uniforms and belt testing, so there are no surprises later.', 'Membership', 14, true);
+end if;
+end
+$seed$;
 
 -- ------------------------------------------------------- learning resources --
 
+do $seed$
+begin
+if not exists (select 1 from public.learning_resources) then
 insert into public.learning_resources
   (title, description, type, collection, external_url, sort_order, published)
 values
   ('Academy website', 'Programs, instructors, reviews and the free trial booking form.', 'link', 'resources', 'https://www.leesmartialartsacademy.com', 1, true),
   ('LMAA on Instagram', 'Photos from the mat, tournaments and events. Replies within 24 hours.', 'link', 'resources', 'https://www.instagram.com/lmaa__wilsonville', 2, true);
+end if;
+end
+$seed$;
 
 -- ----------------------------------------------------------------- pages --
 

@@ -59,6 +59,21 @@ function row(values) {
   return `  (${values.join(', ')})`
 }
 
+/**
+ * Wraps an insert so it only runs while its table is empty. These tables have
+ * no natural key to conflict on, so without this a second run of the file
+ * would load every class and every FAQ twice.
+ */
+function onlyIfEmpty(table, insert) {
+  return `do $seed$
+begin
+if not exists (select 1 from public.${table}) then
+${insert}
+end if;
+end
+$seed$;`
+}
+
 /* ------------------------------------------------------------------ output */
 
 const settings = seed.seedSettings()
@@ -74,6 +89,9 @@ const sql = `-- ================================================================
 -- GENERATED FILE. Do not edit by hand: run \`npm run seed:sql\` instead, which
 -- regenerates this from src/data/demo/seed.ts so the demo app and a fresh
 -- Supabase project always show the same thing.
+--
+-- Safe to run more than once: nothing is loaded twice, and nothing the academy
+-- has since edited from Admin is overwritten.
 --
 -- Optional. Run this after the migrations to load the academy's own published
 -- information — contact details, the weekly class schedule, the programs, the
@@ -99,7 +117,9 @@ update public.app_settings set
   support_email = ${lit(settings.supportEmail)},
   office_hours  = ${lit(settings.officeHours)},
   social        = ${lit(JSON.stringify(settings.social))}::jsonb
-where id = 'default';
+-- Only while the contact details are still blank, so a second run never
+-- overwrites what the academy has since changed in Admin.
+where id = 'default' and phone is null and email is null;
 
 -- -------------------------------------------------------------- programs --
 
@@ -124,7 +144,9 @@ on conflict (slug) do nothing;
 -- The academy's published weekly timetable.
 -- Weekday numbers are ISO: 1 = Monday … 7 = Sunday.
 
-insert into public.schedule_entries
+${onlyIfEmpty(
+  'schedule_entries',
+  `insert into public.schedule_entries
   (class_name, program_slug, day_of_week, start_time, end_time, age_range, level, sort_order, published)
 values
 ${schedule
@@ -141,11 +163,14 @@ ${schedule
       bool(entry.published),
     ]),
   )
-  .join(',\n')};
+  .join(',\n')};`,
+)}
 
 -- ------------------------------------------------------------------ FAQs --
 
-insert into public.faqs (question, answer, category, sort_order, published)
+${onlyIfEmpty(
+  'faqs',
+  `insert into public.faqs (question, answer, category, sort_order, published)
 values
 ${faqs
   .map((faq) =>
@@ -157,11 +182,14 @@ ${faqs
       bool(faq.published),
     ]),
   )
-  .join(',\n')};
+  .join(',\n')};`,
+)}
 
 -- ------------------------------------------------------- learning resources --
 
-insert into public.learning_resources
+${onlyIfEmpty(
+  'learning_resources',
+  `insert into public.learning_resources
   (title, description, type, collection, external_url, sort_order, published)
 values
 ${resources
@@ -176,7 +204,8 @@ ${resources
       bool(resource.published),
     ]),
   )
-  .join(',\n')};
+  .join(',\n')};`,
+)}
 
 -- ----------------------------------------------------------------- pages --
 
