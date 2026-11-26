@@ -50,11 +50,13 @@ jobs:
           # For a custom domain, set the repository variable VITE_BASE_PATH to "/"
           # (Settings -> Secrets and variables -> Actions -> Variables).
           VITE_BASE_PATH: ${{ vars.VITE_BASE_PATH || format('/{0}/', github.event.repository.name) }}
-          # Browser-safe Supabase values. Leave unset to deploy in demo mode.
-          # These are repository VARIABLES, not secrets: everything here is
-          # visible in the published JavaScript by design.
-          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          # The academy's Supabase project. Both values are browser-safe and
+          # are in the published JavaScript by design: the project URL, and the
+          # PUBLISHABLE key, which can do only what Row Level Security allows a
+          # visitor. Never put a secret (sb_secret_... / service_role) key here.
+          # A repository variable of the same name overrides either one.
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL || 'https://bbgzlmwyrkmgchzviadh.supabase.co' }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY || 'sb_publishable_5jZFizH7cvwLVioAEHlhNw_g7pz0Y88' }}
           # Push notifications. The VAPID PUBLIC key is safe to publish; the
           # private half belongs only in Supabase (supabase secrets set ...).
           # See PUSH_NOTIFICATIONS_SETUP.md.

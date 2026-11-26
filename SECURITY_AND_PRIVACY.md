@@ -278,7 +278,9 @@ as it can and the database, not the interface, decides who sees it.
 - **Parents cannot write.** Only staff can add or change a student or link a parent email,
   so nobody can link themselves to a child. Only an administrator can delete a student.
 - **Nothing is cached on the phone.** Student records are fetched for the signed-in parent
-  and are never part of the public content the app keeps for offline use.
+  and are never part of the public content the app keeps for offline use. The service
+  worker keeps a response only when the request was a visitor's (`src/pwa/cacheRules.ts`);
+  anything read while signed in, by staff or by a parent, is never written to its cache.
 - **Dojang OS, if connected, pushes one way** to the `sync-students` Edge Function, which
   refuses any call without a shared secret and drops every field it was not asked for. The
   secret and the service role exist only as Edge Function secrets.
