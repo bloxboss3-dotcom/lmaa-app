@@ -4,6 +4,7 @@ import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
+import { isPublicContentRequest } from './src/pwa/cacheRules'
 
 /**
  * GitHub Pages serves this project from a repository sub-path
@@ -90,11 +91,12 @@ export default defineConfig(({ mode }) => {
             {
               // Live content (announcements, schedule changes) must never be
               // served stale-first: always try the network, fall back to cache
-              // only so the app still opens offline.
-              urlPattern: ({ url }) => url.pathname.includes('/rest/v1/'),
+              // only so the app still opens offline. Public content only: what
+              // a signed-in member of staff or parent reads is never cached.
+              urlPattern: isPublicContentRequest,
               handler: 'NetworkFirst',
               options: {
-                cacheName: 'lmaa-content-v1',
+                cacheName: 'lmaa-public-content-v2',
                 networkTimeoutSeconds: 6,
                 expiration: { maxEntries: 64, maxAgeSeconds: 60 * 30 },
                 cacheableResponse: { statuses: [0, 200] },

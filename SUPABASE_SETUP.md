@@ -98,6 +98,11 @@ content. **If you ever paste one by mistake, rotate it in Supabase immediately.*
 
 ## 4. Tell the deployment about it
 
+**Already done for the academy's project.** Its project URL and publishable key are written
+into `.github/workflows/deploy.yml`, so every deploy connects to it. Both are browser-safe
+and appear in the published app by design. The steps below are only for pointing the app at
+a different project: a repository variable of the same name overrides the built-in value.
+
 In GitHub: **Settings → Secrets and variables → Actions → Variables tab → New repository
 variable**, twice:
 
